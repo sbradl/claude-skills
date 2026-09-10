@@ -24,6 +24,22 @@ For an all-projects install, run it from your home directory so the skills land 
 
 Claude picks a skill up automatically when the task matches its description, or you can invoke one directly with `/tdd-loop`, `/craft-review`, and so on.
 
+## Updating
+
+Run one command from the directory you installed into. It fetches the latest archive and replaces every skill in `./.claude/skills/`, leaving the rest of `./.claude/` alone. See [`news.md`](news.md) for what changed.
+
+**Linux / macOS**
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh
+```
+
+**Windows (PowerShell)**
+
+```powershell
+irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1 | iex
+```
+
 ## Configure your project
 
 Put your project's **test, build, coverage, and mutation-testing commands in the project's `CLAUDE.md`** (and how to run a single test, and coverage scoped to one file). The TDD skills run the suite on every red and green phase, check per-file coverage in the green audit, and run mutation testing at each batch boundary — without those commands recorded, each phase re-discovers them by searching the repo. A few lines in `CLAUDE.md` remove that overhead for the whole loop.

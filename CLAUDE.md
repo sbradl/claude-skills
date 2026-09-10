@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A collection of **Claude Code skills** — prose instruction sets under `.claude/skills/<name>/SKILL.md`, plus supporting reference files in the same directory. There is no application code, build, lint, or test tooling. "Working in this repo" means authoring and editing skill Markdown.
 
-`install.sh` (POSIX sh) and `install.ps1` (PowerShell) are the distribution mechanism: they download the GitHub branch archive and copy `.claude/skills/` into the caller's current directory. Keep the two in lockstep — same repo slug, branch, and copy behaviour.
+`install.sh` (POSIX sh) and `install.ps1` (PowerShell) are the distribution mechanism: they download the GitHub branch archive and copy `.claude/skills/` into the caller's current directory. `update.sh` / `update.ps1` are the same download but replace each skill directory wholesale (so renamed or deleted files inside a skill don't linger). Keep all four in lockstep — same repo slug, branch, and archive handling; the sh and ps1 halves of each pair must match, and install vs. update differ only in the copy step.
 
 ## Skill file conventions
 
