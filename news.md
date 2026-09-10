@@ -30,20 +30,3 @@ First release.
   (Domain-Driven Design, Code Smells, Clean Code, Pragmatic Programmer,
   Philosophy of Software Design), reported separately with no lens overriding
   another. Its findings drive the TDD loop's refactor pass.
-
-## Updating
-
-Run one command from the directory you installed into. It fetches the latest
-archive and replaces every skill in `./.claude/skills/`.
-
-**Linux / macOS**
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh
-```
-
-**Windows (PowerShell)**
-
-```powershell
-irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1 | iex
-```
