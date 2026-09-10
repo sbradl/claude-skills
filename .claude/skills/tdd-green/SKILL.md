@@ -42,6 +42,8 @@ Before running the suite, read `git diff` of the source. For every line, branch,
 
 This is what keeps coverage and mutation holes out of the suite: every construct exists because an assertion demanded it.
 
+Then, if `CLAUDE.md` records a coverage command, run it scoped to the file you changed and read the report against your diff. Any line or branch you added that the suite does not execute is over-coding the audit missed — revert it and re-run. Coverage only proves a construct runs, not that anything pins its result; the batch-boundary mutation pass covers what it can't.
+
 ## 4. Run the full suite
 
 Run every test, not just the one you started from. Paste the runner output verbatim into the conversation.
