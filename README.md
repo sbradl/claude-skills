@@ -33,8 +33,7 @@ Paste this prompt into Claude Code once, after installing, to have it work them 
 ```text
 Inspect this project's tooling and add a "Testing" section to CLAUDE.md with the
 exact commands to: run the full test suite, run a single test file or test by
-name, build/typecheck, and run mutation testing (MUTATE_FILES="<paths>" mise run
-mutation if configured). Only list commands you have verified exist in this repo.
+name, build/typecheck, and run mutation testing. Only list commands you have verified exist in this repo.
 ```
 
 ## The skills
