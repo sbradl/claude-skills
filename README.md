@@ -24,6 +24,10 @@ For an all-projects install, run it from your home directory so the skills land 
 
 Claude picks a skill up automatically when the task matches its description, or you can invoke one directly with `/tdd-loop`, `/craft-review`, and so on.
 
+## Configure your project
+
+Put your project's **test, build, and mutation-testing commands in the project's `CLAUDE.md`** (and how to run a single test). The TDD skills run the suite on every red and green phase — without those commands recorded, each phase re-discovers them by searching the repo. One line in `CLAUDE.md` removes that overhead for the whole loop.
+
 ## The skills
 
 ### TDD
