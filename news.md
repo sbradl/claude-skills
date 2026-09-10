@@ -1,8 +1,6 @@
 # News
 
-What changed in each version of the skills. Newest first.
-
-## 0.2
+## v2
 
 Sharper TDD discipline.
 
@@ -17,7 +15,7 @@ Sharper TDD discipline.
 - The refactor phase will no longer add new behaviour, even when it looks
   necessary.
 
-## 0.1
+## v1
 
 First release.
 
@@ -32,3 +30,20 @@ First release.
   (Domain-Driven Design, Code Smells, Clean Code, Pragmatic Programmer,
   Philosophy of Software Design), reported separately with no lens overriding
   another. Its findings drive the TDD loop's refactor pass.
+
+## Updating
+
+Run one command from the directory you installed into. It fetches the latest
+archive and replaces every skill in `./.claude/skills/`.
+
+**Linux / macOS**
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh
+```
+
+**Windows (PowerShell)**
+
+```powershell
+irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1 | iex
+```
