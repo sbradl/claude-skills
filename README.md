@@ -28,6 +28,15 @@ Claude picks a skill up automatically when the task matches its description, or 
 
 Put your project's **test, build, and mutation-testing commands in the project's `CLAUDE.md`** (and how to run a single test). The TDD skills run the suite on every red and green phase — without those commands recorded, each phase re-discovers them by searching the repo. One line in `CLAUDE.md` removes that overhead for the whole loop.
 
+Paste this prompt into Claude Code once, after installing, to have it work them out and write them down:
+
+```text
+Inspect this project's tooling and add a "Testing" section to CLAUDE.md with the
+exact commands to: run the full test suite, run a single test file or test by
+name, build/typecheck, and run mutation testing (MUTATE_FILES="<paths>" mise run
+mutation if configured). Only list commands you have verified exist in this repo.
+```
+
 ## The skills
 
 ### TDD
