@@ -29,6 +29,8 @@ Then baseline the design: review the cycle-base-to-green-commit diff — the `co
 
 One small transformation at a time — rename, extract, inline, move. Run the full suite after each; it stays green, or you revert that step and take a smaller one.
 
+Add no new behaviour code — a null guard, a type check, a fallback default, a validation — even when it looks obviously needed. Reachable code no test pins is a hole; if the case is real it is a slice for the next red, not this refactor. Unreachable guards are dead code — also don't add them.
+
 Leave every assertion untouched. Test-file edits are allowed only where they carry no behaviour: renaming a symbol the test calls, moving a helper, reformatting. Expected values, the conditions asserted, and the number of assertions stay as they were.
 
 ## 4. Prove behaviour was preserved

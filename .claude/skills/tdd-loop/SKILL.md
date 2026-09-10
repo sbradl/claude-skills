@@ -11,6 +11,11 @@ TDD builds one behaviour at a time through a **loop**: red → green, slice afte
 
 A **slice** is the smallest single behaviour a user of the code would recognise and name. One slice per lap, and never write several tests ahead — each slice responds to what the last one taught you. Before the first slice, agree with the user which public seam the tests drive, and note the current commit as the loop's base.
 
+Two rules keep the suite from acquiring holes the loop should have closed:
+
+- **A faked value gets triangulated next.** When green passes by returning a constant or hard-coding a branch (legitimate — see `tdd-green`), the very next slice is the example that fake cannot satisfy. Do not move to a fresh behaviour while the last one is still faked; the faked code is unpinned until a second example forces it general.
+- **A boundary is two slices.** "Rewards at ten stamps" and "does not reward at nine" are separate slices, driven one after the other. One test on one side of a threshold leaves the other side, and the exact comparison, unspecified.
+
 ## Batches
 
 Slices run in **batches of five**. Lap red → green through the batch, then run the refactor pass (it needs the user to drive `/craft-review`) and **stop**: report slices built and what of the requirement is left, and wait for the user before the next batch. An unattended multi-batch run buries the user in commits they never reviewed.
@@ -35,7 +40,14 @@ A review that finds nothing → say so in the report and open no refactor. Do no
 
 ## The mutation pass
 
-Once per batch, alongside the refactor pass, with the suite green: run mutation testing scoped to the batch's changed files (`MUTATE_FILES="<paths>" mise run mutation`). Every surviving mutant in those files gets one of two outcomes — a missing characterization test, written on the spot, or an explicit note that the gap predates this batch (say so in the report; do not touch code outside the batch to close it). Never leave a survivor unexplained.
+Once per batch, alongside the refactor pass, with the suite green: run mutation testing scoped to the batch's changed files (`MUTATE_FILES="<paths>" mise run mutation`). Never leave a survivor unexplained.
+
+A survivor in code this batch wrote is a loop failure, and fixing it means fixing what the loop should have done — not bolting on a test:
+
+- **Green over-coded.** The mutated construct — a branch, a guard, a comparison edge — was never forced by a failing assertion. Revert it; confirm the suite stays green without it. (Green's step-3 audit is meant to catch this before commit.)
+- **A slice was skipped.** A boundary's other side, a faked value never triangulated. Add the red that should have existed, watch it fail for the right reason, then green it — the normal lap, run late.
+
+Only a survivor in code that predates this batch gets a characterization test written on the spot, or an explicit note that the gap is pre-existing (say so in the report; do not touch code outside the batch to close it). A characterization test over this batch's own fresh code just pins whatever it happens to do, bugs included.
 
 Two traps this catches that review alone won't:
 
