@@ -62,13 +62,20 @@ curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh
 irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1 | iex
 ```
 
-## Configure your project
+## Setting up a project
 
-Put your project's **test, build, and coverage commands in the project's `CLAUDE.md`** (and how to run a single test, and coverage scoped to one file). The TDD skills run the suite on every red and green phase and check per-file coverage in the green audit — without those commands recorded, each phase re-discovers them by searching the repo. A few lines in `CLAUDE.md` remove that overhead for the whole loop.
+What each skill needs before it works, and when you set it up:
 
-`tdd-loop` runs mutation testing at each batch boundary through [mise](https://mise.jdx.dev): `MUTATE_FILES="<paths>" mise run mutation`, scoped to the batch's changed files. Give the project a `mutation` task that mutates only the files listed in `MUTATE_FILES`.
+| Skill | Needs | Set up |
+| --- | --- | --- |
+| `tdd-*` | `test`, `coverage`, and `mutation` tasks | once per project, before the first loop — run `/engineering-rules` with the **Testing strategy** area |
+| `commit` | the project's commit convention | nothing to do — the first commit asks and records it in `.claude/commit.md` |
+| `engineering-rules` | — | it is the setup; run it once, and again to revisit an area |
+| `craft-review` | — | nothing |
 
-Paste this prompt into Claude Code once, after installing, to have it work all of that out:
+**TDD.** The phases run single tests, check per-file coverage, and mutate the files each batch changed. `/engineering-rules` creates the tasks for that — `test [filter]`, `coverage <file>`, and a `mutation` task that honours `MUTATE_FILES` — so nothing goes into `CLAUDE.md`. Pick mise as its task runner: `tdd-loop` calls `MUTATE_FILES="<paths>" mise run mutation`.
+
+Without `engineering-rules`, record the commands in `CLAUDE.md` instead and add the mise `mutation` task yourself. Paste this prompt into Claude Code once to have it do both:
 
 ```text
 Inspect this project's tooling and add a "Testing" section to CLAUDE.md with the
