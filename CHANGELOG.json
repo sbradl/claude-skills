@@ -1,15 +1,18 @@
 {
-  "upcoming": {
-    "skill-users": {
-      "added": [
-        {
-          "id": "commit-release-mode",
-          "en": "The `commit` skill releases too: ask it to release and it proposes the next version from the unreleased changes, then makes one release commit that moves them under that version, tags it, and pushes both — or runs your project's own release task when it has one."
-        }
-      ]
-    }
-  },
+  "upcoming": {},
   "releases": [
+    {
+      "version": "v2.1.1",
+      "date": "2026-10-12",
+      "skill-users": {
+        "added": [
+          {
+            "id": "commit-release-mode",
+            "en": "The `commit` skill releases too: ask it to release and it proposes the next version from the unreleased changes, then makes one release commit that moves them under that version, tags it, and pushes both — or runs your project's own release task when it has one."
+          }
+        ]
+      }
+    },
     {
       "version": "v2.1.0",
       "date": "2026-10-12",
