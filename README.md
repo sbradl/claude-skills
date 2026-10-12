@@ -19,7 +19,7 @@
 
 ## Installing
 
-Run one command from the directory you want the skills in. It downloads the latest archive from GitHub, shows a checklist of skill groups (`feature`, `tdd`, `craft-review`, `commit`, `engineering`) — arrow keys move, space selects, enter confirms — and drops the chosen skills into `./.claude/skills/`.
+Run one command from the directory you want the skills in. It downloads the latest release from GitHub, shows a checklist of skill groups (`feature`, `tdd`, `craft-review`, `commit`, `engineering`) — arrow keys move, space selects, enter confirms — and drops the chosen skills into `./.claude/skills/`.
 
 **Linux / macOS**
 
@@ -45,11 +45,22 @@ curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.s
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1))) tdd
 ```
 
+To install a specific release, or the development version from `main`, name it with `--ref` (PowerShell: `-Ref`) before the groups:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.sh | sh -s -- --ref v2.1.4 tdd
+curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.sh | sh -s -- --ref main
+```
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1))) -Ref v2.1.4 tdd
+```
+
 The update scripts take the same arguments.
 
 ## Updating
 
-Run one command from the directory you installed into. It fetches the latest archive and replaces the skills of every group you have installed — a group gains skills added to it since, and files removed from a skill don't linger. Groups you never installed stay out, and the rest of `./.claude/` is left alone. Name groups to update only those, or to add one. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
+Run one command from the directory you installed into. It fetches the latest release (or the one `--ref` names) and replaces the skills of every group you have installed — a group gains skills added to it since, and files removed from a skill don't linger. Groups you never installed stay out, and the rest of `./.claude/` is left alone. Name groups to update only those, or to add one. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
 
 **Linux / macOS**
 

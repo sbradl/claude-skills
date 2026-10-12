@@ -27,6 +27,10 @@
         {
           "id": "engineering-ci-gitea-jenkins",
           "en": "The `engineering-rules` enforcement area sets up CI on Gitea Actions and Jenkins too."
+        },
+        {
+          "id": "install-latest-release",
+          "en": "The install and update scripts fetch the latest release instead of the development version on `main`; `--ref <tag>` (PowerShell: `-Ref`) installs a specific release, `--ref main` the development version."
         }
       ]
     }

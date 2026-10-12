@@ -1,24 +1,43 @@
 #!/usr/bin/env sh
-# Update the claude-skills in ./.claude/skills/ to the latest version.
+# Update the claude-skills in ./.claude/skills/ to the latest release.
 # Replaces the skill directories in place; leaves the rest of ./.claude alone.
 # Usage:  curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh
-#         curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh -s -- tdd craft-review
+#         curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh -s -- --ref v2.1.4 tdd craft-review
+# --ref takes a release tag, or a branch (main for the development version).
 # Arguments name skill groups (directories under skills/); none means every
 # group with at least one skill already installed.
 set -eu
 
 REPO="sbradl/claude-skills"
-BRANCH="main"
 DEST="./.claude/skills"
+
+REF=""
+groups=""
+while [ $# -gt 0 ]; do
+  case $1 in
+    --ref) [ $# -ge 2 ] || { echo "error: --ref needs a tag or branch" >&2; exit 1; }
+           REF=$2; shift 2 ;;
+    --ref=*) REF=${1#--ref=}; shift ;;
+    *) groups="$groups $1"; shift ;;
+  esac
+done
+set -- $groups
+
+if [ -z "$REF" ]; then
+  REF=$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" \
+    | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
+  [ -n "$REF" ] || { echo "error: no release found; pass --ref main for the development version" >&2; exit 1; }
+fi
 
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
-echo "Downloading $REPO@$BRANCH ..."
-curl -fsSL "https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz" \
+echo "Downloading $REPO@$REF ..."
+curl -fsSL "https://github.com/$REPO/archive/$REF.tar.gz" \
   | tar -xz -C "$tmp"
 
-src="$tmp/claude-skills-$BRANCH/skills"
+# The archive holds one top-level directory, named after the repo and ref.
+src=$(echo "$tmp"/*/skills)
 [ -d "$src" ] || { echo "error: skills directory not found in archive" >&2; exit 1; }
 
 if [ $# -eq 0 ]; then

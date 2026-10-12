@@ -26,6 +26,9 @@
   runners (Linux only).
 - The `engineering-rules` enforcement area sets up CI on Gitea Actions and
   Jenkins too.
+- The install and update scripts fetch the latest release instead of the
+  development version on `main`; `--ref <tag>` (PowerShell: `-Ref`) installs a
+  specific release, `--ref main` the development version.
 
 ## v2.1.4 — 2026-10-12
 
