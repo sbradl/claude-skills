@@ -1,8 +1,20 @@
 # claude-skills
 
-A small collection of [Claude Code](https://claude.com/claude-code) skills for disciplined, test-driven development, deep code review, and convention-following commits.
+[Claude Code](https://claude.com/claude-code) skills for test-driven development, deep code review, convention-following commits and releases, and project engineering rules.
 
-Skills are prose instruction sets Claude loads on demand. These two families interlock: the TDD loop builds a feature one behaviour at a time, and the craft review supplies the findings that drive each refactor pass.
+## Skills
+
+| Skill | What it does | Group | Starts |
+| --- | --- | --- | --- |
+| **`tdd-loop`** | Builds a feature or fixes a bug test-first: red → green one behaviour at a time, with a refactor and a mutation-testing pass after every five | `tdd` | automatically, or `/tdd-loop` |
+| **`tdd-red`** | Writes one failing test and proves it fails for the right reason | `tdd` | automatically, or `/tdd-red` |
+| **`tdd-green`** | Makes a failing test pass with the smallest source change | `tdd` | automatically, or `/tdd-green` |
+| **`tdd-refactor`** | Improves the design of working code without changing behaviour | `tdd` | automatically, or `/tdd-refactor` |
+| **`craft-review`** | Reviews a diff through five lenses — DDD, code smells, Clean Code, Pragmatic Programmer, Philosophy of Software Design — each in its own sub-agent | `craft-review` | `/craft-review` only |
+| **`commit`** | Commits in your project's convention, keeps a translated changelog per audience, and cuts releases | `commit` | automatically, or `/commit` |
+| **`engineering-rules`** | Sets up the checks your code must pass — static analysis, security scanning, testing strategy, hooks and CI, accessibility, performance budgets, logging conventions | `engineering` | `/engineering-rules` only |
+
+*Automatically* means Claude starts the skill when your request matches it. The group is what you pick when installing. `tdd-loop` feeds on `craft-review`'s findings, so install both groups to run the full loop. Details on each skill are [below](#skill-details).
 
 ## Installing
 
@@ -32,9 +44,7 @@ curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.s
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1))) tdd
 ```
 
-`tdd-loop` feeds on `craft-review`'s findings, so install both groups to run the full loop. The update scripts take the same arguments.
-
-Claude picks a skill up automatically when the task matches its description, or you can invoke one directly with `/tdd-loop`, `/craft-review`, and so on.
+The update scripts take the same arguments.
 
 ## Updating
 
@@ -65,7 +75,7 @@ name, build/typecheck, report test coverage for a single file, and run mutation
 testing. Only list commands you have verified exist in this repo.
 ```
 
-## The skills
+## Skill details
 
 ### TDD
 
@@ -75,6 +85,8 @@ testing. Only list commands you have verified exist in this repo.
 | **`tdd-red`** | Writes one failing test and proves it fails for the *right* reason. Edits test files only. |
 | **`tdd-green`** | Makes the suite pass with the smallest source change (Transformation Priority Premise). Edits source only. |
 | **`tdd-refactor`** | Improves the design of working code without changing behaviour or any assertion. |
+
+The TDD family and the craft review interlock: the loop builds a feature one behaviour at a time, and the craft review supplies the findings that drive each refactor pass.
 
 The phases run in **isolated sub-agents**. Red hands green two artifacts — the test file and the verbatim runner transcript — and nothing else: a prose summary would smuggle in an imagined implementation, and that coupling is exactly what TDD exists to prevent.
 
