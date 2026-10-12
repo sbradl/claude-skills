@@ -1,11 +1,12 @@
 # claude-skills
 
-[Claude Code](https://claude.com/claude-code) skills for test-driven development, deep code review, convention-following commits and releases, and project engineering rules.
+[Claude Code](https://claude.com/claude-code) skills for building features end to end, test-driven development, deep code review, convention-following commits and releases, and project engineering rules.
 
 ## Skills
 
 | Skill | What it does | Group | Starts |
 | --- | --- | --- | --- |
+| **`build-feature`** | Builds a feature end to end: requirements, tests, and design, each approved by you, then one sub-agent per slice and a closing report | `feature` | `/build-feature` only |
 | **`tdd-loop`** | Builds a feature or fixes a bug test-first: red → green one behaviour at a time, with a refactor and a mutation-testing pass after every five | `tdd` | automatically, or `/tdd-loop` |
 | **`tdd-red`** | Writes one failing test and proves it fails for the right reason | `tdd` | automatically, or `/tdd-red` |
 | **`tdd-green`** | Makes a failing test pass with the smallest source change | `tdd` | automatically, or `/tdd-green` |
@@ -18,7 +19,7 @@
 
 ## Installing
 
-Run one command from the directory you want the skills in. It downloads the latest archive from GitHub, shows a checklist of skill groups (`tdd`, `craft-review`, `commit`, `engineering`) — arrow keys move, space selects, enter confirms — and drops the chosen skills into `./.claude/skills/`.
+Run one command from the directory you want the skills in. It downloads the latest archive from GitHub, shows a checklist of skill groups (`feature`, `tdd`, `craft-review`, `commit`, `engineering`) — arrow keys move, space selects, enter confirms — and drops the chosen skills into `./.claude/skills/`.
 
 **Linux / macOS**
 
@@ -68,6 +69,7 @@ What each skill needs before it works, and when you set it up:
 
 | Skill | Needs | Set up |
 | --- | --- | --- |
+| `build-feature` | the `commit` and `engineering` groups, a commit convention, and a rulebook | once per project — run `/engineering-rules` and `/commit` first; the first `/build-feature` checks both, asks how features are built here, and records it in `.claude/build-feature.md` |
 | `tdd-*` | `test`, `coverage`, and `mutation` tasks | once per project, before the first loop — run `/engineering-rules` with the **Testing strategy** area |
 | `commit` | the project's commit convention | nothing to do — the first commit asks and records it in `.claude/commit.md` |
 | `engineering-rules` | — | it is the setup; run it once, and again to revisit an area |
@@ -87,6 +89,16 @@ MUTATE_FILES environment variable.
 ```
 
 ## Skill details
+
+### Build feature
+
+**`build-feature`** takes a feature from a ticket, a spec section, or a few words to green, pushed code. You approve three **gates**; everything between them runs on its own:
+
+1. **Requirements** — gathered from your spec, tickets, glossary, and ADRs, each with a one-line summary and how it gets tested: acceptance tests by default, or a mix with unit, e2e, and benchmark tests; mutation testing and fuzzing per requirement. Facts no document holds are researched, or you answer them.
+2. **Tests** — Gherkin scenarios and test names for every requirement, the assumptions to decide, and every user-visible text.
+3. **Design and slices** — a short feature design (names, not shapes, at most 150 lines), then vertical slices of at most six acceptance and e2e tests each.
+
+Each slice is built test-first by its own sub-agent, then a fresh reviewer checks that every test keeps the promise of its name. When a check fails on a rule you haven't settled, you decide: loosen it, or keep it — and a kept rule is final, fixed without asking from then on. At the end, the checks you reserved for it run once, the checkpoints are squashed through `commit` and pushed, CI is watched (GitHub, Gitea, or Jenkins), a PR is opened if you use them, and a report shows what was built and what to try by hand.
 
 ### TDD
 
@@ -170,6 +182,10 @@ tdd-loop
 
 ```
 skills/
+  feature/
+    build-feature/
+      SKILL.md  setup.md  check-coverage.sh
+      briefs/tests.md  design.md  slice.md  test-review.md
   tdd/
     tdd-loop/SKILL.md
     tdd-red/SKILL.md

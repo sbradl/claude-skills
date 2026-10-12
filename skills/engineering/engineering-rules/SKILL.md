@@ -51,7 +51,7 @@ Areas run in the order picked — except an area whose file says it runs last �
 
 ## 7. Record
 
-Write the rulebook; on revisit, replace only the revisited areas' sections.
+Write the rulebook; on revisit, replace only the revisited areas' sections. Leave `## Rule decisions` as it is — `build-feature` records there whether the user loosened or kept a rule.
 
 ```markdown
 # Engineering rules

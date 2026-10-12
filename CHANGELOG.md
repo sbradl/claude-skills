@@ -2,6 +2,14 @@
 
 ## Upcoming
 
+### Added
+
+- New `build-feature` skill (group `feature`): takes a feature from
+  requirements to pushed code through three gates you approve — requirements
+  with how each is tested, tests, design and slices — then builds each slice
+  test-first in its own sub-agent with a fresh test review, and closes with a
+  report. Needs the `commit` and `engineering` groups set up first.
+
 ### Changed
 
 - The `engineering-rules` testing area offers fuzzing for stacks that read
