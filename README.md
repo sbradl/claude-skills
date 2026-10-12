@@ -119,7 +119,7 @@ Run it with `/craft-review [fixed-point]` — a SHA, branch, tag, or `main`. Wit
   | Plain | `Add password reset via email` |
 
 - **Body** — always, only when the reason isn't obvious, or never
-- **Granularity** — one commit per logical change, or one for everything
+- **Granularity** — one commit per logical change, or one for everything; either way it asks before putting several changes into one commit
 - **Issue references** — required, added when the branch name carries one, or never
 - **Attribution** — keep Claude's `Co-Authored-By` trailer, or leave Claude attribution out
 

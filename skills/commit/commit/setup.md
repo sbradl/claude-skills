@@ -8,7 +8,7 @@ Before asking, `git log -n 20 --format=%B`, and mark the option the existing his
 
 - **Style** — one option per file in `<skill-dir>/styles/`; label = the file's `#` heading, value = the filename without `.md`.
 - **Body** — `always` (every commit explains why), `when-non-obvious` (only when subject and diff leave the reason unclear), `never` (subject only).
-- **Granularity** — `atomic` (one commit per logical change), `single` (one commit for everything).
+- **Granularity** — `atomic` (one commit per logical change), `single` (one commit for everything). Either way, combining several changes into one commit is confirmed each time.
 - **Issue references** — `required` (from the branch name, else ask), `when-available` (from the branch name when present), `never`.
 - **Attribution** — `keep` (Claude co-author trailers, as the harness asks), `omit` (no Claude attribution in commit messages).
 

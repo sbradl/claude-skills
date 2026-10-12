@@ -7,6 +7,9 @@
 - The `commit` skill's setup shows an example commit message for every option,
   so you pick the style, body, granularity, issue references, and attribution
   by how your commits will look.
+- The `commit` skill asks before putting several changes into one commit, and
+  splits a file that mixes two changes into separate commits instead of filing
+  it under one.
 
 ## v2.1.1 — 2026-10-12
 

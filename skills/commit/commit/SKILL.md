@@ -27,8 +27,10 @@ Leave out anything that holds credentials (`.env`, keys, tokens), build output, 
 
 ## 3. Group by granularity
 
-- **`atomic`** — one commit per logical change: each commit has one reason to exist, and a reader of its message needs no other commit to understand it. Split at file level; a file mixing two changes goes with the change it mostly serves. Order the commits so each builds on the last.
+- **`atomic`** — one commit per logical change: each commit has one reason to exist, and a reader of its message needs no other commit to understand it. Split at file level; a file mixing two changes splits by hunk — stage each change's hunks with `git apply --cached`. Order the commits so each builds on the last.
 - **`single`** — the whole change set is one commit.
+
+**Combining needs consent.** Before any commit would hold more than one logical change — `single` with several changes, or an `atomic` file whose hunks can't be told apart — list the changes it would combine and ask one single-select question: `Combine into one commit` and `One commit per change`, the granularity's own choice first and `(Recommended)`. One logical change → no question.
 
 ## 4. Write each message
 
