@@ -1,0 +1,57 @@
+---
+name: commit
+description: Commit changes in the project's own commit convention — message style, body, granularity, issue references, a changelog for the audiences you describe — set up once per project. Use when the user asks to commit, or when another skill needs a commit.
+---
+
+# Commit
+
+Turns the working-tree changes into commits that follow the project's **convention**: the user's recorded answers on style, body, granularity, issue references, and changelog. The convention is a decision the user makes once; every commit applies it without asking again.
+
+Resolve `<skill-dir>` to this skill folder's absolute path.
+
+## 1. Load the convention
+
+Read the first that exists: `<repo-root>/.claude/commit.md`, then `~/.claude/commit.md`. Neither exists → follow `<skill-dir>/setup.md`, then continue here.
+
+Read `<skill-dir>/styles/<style>.md` for the `style:` value. The convention has a `## Changelog` section → also read `<skill-dir>/changelog.md`.
+
+The convention's **House rules** section overrides the style file and every rule in this skill.
+
+## 2. Pick the change set
+
+The change set is what is staged. Nothing staged → every modified tracked file plus the untracked files that belong to the work in this conversation.
+
+Leave out anything that holds credentials (`.env`, keys, tokens), build output, and editor or OS litter; name what you left out to the user.
+
+## 3. Group by granularity
+
+- **`atomic`** — one commit per logical change: each commit has one reason to exist, and a reader of its message needs no other commit to understand it. Split at file level; a file mixing two changes goes with the change it mostly serves. Order the commits so each builds on the last.
+- **`single`** — the whole change set is one commit.
+
+## 4. Write each message
+
+Format the subject per the style file. Then apply:
+
+**Body** — explains *why*: the motivation, what was wrong before, the trade-off taken. The diff already says *what*. Blank line after the subject, wrapped at 72 columns.
+
+- `always` — every commit gets a body.
+- `when-non-obvious` — a body only when the subject plus diff leave the reason unclear.
+- `never` — subject only.
+
+**Issue references** — read the issue ID from the branch name (`ABC-123`, `#123`, `123-some-slug`). Place it as a trailer: `Refs: ABC-123`.
+
+- `required` — no ID in the branch name → ask the user for one.
+- `when-available` — add it when the branch name has one.
+- `never` — no reference.
+
+Keep every trailer the harness or the user's instructions require (e.g. `Co-Authored-By`) after the issue trailer.
+
+## 5. Commit
+
+With a changelog, run the release rollover from `changelog.md` first, then add each group's changelog entries before committing that group.
+
+Stage each group by path and commit it, passing the message via heredoc so newlines survive. A hook fails → fix the cause, re-stage, and create the commit again.
+
+## Done
+
+`git status` shows none of the change set left uncommitted, and `git log` shows each new commit with a subject that matches the style file's format and a body and trailers that match the convention. With a changelog, `changelog.md`'s Done holds too.

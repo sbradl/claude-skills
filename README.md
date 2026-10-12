@@ -1,12 +1,12 @@
 # claude-skills
 
-A small collection of [Claude Code](https://claude.com/claude-code) skills for disciplined, test-driven development and deep code review.
+A small collection of [Claude Code](https://claude.com/claude-code) skills for disciplined, test-driven development, deep code review, and convention-following commits.
 
 Skills are prose instruction sets Claude loads on demand. These two families interlock: the TDD loop builds a feature one behaviour at a time, and the craft review supplies the findings that drive each refactor pass.
 
 ## Installing
 
-Run one command from the directory you want the skills in. It downloads the latest archive from GitHub, shows a checklist of skill groups (`tdd`, `craft-review`) — arrow keys move, space selects, enter confirms — and drops the chosen skills into `./.claude/skills/`.
+Run one command from the directory you want the skills in. It downloads the latest archive from GitHub, shows a checklist of skill groups (`tdd`, `craft-review`, `commit`) — arrow keys move, space selects, enter confirms — and drops the chosen skills into `./.claude/skills/`.
 
 **Linux / macOS**
 
@@ -94,6 +94,19 @@ The lenses stay separate on purpose. A clean bill on one must not mask a failure
 
 Run it with `/craft-review [fixed-point]` — a SHA, branch, tag, or `main`. With no argument it reviews everything not on `main` plus uncommitted work.
 
+### Commit
+
+**`commit`** turns your changes into commits that follow the project's convention. The first time it runs in a project it asks four questions and records the answers in `.claude/commit.md`:
+
+- **Style** — Conventional Commits, Gitmoji, or plain imperative subjects
+- **Body** — always, only when the reason isn't obvious, or never
+- **Granularity** — one commit per logical change, or one for everything
+- **Issue references** — required, added when the branch name carries one, or never
+
+It can also keep a changelog, `CHANGELOG.json`, written for the **audiences** you describe during setup — end users, developers, operators, plugin authors, whoever reads it. Setup turns each description into a short brief (who they are, what they notice, what never reaches them, which categories they get), confirms it with you, and asks which languages to translate into. Every commit is measured against each brief, so one change can get an entry for several audiences, each in their own words. One JSON file holds every audience's entries with all translations side by side — a single source of truth you edit in one place and can generate Markdown, HTML, or release notes from. Entries land in an **Upcoming** section in the same commit as the change. Versions come from your release tags: setup reads the tag format from the repo (and asks when there are none or several). The first commit after you tag a release moves the Upcoming entries under that version.
+
+Edit the file or add house rules (they override the style) at any time. Move it to `~/.claude/commit.md` to use it for every project without its own, or delete it to be asked again. Updates leave it alone.
+
 ## How they fit together
 
 ```
@@ -120,6 +133,10 @@ skills/
     craft-review/
       SKILL.md
       ddd.md  smells.md  clean-code.md  pragmatic.md  philosophy.md
+  commit/
+    commit/
+      SKILL.md  setup.md  changelog.md
+      styles/conventional.md  gitmoji.md  plain.md
 .claude/skills/   symlinks into skills/, so the skills load while working on this repo
 ```
 
