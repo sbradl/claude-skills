@@ -8,6 +8,6 @@ run = [
   "git config core.hooksPath .githooks",
 ]
 
-[tasks.news]
-description = "Regenerate news.md from CHANGELOG.json"
-run = "scripts/news.sh > news.md.tmp && mv news.md.tmp news.md"
+[tasks.changelog]
+description = "Regenerate CHANGELOG.md from CHANGELOG.json"
+run = "scripts/changelog.sh > CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md"

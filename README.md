@@ -38,7 +38,7 @@ Claude picks a skill up automatically when the task matches its description, or 
 
 ## Updating
 
-Run one command from the directory you installed into. It fetches the latest archive and replaces every skill in `./.claude/skills/`, leaving the rest of `./.claude/` alone. See [`news.md`](news.md) for what changed.
+Run one command from the directory you installed into. It fetches the latest archive and replaces every skill in `./.claude/skills/`, leaving the rest of `./.claude/` alone. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
 
 **Linux / macOS**
 

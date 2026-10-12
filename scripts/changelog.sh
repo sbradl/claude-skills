@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 # Render CHANGELOG.json as Markdown on stdout.
-# Usage:  scripts/news.sh [-c changelog] [-r tag] [-a audience] [-l lang]
+# Usage:  scripts/changelog.sh [-c changelog] [-r tag] [-a audience] [-l lang]
 #   -c  changelog to read; - reads stdin       (default: CHANGELOG.json)
 #   -r  print only the notes for release <tag>: its release section, or
 #       Upcoming when the changelog hasn't recorded the release yet
 #   -a  audience                               (default: skill-users)
 #   -l  language                               (default: en)
-# Without -r prints the whole news file:  scripts/news.sh > news.md
+# Without -r prints the whole changelog:  scripts/changelog.sh > CHANGELOG.md
 # Requires jq.
 set -eu
 
@@ -64,7 +64,7 @@ jq -r --arg audience "$audience" --arg lang "$lang" --arg release "$release" '
     (first(.releases[] | select(.version == $release) | .[$audience]) // .upcoming[$audience] // {})
     | categories
   else
-    "# News\n\n"
+    "# Changelog\n\n"
     + (.upcoming[$audience] // {} | section("Upcoming"))
     + (.releases | map(.[$audience] as $cats | "\(.version) — \(.date)" as $h
          | $cats // {} | section($h)) | join(""))

@@ -17,15 +17,15 @@ jobs:
 
       - uses: jdx/mise-action@v2
 
-      # news.md is generated; a stale copy means the hook was bypassed.
-      - name: Check news.md matches CHANGELOG.json
-        run: scripts/news.sh | diff -u news.md -
+      # CHANGELOG.md is generated; a stale copy means the hook was bypassed.
+      - name: Check CHANGELOG.md matches CHANGELOG.json
+        run: scripts/changelog.sh | diff -u CHANGELOG.md -
 
       # At the tagged commit the changelog hasn't recorded the release yet,
       # so its Upcoming section is exactly what this release ships.
       - name: Render release notes
         run: |
-          scripts/news.sh -r "$GITHUB_REF_NAME" > notes.md
+          scripts/changelog.sh -r "$GITHUB_REF_NAME" > notes.md
           [ -s notes.md ] || echo "No user-facing changes." > notes.md
 
       - name: Create GitHub release
