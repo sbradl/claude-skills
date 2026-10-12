@@ -48,7 +48,7 @@ The update scripts take the same arguments.
 
 ## Updating
 
-Run one command from the directory you installed into. It fetches the latest archive and replaces every skill in `./.claude/skills/`, leaving the rest of `./.claude/` alone. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
+Run one command from the directory you installed into. It fetches the latest archive and replaces the skills of every group you have installed — a group gains skills added to it since, and files removed from a skill don't linger. Groups you never installed stay out, and the rest of `./.claude/` is left alone. Name groups to update only those, or to add one. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
 
 **Linux / macOS**
 
@@ -64,15 +64,19 @@ irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1 | iex
 
 ## Configure your project
 
-Put your project's **test, build, coverage, and mutation-testing commands in the project's `CLAUDE.md`** (and how to run a single test, and coverage scoped to one file). The TDD skills run the suite on every red and green phase, check per-file coverage in the green audit, and run mutation testing at each batch boundary — without those commands recorded, each phase re-discovers them by searching the repo. A few lines in `CLAUDE.md` remove that overhead for the whole loop.
+Put your project's **test, build, and coverage commands in the project's `CLAUDE.md`** (and how to run a single test, and coverage scoped to one file). The TDD skills run the suite on every red and green phase and check per-file coverage in the green audit — without those commands recorded, each phase re-discovers them by searching the repo. A few lines in `CLAUDE.md` remove that overhead for the whole loop.
 
-Paste this prompt into Claude Code once, after installing, to have it work them out and write them down:
+`tdd-loop` runs mutation testing at each batch boundary through [mise](https://mise.jdx.dev): `MUTATE_FILES="<paths>" mise run mutation`, scoped to the batch's changed files. Give the project a `mutation` task that mutates only the files listed in `MUTATE_FILES`.
+
+Paste this prompt into Claude Code once, after installing, to have it work all of that out:
 
 ```text
 Inspect this project's tooling and add a "Testing" section to CLAUDE.md with the
 exact commands to: run the full test suite, run a single test file or test by
-name, build/typecheck, report test coverage for a single file, and run mutation
-testing. Only list commands you have verified exist in this repo.
+name, build/typecheck, and report test coverage for a single file. Only list
+commands you have verified exist in this repo. Then add a `mutation` task to
+mise.toml that runs mutation testing on only the files listed in the
+MUTATE_FILES environment variable.
 ```
 
 ## Skill details
@@ -88,7 +92,7 @@ testing. Only list commands you have verified exist in this repo.
 
 The TDD family and the craft review interlock: the loop builds a feature one behaviour at a time, and the craft review supplies the findings that drive each refactor pass.
 
-The phases run in **isolated sub-agents**. Red hands green two artifacts — the test file and the verbatim runner transcript — and nothing else: a prose summary would smuggle in an imagined implementation, and that coupling is exactly what TDD exists to prevent.
+Red and green run in **isolated sub-agents**; refactor runs in the main conversation, since it needs you to drive `/craft-review`. Red hands green two artifacts — the test file and the verbatim runner transcript — and nothing else: a prose summary would smuggle in an imagined implementation, and that coupling is exactly what TDD exists to prevent.
 
 Each phase ends on a checkpoint commit, so the run can be reviewed one step at a time. `tdd-loop` stops at every batch boundary and waits for you.
 
@@ -108,7 +112,7 @@ Run it with `/craft-review [fixed-point]` — a SHA, branch, tag, or `main`. Wit
 
 ### Commit
 
-**`commit`** turns your changes into commits that follow the project's convention. The first time it runs in a project it asks five questions and records the answers in `.claude/commit.md`:
+**`commit`** turns your changes into commits that follow the project's convention. The first time it runs in a project it sets up the convention and records it in `.claude/commit.md` — five questions on the messages, each option previewed as an example commit, then the changelog questions below:
 
 - **Style** — how the subject line looks:
 
@@ -125,7 +129,7 @@ Run it with `/craft-review [fixed-point]` — a SHA, branch, tag, or `main`. Wit
 
 It can also keep a changelog, `CHANGELOG.json`, written for the **audiences** you pick during setup — end users, developers, operators, plugin authors, whoever reads it. Setup drafts a short brief for each audience it spots in the repo (who they are, what they notice, what never reaches them, which categories they get); you pick, correct, or describe your own, then choose the languages to translate into. Every commit is measured against each brief, so one change can get an entry for several audiences, each in their own words. One JSON file holds every audience's entries with all translations side by side — a single source of truth you edit in one place and can generate Markdown, HTML, or release notes from. Entries land in an **Upcoming** section in the same commit as the change. Versions come from your release tags: setup reads the tag format from the repo (and asks when there are none or several). Ask it to **release** and it proposes the next version from what Upcoming holds (breaking or removed → major, added → minor, else patch), then makes one release commit that moves Upcoming under that version, tags it, and pushes both — or runs your project's own release task when there is one. A tag made elsewhere gets its entries filed on the next commit.
 
-Edit the file or add house rules (they override the style) at any time. Move it to `~/.claude/commit.md` to use it for every project without its own, or delete it to be asked again. Updates leave it alone.
+Edit the file or add house rules (they override every rule of the skill) at any time. Move it to `~/.claude/commit.md` to use it for every project without its own, or delete it to be asked again. Updates leave it alone.
 
 ### Engineering rules
 
@@ -139,17 +143,18 @@ Edit the file or add house rules (they override the style) at any time. Move it 
 - **Performance budgets** — page scores, bundle size, benchmarks, load tests
 - **Logging and observability** — structured logging, tracing, log levels, and the lint rules that enforce them
 
-For each area a research sub-agent per stack finds freely usable tools. You pick tools first, then each tool's ruleset — the strictest is recommended. The skill installs and configures them, runs each once, and records everything in `.claude/engineering-rules.md` for agents to follow. Every check becomes a task — in mise when the project uses it (the skill offers to set mise up when it doesn't), otherwise in the stack's own runner — grouped under one task per area (`lint`, `security`, `test`, …) and a `check` task that runs them all.
+For each area a research sub-agent per stack finds freely usable tools. You pick tools first, then each tool's ruleset — the strictest is recommended. The skill installs and configures them, runs each once, and records everything in `.claude/engineering-rules.md` for agents to follow. Every check becomes a task — in mise when the project uses it (the skill offers to set mise up when it doesn't), otherwise in the stack's own runner — grouped under one task per area (`lint`, `security`, `test`, …). The Enforcement area adds a `check` task that runs them all, and the hooks and CI that run it.
 
 ## How they fit together
 
 ```
 tdd-loop
   │
-  ├── per slice:  tdd-red ──artifacts──▶ tdd-green ──▶ commit
+  ├── per slice:  tdd-red ──▶ commit ──artifacts──▶ tdd-green ──▶ commit
   │
   └── per batch:  /craft-review ──findings──▶ tdd-refactor ──▶ commit
-                  mutation pass ──survivors──▶ characterization tests
+                  mutation pass ──survivors──▶ in batch code:  fixed in the loop (revert, or a new slice)
+                                               in older code:  characterization test
 ```
 
 `craft-review` is user-invoked, so `tdd-loop` can't start it — it asks you to run `/craft-review` and feeds the aggregated findings into the refactor pass as its mandate.
@@ -176,9 +181,20 @@ skills/
       SKILL.md  research.md
       areas/static-analysis.md  security.md  testing.md  enforcement.md
             accessibility.md  performance.md  observability.md
-.claude/skills/   symlinks into skills/, so the skills load while working on this repo
+.claude/skills/        symlinks into skills/, so the skills load while working on this repo
+install.sh  install.ps1  update.sh  update.ps1
+CHANGELOG.json         the changelog's source of truth
+CHANGELOG.md           generated from it by scripts/changelog.sh
+scripts/release.sh     cuts a release: release commit, tag, push
+.githooks/pre-commit   regenerates CHANGELOG.md when CHANGELOG.json is staged
+.github/workflows/     publishes a GitHub release for each version tag
+mise.toml              pins jq and gh; tasks setup, changelog, release
 ```
 
 Skills are grouped by family under `skills/`; installing flattens the groups into `./.claude/skills/`, since Claude Code only discovers skills one level deep.
 
 The `craft-review` reference files are per-lens checklists, each loaded into a fresh sub-agent context by absolute path.
+
+## Working on this repo
+
+Run `mise run setup` once per clone: it installs `jq` and `gh` and enables the pre-commit hook. Record changes in `CHANGELOG.json`, never `CHANGELOG.md`. Release with `mise run release v<major>.<minor>.<patch>`.
