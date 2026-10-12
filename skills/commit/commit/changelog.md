@@ -57,9 +57,21 @@ Each `###` block in the convention's `## Changelog` section is an **audience**: 
 - **`id`** — a kebab-case slug, unique across the whole file, never changed once written. Rollover finds an entry's origin by it.
 - Every entry carries every language in its audience's `languages`. Empty categories are left out; 2-space indent.
 
+## Release — when the user asks for one
+
+A release is one **release commit** that moves `upcoming` into a release, tagged and pushed together — so the tagged commit's changelog already records the version.
+
+1. **Preconditions** — on the default branch, in sync with its remote, `upcoming` not empty. Uncommitted changes → commit them first through this skill's normal steps.
+2. **Version** — the user named one → use it. Otherwise propose the next from `tag-format`: SemVer → major when `upcoming` holds `breaking` or `removed` entries, minor when it holds `added`, patch otherwise; CalVer → today's date in the template's shape.
+3. **Confirm** — one single-select question: `Release <version> and push` `(Recommended)`, `Release <version> locally, no push`; the free-text answer names another version.
+4. **Defer to the project** — the repo has a release task or script (`mise tasks`, `package.json` scripts, `scripts/release*`) → run it with the confirmed version and stop here.
+5. **Release commit** — move every `upcoming` entry into a new release, `date` = today, placed first in `releases`; `upcoming` becomes `{}`. Commit only the changelog file(s): subject per the style file, stating the release `<version>` (Conventional Commits: `chore(release): <version>`); no body, no issue reference; attribution per the convention.
+6. **Tag** — `git tag -a <version> -m <version>` on the release commit.
+7. **Push** — when confirmed: `git push --atomic origin <branch> <version>`, so the commit and tag land together or not at all.
+
 ## 1. Release rollover — once, before the first commit
 
-Files `upcoming` entries under the release tags cut since the changelog last recorded one.
+Files `upcoming` entries under release tags cut without a release commit — tags made elsewhere, such as in a hosting UI.
 
 1. **Release tags** — `git tag -l --sort=-v:refname`, kept when they match `tag-format`, minus pre-releases (a suffix such as `-rc.1`, `-beta`).
 2. **Pending tags** — release tags newer than the newest entry in `releases`; all release tags when it is empty. None pending → skip to step 2.
@@ -76,4 +88,4 @@ Files `upcoming` entries under the release tags cut since the changelog last rec
 
 ## Done
 
-Every release tag that contains an `upcoming` entry has its release; each committed group has an entry in `upcoming` for every audience whose brief it meets, in every language configured for that audience; the file parses as JSON.
+A requested release has its release commit, tagged, and pushed when confirmed. Every release tag that contains an `upcoming` entry has its release; each committed group has an entry in `upcoming` for every audience whose brief it meets, in every language configured for that audience; the file parses as JSON.

@@ -1,5 +1,14 @@
 # Changelog
 
+## Upcoming
+
+### Added
+
+- The `commit` skill releases too: ask it to release and it proposes the next
+  version from the unreleased changes, then makes one release commit that
+  moves them under that version, tags it, and pushes both — or runs your
+  project's own release task when it has one.
+
 ## v2.1.0 — 2026-10-12
 
 ### Added

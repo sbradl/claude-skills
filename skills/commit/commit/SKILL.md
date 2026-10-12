@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Commit changes in the project's own commit convention — message style, body, granularity, issue references, Claude attribution, a changelog for the audiences you describe — set up once per project. Use when the user asks to commit, or when another skill needs a commit.
+description: Commit changes in the project's own commit convention — message style, body, granularity, issue references, Claude attribution, a changelog for the audiences you describe — set up once per project. Use when the user asks to commit or to release, or when another skill needs a commit.
 ---
 
 # Commit
@@ -16,6 +16,8 @@ Read the first that exists: `<repo-root>/.claude/commit.md`, then `~/.claude/com
 Read `<skill-dir>/styles/<style>.md` for the `style:` value. The convention has a `## Changelog` section → also read `<skill-dir>/changelog.md`.
 
 The convention's **House rules** section overrides the style file and every rule in this skill.
+
+**Release** — the user asks to release or cut a version → follow the Release section of `<skill-dir>/changelog.md` instead of the steps below. No changelog → a release is the tag and push alone: steps 1–4, 6, and 7 of that section, with no `upcoming` to check.
 
 ## 2. Pick the change set
 
