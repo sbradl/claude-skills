@@ -6,9 +6,9 @@
 
 - New `commit` skill: commits your changes in your project's convention —
   Conventional Commits, Gitmoji, or plain subjects — asking once per project
-  about message style, body, granularity, and issue references, and optionally
-  keeping a translated `CHANGELOG.json` for the audiences you pick or
-  describe.
+  about message style, body, granularity, issue references, and Claude
+  attribution, and optionally keeping a translated `CHANGELOG.json` for the
+  audiences you pick or describe.
 - The install and update scripts take skill group names (`tdd`,
   `craft-review`, `commit`) to install or update only those groups.
 - Running the install script without arguments shows a checklist of skill

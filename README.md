@@ -96,12 +96,13 @@ Run it with `/craft-review [fixed-point]` — a SHA, branch, tag, or `main`. Wit
 
 ### Commit
 
-**`commit`** turns your changes into commits that follow the project's convention. The first time it runs in a project it asks four questions and records the answers in `.claude/commit.md`:
+**`commit`** turns your changes into commits that follow the project's convention. The first time it runs in a project it asks five questions and records the answers in `.claude/commit.md`:
 
 - **Style** — Conventional Commits, Gitmoji, or plain imperative subjects
 - **Body** — always, only when the reason isn't obvious, or never
 - **Granularity** — one commit per logical change, or one for everything
 - **Issue references** — required, added when the branch name carries one, or never
+- **Attribution** — keep Claude's `Co-Authored-By` trailer, or leave Claude attribution out
 
 It can also keep a changelog, `CHANGELOG.json`, written for the **audiences** you pick during setup — end users, developers, operators, plugin authors, whoever reads it. Setup drafts a short brief for each audience it spots in the repo (who they are, what they notice, what never reaches them, which categories they get); you pick, correct, or describe your own, then choose the languages to translate into. Every commit is measured against each brief, so one change can get an entry for several audiences, each in their own words. One JSON file holds every audience's entries with all translations side by side — a single source of truth you edit in one place and can generate Markdown, HTML, or release notes from. Entries land in an **Upcoming** section in the same commit as the change. Versions come from your release tags: setup reads the tag format from the repo (and asks when there are none or several). The first commit after you tag a release moves the Upcoming entries under that version.
 

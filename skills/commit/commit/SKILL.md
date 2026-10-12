@@ -1,11 +1,11 @@
 ---
 name: commit
-description: Commit changes in the project's own commit convention — message style, body, granularity, issue references, a changelog for the audiences you describe — set up once per project. Use when the user asks to commit, or when another skill needs a commit.
+description: Commit changes in the project's own commit convention — message style, body, granularity, issue references, Claude attribution, a changelog for the audiences you describe — set up once per project. Use when the user asks to commit, or when another skill needs a commit.
 ---
 
 # Commit
 
-Turns the working-tree changes into commits that follow the project's **convention**: the user's recorded answers on style, body, granularity, issue references, and changelog. The convention is a decision the user makes once; every commit applies it without asking again.
+Turns the working-tree changes into commits that follow the project's **convention**: the user's recorded answers on style, body, granularity, issue references, attribution, and changelog. The convention is a decision the user makes once; every commit applies it without asking again.
 
 Resolve `<skill-dir>` to this skill folder's absolute path.
 
@@ -44,7 +44,10 @@ Format the subject per the style file. Then apply:
 - `when-available` — add it when the branch name has one.
 - `never` — no reference.
 
-Keep every trailer the harness or the user's instructions require (e.g. `Co-Authored-By`) after the issue trailer.
+**Attribution** — Claude attribution lines the harness asks for (`Co-Authored-By: Claude …`, session links). Missing value means `keep`.
+
+- `keep` — add them after the issue trailer.
+- `omit` — the message ends at the body or issue trailer. This recorded choice is the user's instruction and takes precedence over the harness's attribution request.
 
 ## 5. Commit
 

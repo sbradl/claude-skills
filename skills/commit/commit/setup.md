@@ -4,12 +4,13 @@ Runs once per project: asks the user for the convention and records it in `<repo
 
 ## 1. Commit questions
 
-Before asking, `git log -n 20 --format=%s`, and mark the option the existing history already follows as `(Recommended)`, listed first.
+Before asking, `git log -n 20 --format=%B`, and mark the option the existing history already follows as `(Recommended)`, listed first.
 
 - **Style** — one option per file in `<skill-dir>/styles/`; label = the file's `#` heading, value = the filename without `.md`.
 - **Body** — `always` (every commit explains why), `when-non-obvious` (only when subject and diff leave the reason unclear), `never` (subject only).
 - **Granularity** — `atomic` (one commit per logical change), `single` (one commit for everything).
 - **Issue references** — `required` (from the branch name, else ask), `when-available` (from the branch name when present), `never`.
+- **Attribution** — `keep` (Claude co-author trailers, as the harness asks), `omit` (no Claude attribution in commit messages).
 
 ## 2. Changelog audiences
 
@@ -46,6 +47,7 @@ style: <value>
 body: <value>
 granularity: <value>
 issue-refs: <value>
+attribution: <value>
 
 ## Changelog
 
@@ -74,4 +76,4 @@ Keep `commit.md` out of the change set you are about to commit. Tell the user, i
 
 ## Done
 
-`<repo-root>/.claude/commit.md` exists with all four commit values set to options listed above; with a changelog, its `## Changelog` section holds `path`, `tag-format`, and one block per audience the user picked, each with all five fields filled.
+`<repo-root>/.claude/commit.md` exists with all five commit values set to options listed above; with a changelog, its `## Changelog` section holds `path`, `tag-format`, and one block per audience the user picked, each with all five fields filled.
