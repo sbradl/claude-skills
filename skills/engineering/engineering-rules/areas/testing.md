@@ -2,20 +2,29 @@
 
 How the project proves its behaviour: which kinds of test exist, how each is written, and how strictly the suite itself is held to account. Tasks: `test`, `coverage`, `acceptance`, `mutation`, `fuzz`, `e2e`, `contract`.
 
-## Research categories
+## Before research
 
-- **Unit test framework** — the stack's runner and assertion library (xUnit, NUnit, Vitest, pytest).
-- **Coverage** — line and branch coverage with a failing threshold (coverlet, Vitest's v8 provider, coverage.py).
-- **Mutation testing** — mutates the code and checks the suite notices (Stryker.NET, StrykerJS, mutmut, PIT, cargo-mutants).
-- **Property-based testing** — generated inputs against stated invariants (fast-check, CsCheck, FsCheck, Hypothesis).
-- **Fuzzing** — only for stacks that read untrusted input (files, network protocols): coverage-guided malformed input until no new paths turn up, finding crashes and hangs (cargo-fuzz, SharpFuzz, Jazzer.js, Atheris).
-- **Gherkin runner** — runs `.feature` files against step definitions in this stack's test runner (Reqnroll for .NET, Cucumber.js, playwright-bdd, QuickPickle for Vitest). Researched up front; used only when the user picks Gherkin.
-- **End-to-end** — only for stacks with a UI or an HTTP API: drives the running app (Playwright).
-- **Contract testing** — only for stacks that call or serve other services: consumer-driven contracts (Pact).
+**Acceptance tests** — single-select:
 
-## Rounds
+- **`gherkin`** — feature files in Given/When/Then, readable by non-developers, bound to step definitions.
+- **`coded`** — acceptance tests written in the test framework itself, named after the behaviour they prove.
+- **`both`** — each for a different kind of behaviour. Then ask which behaviour goes where: single-select with `Gherkin for behaviour agreed with stakeholders, coded for the rest` and `Gherkin for user-facing behaviour, coded for technical and integration behaviour`; the free-text answer states another split.
 
-Both rounds per category. Rulesets here are mostly thresholds — strictest = the highest: coverage `100% lines and branches` `(Recommended)` then `90%`, `80%`; mutation score break threshold likewise. For end-to-end, the ruleset is the browser matrix: all engines the tool supports `(Recommended)`, then Chromium only. For fuzzing, it is the run length per target: until coverage plateaus `(Recommended)`, then a fixed time.
+## Outcomes
+
+- **Unit tests** — the stack's runner and assertion library (xUnit, NUnit, Vitest, pytest).
+- **Untested lines and branches** — coverage with a failing threshold (coverlet, Vitest's v8 provider, coverage.py).
+- **Tests that miss broken code** — mutation testing: mutates the code and checks the suite notices (Stryker.NET, StrykerJS, mutmut, PIT, cargo-mutants).
+- **Invariants broken by unusual inputs** — property-based testing: generated inputs against stated invariants (fast-check, CsCheck, FsCheck, Hypothesis).
+- **Crashes and hangs on malformed input** — only for stacks that read untrusted input (files, network protocols): coverage-guided fuzzing until no new paths turn up (cargo-fuzz, SharpFuzz, Jazzer.js, Atheris).
+- **Broken flows in the running app** — only for stacks with a UI or an HTTP API: end-to-end tests drive the running app (Playwright).
+- **Broken contracts with other services** — only for stacks that call or serve other services: consumer-driven contracts (Pact).
+
+Acceptance tests `gherkin` or `both` → research also covers a **Gherkin runner**: runs `.feature` files against step definitions in this stack's test runner (Reqnroll for .NET, Cucumber.js, playwright-bdd, QuickPickle for Vitest).
+
+## Rulesets
+
+Mostly thresholds — strictest = the highest: coverage `100% lines and branches` `(Recommended)` then `90%`, `80%`; mutation score break threshold likewise. For end-to-end, the ruleset is the browser matrix: all engines the tool supports `(Recommended)`, then Chromium only. For fuzzing, it is the run length per target: until coverage plateaus `(Recommended)`, then a fixed time.
 
 ## Questions
 
@@ -24,14 +33,6 @@ Both rounds per category. Rulesets here are mostly thresholds — strictest = th
 - **Behaviour sentence** `(Recommended)` — what a user of the code can do or expect, in their vocabulary: `customer earns a free coffee after ten stamps`.
 - **`Method_Scenario_Expected`** — `AddStamp_TenthStamp_GrantsReward`.
 - **Given/When/Then** — `Given_nine_stamps_When_stamped_Then_reward_granted`.
-
-**Acceptance tests** — single-select:
-
-- **`gherkin`** — feature files in Given/When/Then, readable by non-developers, bound to step definitions.
-- **`coded`** — acceptance tests written in the test framework itself, named after the behaviour they prove.
-- **`both`** — each for a different kind of behaviour.
-
-`gherkin` or `both` → round 1 and 2 over the Gherkin runner candidates. `both` → ask which behaviour goes where: single-select with `Gherkin for behaviour agreed with stakeholders, coded for the rest` and `Gherkin for user-facing behaviour, coded for technical and integration behaviour`; the free-text answer states another split.
 
 **Acceptance seam** — ask in plain chat what acceptance tests drive: the entry point they call, the fakes that stand in for the outside world, and what Then asserts on. Propose it from the code: the outermost layer the app's UI or API calls, with every gateway faked.
 
@@ -42,7 +43,7 @@ Both rounds per category. Rulesets here are mostly thresholds — strictest = th
 ## Record
 
 ```markdown
-| Stack | Category | Tool | Ruleset |
+| Stack | Outcome | Tool | Ruleset |
 | --- | --- | --- | --- |
 
 Unit test names: <convention>

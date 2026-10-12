@@ -2,19 +2,19 @@
 
 Checks that a UI is usable with assistive technology and meets WCAG. UI stacks only. Task: `a11y`.
 
-## Research categories
+## Outcomes
 
-- **Static accessibility linting** — accessibility rules on component source (eslint-plugin-jsx-a11y, eslint-plugin-vuejs-accessibility, angular-eslint template rules). Overlaps the `lint` task's linter; the rules join that linter's config.
-- **Runtime accessibility testing** — rendered pages checked against WCAG (axe-core with its Playwright or Vitest integration, Pa11y).
+- **Accessibility mistakes in component code** — UI stacks only: missing labels, roles, and alt texts flagged in the source (eslint-plugin-jsx-a11y, eslint-plugin-vuejs-accessibility, angular-eslint template rules). The rules join the `lint` task's linter config.
+- **WCAG violations on rendered pages** — UI stacks only: pages checked against WCAG in a browser (axe-core with its Playwright or Vitest integration, Pa11y).
 
-## Rounds
+## Rulesets
 
-Both rounds. For runtime testing, the ruleset is the WCAG conformance target: AAA plus axe best practices `(Recommended)`, then AA, then A.
+For WCAG violations, the ruleset is the conformance target: AAA plus axe best practices `(Recommended)`, then AA, then A.
 
 ## Record
 
 ```markdown
-| Stack | Category | Tool | Ruleset |
+| Stack | Outcome | Tool | Ruleset |
 | --- | --- | --- | --- |
 
 WCAG target: <level>

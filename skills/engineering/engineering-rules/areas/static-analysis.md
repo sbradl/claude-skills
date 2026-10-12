@@ -2,24 +2,24 @@
 
 Checks that read the code without running it: linters, formatters, type checkers, analyzers, architecture and dead-code checks. Task: `lint`.
 
-## Research categories
+## Outcomes
 
-- **Linter** — bug patterns, best practices, style rules (ESLint with typescript-eslint, Roslyn analyzers, Ruff).
-- **Formatter** — one canonical layout (Prettier, Biome, `dotnet format`, Ruff format).
-- **Type strictness** — the compiler's or type checker's strict modes (`tsconfig` `strict`, `<Nullable>enable</Nullable>`, `TreatWarningsAsErrors`, `mypy --strict`).
-- **Complexity and duplication** — complexity limits per function, copy-paste detection.
-- **Architecture rules** — allowed dependencies between modules and layers, no cycles (dependency-cruiser, ArchUnitNET, NetArchTest, import-linter).
-- **Dead code and unused dependencies** — unreferenced exports, files, and packages (knip, deptry).
-- **API spec linting** — only when the stack ships an OpenAPI or AsyncAPI spec (Spectral).
+- **Bug patterns and bad practices** — linter rules (ESLint with typescript-eslint, Roslyn analyzers, Ruff, Clippy).
+- **Inconsistent formatting** — one canonical layout (Prettier, Biome, `dotnet format`, Ruff format, rustfmt).
+- **Type errors the compiler lets through** — the compiler's or type checker's strict modes (`tsconfig` `strict`, `<Nullable>enable</Nullable>`, `TreatWarningsAsErrors`, `mypy --strict`).
+- **Over-complex or duplicated code** — complexity limits per function, copy-paste detection.
+- **Forbidden dependencies between layers** — allowed dependencies between modules and layers, no cycles (dependency-cruiser, ArchUnitNET, NetArchTest, import-linter).
+- **Unused code and dependencies** — unreferenced exports, files, and packages (knip, deptry).
+- **Broken API specs** — only when the stack ships an OpenAPI or AsyncAPI spec (Spectral).
 
-## Rounds
+## Rulesets
 
-Both rounds. Tools that overlap across categories (Biome against ESLint plus Prettier) say so in their option description.
+Presets and rule packs; strictest = the broadest set.
 
 ## Record
 
 ```markdown
-| Stack | Category | Tool | Ruleset |
+| Stack | Outcome | Tool | Ruleset |
 | --- | --- | --- | --- |
 
 Layers: <layer> → <layers it may depend on>, one line each   (architecture rules)

@@ -29,22 +29,13 @@
 - The install and update scripts fetch the latest release instead of the
   development version on `main`; `--ref <tag>` (PowerShell: `-Ref`) installs a
   specific release, `--ref main` the development version.
-- Before you pick tools, `engineering-rules` shows a comparison table per
-  category — whether each tool is the language's convention, its strengths and
-  weak spots, adoption, speed, overlaps, and license — with a recommendation
-  and why.
+- `engineering-rules` asks what your checks must catch instead of which tools
+  you want, plus your developer platforms and allowed runtimes, then
+  recommends the smallest tool set covering it all as a table; swap any row,
+  each alternative shown with its comparison — convention, strengths, weak
+  spots, adoption, speed, license.
 - `engineering-rules` lists tool candidates with the language's official and
   de facto standard tools first, then the tools covering the most ground.
-- After you pick tools, `engineering-rules` shows where two picks check the
-  same thing — including tools already in your rulebook — recommends which to
-  keep, and removes the ones you drop, or switches off just the overlapping
-  part of a tool.
-
-### Fixed
-
-- `engineering-rules` no longer asks a stack's tool question again after you
-  picked a tool for an earlier stack that already covers it — Trivy for Rust
-  and Kotlin, say.
 
 ## v2.1.4 — 2026-10-12
 

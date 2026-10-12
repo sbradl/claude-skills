@@ -2,14 +2,14 @@
 
 Where the other areas' checks run — git hooks, CI, both — and how dependencies stay current. Runs last: it wires the tasks the other areas created. Task: `check`.
 
-## Research categories
+## Outcomes
 
-- **Git hook manager** — runs tasks on commit or push, versioned in the repo (Lefthook, Husky, pre-commit). Include the no-tool option: a tracked `.githooks/` directory enabled with `git config core.hooksPath`.
-- **Dependency updates** — opens pull requests for new dependency versions (Renovate, Dependabot).
+- **Checks run before every commit or push** — git hooks versioned in the repo run the tasks (Lefthook, Husky, pre-commit). Include the no-tool option: a tracked `.githooks/` directory enabled with `git config core.hooksPath`.
+- **Dependencies kept current** — pull requests for new dependency versions (Renovate, Dependabot).
 
-## Rounds
+## Rulesets
 
-Both rounds. For dependency updates, the ruleset is the update policy: Renovate's strictest preset (`config:best-practices` — pinned versions and digests) `(Recommended)`, then `config:recommended`.
+For dependency updates, the ruleset is the update policy: Renovate's strictest preset (`config:best-practices` — pinned versions and digests) `(Recommended)`, then `config:recommended`.
 
 ## Questions
 

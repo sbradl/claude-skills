@@ -2,15 +2,15 @@
 
 Conventions for what the running app tells its operators: structured logs, log levels, correlation, traces, metrics. Conventions, not checks — adopting a library changes application code, which is a feature to build, not setup to apply. No task.
 
-## Research categories
+## Outcomes
 
-- **Structured logging** — a logging library emitting structured events (Serilog, Microsoft.Extensions.Logging, pino, structlog).
-- **Tracing and metrics** — OpenTelemetry's SDK and auto-instrumentation for this stack.
-- **Log linting** — lint rules that enforce the conventions: no raw console or print output, no string-interpolated log messages (ESLint `no-console`, CA2254, Ruff `T20` and `G` rules). Overlaps the `lint` task's linter; the rules join that linter's config.
+- **Structured log events** — a logging library emitting structured events (Serilog, Microsoft.Extensions.Logging, pino, structlog).
+- **Traces and metrics** — OpenTelemetry's SDK and auto-instrumentation for this stack.
+- **Logging convention violations** — lint rules that enforce the conventions: no raw console or print output, no string-interpolated log messages (ESLint `no-console`, CA2254, Ruff `T20` and `G` rules). The rules join the `lint` task's linter config.
 
-## Rounds
+## Rulesets
 
-Round 1 for each category; round 2 for log linting only.
+Only for logging convention violations.
 
 ## Questions
 

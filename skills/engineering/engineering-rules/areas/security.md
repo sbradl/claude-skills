@@ -2,28 +2,28 @@
 
 Checks for insecure code, vulnerable or non-compliant dependencies, misconfigured infrastructure, leaked secrets, and attackable running apps. Task: `security`; `dast` for the running-app scan.
 
-## Research categories
+## Outcomes
 
-- **SAST** — insecure code patterns. Include Opengrep and the rule packs available to it.
-- **Dependency vulnerabilities** — known CVEs in direct and transitive dependencies. Include Trivy (`trivy fs`) and the stack's native audit (`npm audit`, `dotnet list package --vulnerable`).
-- **License compliance** — dependency licenses checked against an allow-list. Include Trivy's license scanner.
-- **SBOM** — a software bill of materials as a build artifact. Include Syft and Trivy.
-- **Infrastructure misconfiguration** — infrastructure stacks only: Dockerfiles, Compose, Terraform, Helm, Kubernetes. Include Trivy (`trivy config`).
-- **Container image scanning** — infrastructure stacks with a Dockerfile: vulnerabilities in the built image's OS packages and layers. Include Trivy (`trivy image`) and Grype.
-- **Secret scanning** — credentials in the working tree and the git history. Include Gitleaks, TruffleHog, and Trivy's secret scanner.
-- **DAST** — only for stacks serving HTTP: attacks the running app from outside. Include ZAP.
+- **Insecure code patterns** — static application security testing. Include Opengrep and the rule packs available to it.
+- **Vulnerable dependencies** — known CVEs in direct and transitive dependencies. Include Trivy (`trivy fs`) and the stack's native audit (`npm audit`, `dotnet list package --vulnerable`).
+- **Dependency licenses outside an allow-list** — Include Trivy's license scanner.
+- **A software bill of materials** — an SBOM as a build artifact. Include Syft and Trivy.
+- **Misconfigured infrastructure** — infrastructure stacks only: Dockerfiles, Compose, Terraform, Helm, Kubernetes. Include Trivy (`trivy config`).
+- **Vulnerable container images** — infrastructure stacks with a Dockerfile: the built image's OS packages and layers. Include Trivy (`trivy image`) and Grype.
+- **Leaked secrets** — credentials in the working tree and the git history. Include Gitleaks, TruffleHog, and Trivy's secret scanner.
+- **Attacks on the running app** — stacks serving HTTP only: dynamic testing from outside. Include ZAP.
 
-## Rounds
+## Rulesets
 
-Both rounds. Rulesets here are mostly rule packs (strictest = the broadest set) and severity thresholds (strictest = fail on the lowest severity). Two categories rank differently:
+Mostly rule packs (strictest = the broadest set) and severity thresholds (strictest = fail on the lowest severity). Two outcomes rank differently:
 
-- **License compliance** — the allow-list: permissive only (MIT, Apache-2.0, BSD, ISC) `(Recommended)`, then adding weak copyleft (LGPL, MPL), then adding strong copyleft (GPL, AGPL).
-- **SBOM** — not a check, so round 2 picks the format: CycloneDX `(Recommended)` or SPDX.
+- **Dependency licenses** — the allow-list: permissive only (MIT, Apache-2.0, BSD, ISC) `(Recommended)`, then adding weak copyleft (LGPL, MPL), then adding strong copyleft (GPL, AGPL).
+- **SBOM** — not a check, so the ruleset is the format: CycloneDX `(Recommended)` or SPDX.
 
 ## Record
 
 ```markdown
-| Stack | Category | Tool | Ruleset |
+| Stack | Outcome | Tool | Ruleset |
 | --- | --- | --- | --- |
 
 License allow-list: <SPDX ids>

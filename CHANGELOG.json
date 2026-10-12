@@ -34,21 +34,11 @@
         },
         {
           "id": "engineering-tool-comparison",
-          "en": "Before you pick tools, `engineering-rules` shows a comparison table per category — whether each tool is the language's convention, its strengths and weak spots, adoption, speed, overlaps, and license — with a recommendation and why."
+          "en": "`engineering-rules` asks what your checks must catch instead of which tools you want, plus your developer platforms and allowed runtimes, then recommends the smallest tool set covering it all as a table; swap any row, each alternative shown with its comparison — convention, strengths, weak spots, adoption, speed, license."
         },
         {
           "id": "engineering-tool-order",
           "en": "`engineering-rules` lists tool candidates with the language's official and de facto standard tools first, then the tools covering the most ground."
-        },
-        {
-          "id": "engineering-overlap-review",
-          "en": "After you pick tools, `engineering-rules` shows where two picks check the same thing — including tools already in your rulebook — recommends which to keep, and removes the ones you drop, or switches off just the overlapping part of a tool."
-        }
-      ],
-      "fixed": [
-        {
-          "id": "engineering-multi-stack-pick",
-          "en": "`engineering-rules` no longer asks a stack's tool question again after you picked a tool for an earlier stack that already covers it — Trivy for Rust and Kotlin, say."
         }
       ]
     }
