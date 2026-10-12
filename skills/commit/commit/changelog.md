@@ -61,7 +61,7 @@ Each `###` block in the convention's `## Changelog` section is an **audience**: 
 
 A release is one **release commit** that moves `upcoming` into a release, tagged and pushed together — so the tagged commit's changelog already records the version.
 
-1. **Preconditions** — on the default branch, in sync with its remote, `upcoming` not empty. Uncommitted changes → commit them first through this skill's normal steps.
+1. **Preconditions** — on the default branch, not behind its remote (ahead is fine: the push carries those commits), `upcoming` not empty. Uncommitted changes → commit them first through this skill's normal steps.
 2. **Version** — the user named one → use it. Otherwise propose the next from `tag-format`: SemVer → major when `upcoming` holds `breaking` or `removed` entries, minor when it holds `added`, patch otherwise; CalVer → today's date in the template's shape.
 3. **Confirm** — one single-select question: `Release <version> and push` `(Recommended)`, `Release <version> locally, no push`; the free-text answer names another version.
 4. **Defer to the project** — the repo has a release task or script (`mise tasks`, `package.json` scripts, `scripts/release*`) → run it with the confirmed version and stop here.
