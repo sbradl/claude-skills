@@ -147,7 +147,7 @@ Edit the file or add house rules (they override every rule of the skill) at any 
 - **Testing strategy** — unit test framework and naming, coverage and mutation thresholds, property-based tests, fuzzing, acceptance tests in Gherkin, in code, or both, end-to-end tests with page objects, contract tests
 - **Enforcement** — which checks run in pre-commit and pre-push hooks and in CI, SARIF upload to code scanning, automated dependency updates
 - **Accessibility** — accessibility lint rules and runtime WCAG checks for UI stacks
-- **Performance budgets** — page scores, bundle size, benchmarks, load tests
+- **Performance budgets** — page scores, bundle size, benchmarks, hardware-independent instruction-count benchmarks, load tests
 - **Logging and observability** — structured logging, tracing, log levels, and the lint rules that enforce them
 
 For each area a research sub-agent per stack finds freely usable tools. You pick tools first, then each tool's ruleset — the strictest is recommended. The skill installs and configures them, runs each once, and records everything in `.claude/engineering-rules.md` for agents to follow. Every check becomes a task — in mise when the project uses it (the skill offers to set mise up when it doesn't), otherwise in the stack's own runner — grouped under one task per area (`lint`, `security`, `test`, …). The Enforcement area adds a `check` task that runs them all, and the hooks and CI that run it.

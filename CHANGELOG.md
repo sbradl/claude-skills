@@ -13,6 +13,9 @@
 - The `acceptance` task that `engineering-rules` sets up skips Gherkin
   scenarios tagged `@wip`, so scenarios written before their code keep the
   suite green.
+- The `engineering-rules` performance area offers instruction-count
+  benchmarks: hardware-independent, so a 1% regression shows even on shared CI
+  runners (Linux only).
 
 ## v2.1.4 — 2026-10-12
 
