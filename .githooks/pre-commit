@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# Regenerate news.md from the staged CHANGELOG.json and stage it with the
+# commit. Renders from the index, not the working tree, so unstaged changelog
+# edits stay out. Also overwrites a hand-edited news.md: CHANGELOG.json is the
+# source of truth.
+# Enable once per clone:  mise run setup
+set -eu
+
+root="$(git rev-parse --show-toplevel)"
+
+git diff --cached --quiet -- CHANGELOG.json news.md && exit 0
+
+git show :CHANGELOG.json | "$root/scripts/news.sh" -c - >"$root/news.md.tmp" || {
+  rm -f "$root/news.md.tmp"
+  echo "pre-commit: could not render news.md from CHANGELOG.json" >&2
+  exit 1
+}
+mv "$root/news.md.tmp" "$root/news.md"
+git add "$root/news.md"

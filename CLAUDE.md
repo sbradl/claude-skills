@@ -8,6 +8,8 @@ A collection of **Claude Code skills** — prose instruction sets under `skills/
 
 `install.sh` (POSIX sh) and `install.ps1` (PowerShell) are the distribution mechanism: they download the GitHub branch archive and flatten `skills/<group>/*` into the caller's `./.claude/skills/` — every group, or only those named as arguments. `update.sh` / `update.ps1` are the same download but replace each skill directory wholesale (so renamed or deleted files inside a skill don't linger). Keep all four in lockstep — same repo slug, branch, and archive handling; the sh and ps1 halves of each pair must match, and install vs. update differ only in the copy step.
 
+`news.md` is generated from `CHANGELOG.json` (the `skill-users` audience) by `scripts/news.sh` — edit the JSON, never `news.md`. The `.githooks/pre-commit` hook regenerates and stages it whenever either file is staged; `mise run setup` installs `jq` and enables the hook once per clone (`mise run news` regenerates by hand).
+
 ## Skill file conventions
 
 - Each skill is a directory under `skills/<group>/`, with `SKILL.md` as the entry point. Skill names must be unique across groups — install flattens them into one directory.

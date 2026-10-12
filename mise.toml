@@ -1,0 +1,13 @@
+[tools]
+jq = "1.8.2"
+
+[tasks.setup]
+description = "Install tools and enable the repo's git hooks"
+run = [
+  "mise install",
+  "git config core.hooksPath .githooks",
+]
+
+[tasks.news]
+description = "Regenerate news.md from CHANGELOG.json"
+run = "scripts/news.sh > news.md.tmp && mv news.md.tmp news.md"
