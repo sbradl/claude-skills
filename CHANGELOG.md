@@ -14,6 +14,12 @@
 - Running the install script without arguments shows a checklist of skill
   groups to pick from (arrow keys move, space selects, enter confirms) instead
   of installing everything.
+- New `engineering-rules` skill: sets up the checks your code must pass —
+  static analysis, security scanning, testing strategy, enforcement in hooks
+  and CI, accessibility, performance budgets, and logging conventions. It
+  detects your stacks, researches freely usable tools for each, lets you pick
+  tools and rulesets (strictest recommended), and wires every check as a task,
+  offering to set up mise when the project doesn't use it.
 
 ## v2.0.0 — 2026-09-10
 

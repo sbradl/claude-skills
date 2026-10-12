@@ -6,7 +6,7 @@ Skills are prose instruction sets Claude loads on demand. These two families int
 
 ## Installing
 
-Run one command from the directory you want the skills in. It downloads the latest archive from GitHub, shows a checklist of skill groups (`tdd`, `craft-review`, `commit`) — arrow keys move, space selects, enter confirms — and drops the chosen skills into `./.claude/skills/`.
+Run one command from the directory you want the skills in. It downloads the latest archive from GitHub, shows a checklist of skill groups (`tdd`, `craft-review`, `commit`, `engineering`) — arrow keys move, space selects, enter confirms — and drops the chosen skills into `./.claude/skills/`.
 
 **Linux / macOS**
 
@@ -108,6 +108,20 @@ It can also keep a changelog, `CHANGELOG.json`, written for the **audiences** yo
 
 Edit the file or add house rules (they override the style) at any time. Move it to `~/.claude/commit.md` to use it for every project without its own, or delete it to be asked again. Updates leave it alone.
 
+### Engineering rules
+
+**`engineering-rules`** sets up the checks your code must pass. Run it with `/engineering-rules`. It detects your stacks (e.g. .NET with xUnit, TypeScript with Vitest) and lets you confirm them, then works through each area you pick:
+
+- **Static analysis and linting** — linters, formatters, type strictness, complexity and duplication, architecture rules, dead code, API spec linting
+- **Security analysis** — SAST (e.g. Opengrep), dependency vulnerabilities, license compliance, SBOM, infrastructure and container image scanning (e.g. Trivy), secret scanning (e.g. Gitleaks), DAST (e.g. ZAP)
+- **Testing strategy** — unit test framework and naming, coverage and mutation thresholds, property-based tests, acceptance tests in Gherkin, in code, or both, end-to-end and contract tests
+- **Enforcement** — which checks run in pre-commit and pre-push hooks and in CI, SARIF upload to code scanning, automated dependency updates
+- **Accessibility** — accessibility lint rules and runtime WCAG checks for UI stacks
+- **Performance budgets** — page scores, bundle size, benchmarks, load tests
+- **Logging and observability** — structured logging, tracing, log levels, and the lint rules that enforce them
+
+For each area a research sub-agent per stack finds freely usable tools. You pick tools first, then each tool's ruleset — the strictest is recommended. The skill installs and configures them, runs each once, and records everything in `.claude/engineering-rules.md` for agents to follow. Every check becomes a task — in mise when the project uses it (the skill offers to set mise up when it doesn't), otherwise in the stack's own runner — grouped under one task per area (`lint`, `security`, `test`, …) and a `check` task that runs them all.
+
 ## How they fit together
 
 ```
@@ -138,6 +152,11 @@ skills/
     commit/
       SKILL.md  setup.md  changelog.md
       styles/conventional.md  gitmoji.md  plain.md
+  engineering/
+    engineering-rules/
+      SKILL.md  research.md
+      areas/static-analysis.md  security.md  testing.md  enforcement.md
+            accessibility.md  performance.md  observability.md
 .claude/skills/   symlinks into skills/, so the skills load while working on this repo
 ```
 

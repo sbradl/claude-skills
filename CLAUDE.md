@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-A collection of **Claude Code skills** — prose instruction sets under `skills/<group>/<name>/SKILL.md`, plus supporting reference files in the same directory. A **group** (`tdd`, `craft-review`, `commit`) is a unit of distribution only; Claude Code never sees it. There is no application code, build, lint, or test tooling. "Working in this repo" means authoring and editing skill Markdown.
+A collection of **Claude Code skills** — prose instruction sets under `skills/<group>/<name>/SKILL.md`, plus supporting reference files in the same directory. A **group** (`tdd`, `craft-review`, `commit`, `engineering`) is a unit of distribution only; Claude Code never sees it. There is no application code, build, lint, or test tooling. "Working in this repo" means authoring and editing skill Markdown.
 
 `install.sh` (POSIX sh) and `install.ps1` (PowerShell) are the distribution mechanism: they download the GitHub branch archive and flatten `skills/<group>/*` into the caller's `./.claude/skills/` — every group, or only those named as arguments. `update.sh` / `update.ps1` are the same download but replace each skill directory wholesale (so renamed or deleted files inside a skill don't linger). Keep all four in lockstep — same repo slug, branch, and archive handling; the sh and ps1 halves of each pair must match, and install vs. update differ only in the copy step.
 
@@ -23,7 +23,7 @@ Releasing = pushing a `v{major}.{minor}.{patch}` tag. `.github/workflows/release
 
 ## Architecture: how the skills compose
 
-Two families that interlock, plus the standalone `commit` skill.
+Two families that interlock, plus the standalone `commit` and `engineering-rules` skills.
 
 ### TDD family — `tdd-loop` orchestrates `tdd-red`, `tdd-green`, `tdd-refactor`
 
