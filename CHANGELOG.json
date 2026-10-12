@@ -1,5 +1,14 @@
 {
-  "upcoming": {},
+  "upcoming": {
+    "skill-users": {
+      "changed": [
+        {
+          "id": "engineering-testing-fuzzing",
+          "en": "The `engineering-rules` testing area offers fuzzing for stacks that read untrusted input, with a `fuzz <target>` task that runs one target until coverage plateaus."
+        }
+      ]
+    }
+  },
   "releases": [
     {
       "version": "v2.1.4",

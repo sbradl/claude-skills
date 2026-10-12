@@ -1,5 +1,13 @@
 # Changelog
 
+## Upcoming
+
+### Changed
+
+- The `engineering-rules` testing area offers fuzzing for stacks that read
+  untrusted input, with a `fuzz <target>` task that runs one target until
+  coverage plateaus.
+
 ## v2.1.4 — 2026-10-12
 
 ### Changed

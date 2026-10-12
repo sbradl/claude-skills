@@ -1,6 +1,6 @@
 # Testing strategy
 
-How the project proves its behaviour: which kinds of test exist, how each is written, and how strictly the suite itself is held to account. Tasks: `test`, `coverage`, `acceptance`, `mutation`, `e2e`, `contract`.
+How the project proves its behaviour: which kinds of test exist, how each is written, and how strictly the suite itself is held to account. Tasks: `test`, `coverage`, `acceptance`, `mutation`, `fuzz`, `e2e`, `contract`.
 
 ## Research categories
 
@@ -8,13 +8,14 @@ How the project proves its behaviour: which kinds of test exist, how each is wri
 - **Coverage** — line and branch coverage with a failing threshold (coverlet, Vitest's v8 provider, coverage.py).
 - **Mutation testing** — mutates the code and checks the suite notices (Stryker.NET, StrykerJS, mutmut, PIT, cargo-mutants).
 - **Property-based testing** — generated inputs against stated invariants (fast-check, CsCheck, FsCheck, Hypothesis).
+- **Fuzzing** — only for stacks that read untrusted input (files, network protocols): coverage-guided malformed input until no new paths turn up, finding crashes and hangs (cargo-fuzz, SharpFuzz, Jazzer.js, Atheris).
 - **Gherkin runner** — runs `.feature` files against step definitions in this stack's test runner (Reqnroll for .NET, Cucumber.js, playwright-bdd, QuickPickle for Vitest). Researched up front; used only when the user picks Gherkin.
 - **End-to-end** — only for stacks with a UI or an HTTP API: drives the running app (Playwright).
 - **Contract testing** — only for stacks that call or serve other services: consumer-driven contracts (Pact).
 
 ## Rounds
 
-Both rounds per category. Rulesets here are mostly thresholds — strictest = the highest: coverage `100% lines and branches` `(Recommended)` then `90%`, `80%`; mutation score break threshold likewise. For end-to-end, the ruleset is the browser matrix: all engines the tool supports `(Recommended)`, then Chromium only.
+Both rounds per category. Rulesets here are mostly thresholds — strictest = the highest: coverage `100% lines and branches` `(Recommended)` then `90%`, `80%`; mutation score break threshold likewise. For end-to-end, the ruleset is the browser matrix: all engines the tool supports `(Recommended)`, then Chromium only. For fuzzing, it is the run length per target: until coverage plateaus `(Recommended)`, then a fixed time.
 
 ## Questions
 
@@ -43,7 +44,7 @@ Both rounds per category. Rulesets here are mostly thresholds — strictest = th
 Unit test names: <convention>
 Acceptance tests: <gherkin | coded | both>; split: <rule>        (both)
 Property-based tests required for: <rule>
-Run: `test [filter]` · `coverage <file>` · `acceptance` · `MUTATE_FILES="<paths>" mutation` · `e2e` · `contract`
+Run: `test [filter]` · `coverage <file>` · `acceptance` · `MUTATE_FILES="<paths>" mutation` · `fuzz <target>` · `e2e` · `contract`
 ```
 
 ## Apply
@@ -52,6 +53,7 @@ Run: `test [filter]` · `coverage <file>` · `acceptance` · `MUTATE_FILES="<pat
 - **`coverage`** takes one source file and reports its line and branch coverage under the full suite; a report, no threshold.
 - **`acceptance`** — `gherkin` or `both`: install the runner and run every feature file; `coded`: run the acceptance tests by the test runner's filter for them (category, folder, or name pattern), and record that filter. Add no example tests or features; the rulebook records the convention, the next feature's tests follow it.
 - **`mutation`** runs with the picked break threshold; with `MUTATE_FILES` set (space-separated paths), it mutates only those files. A full run can take long — report its duration with the score.
+- **`fuzz`** takes one target name and runs it for the picked run length, keeping its corpus and any crashing input in the repo. Add no targets; the first feature that reads untrusted input writes its own.
 - **`e2e`** configures the tool to start the app itself where it can (Playwright's `webServer`); otherwise it needs a running app.
 - **`contract`** — install the library and wire the task; contracts come from the first consumer test written against it. A contract broker is a server — note it in the rulebook if the user wants one; set none up.
-- **`CLAUDE.md`** — write a `Testing` section into the project's `CLAUDE.md` (replace an existing one) naming the exact commands to run the full suite, one test file or test by name, coverage for one file, and mutation testing scoped by `MUTATE_FILES` — agents look for test commands there.
+- **`CLAUDE.md`** — write a `Testing` section into the project's `CLAUDE.md` (replace an existing one) naming the exact commands to run the full suite, one test file or test by name, coverage for one file, mutation testing scoped by `MUTATE_FILES`, and fuzzing one target — agents look for test commands there.

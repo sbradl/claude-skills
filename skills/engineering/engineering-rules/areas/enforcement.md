@@ -13,7 +13,7 @@ Both rounds. For dependency updates, the ruleset is the update policy: Renovate'
 
 ## Questions
 
-**Where checks run** — per task the other areas created, one multi-select question (four tasks per call): `pre-commit hook`, `pre-push hook`, `CI`. Recommend fast, file-scoped checks (`lint` on staged files, secret scanning) for `pre-commit`, `test` for `pre-push`, and every task for `CI`. Tasks that need a running app (`dast`, `e2e`) and slow ones (`mutation`) recommend `CI` only.
+**Where checks run** — per task the other areas created, one multi-select question (four tasks per call): `pre-commit hook`, `pre-push hook`, `CI`. Recommend fast, file-scoped checks (`lint` on staged files, secret scanning) for `pre-commit`, `test` for `pre-push`, and every task for `CI`. Tasks that need a running app (`dast`, `e2e`) and slow ones (`mutation`, `fuzz`) recommend `CI` only.
 
 **CI platform** — detect it (`.github/workflows/`, `.gitlab-ci.yml`, `azure-pipelines.yml`) and confirm; nothing detected → single-select: GitHub Actions, GitLab CI, Azure Pipelines.
 
