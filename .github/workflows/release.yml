@@ -1,5 +1,5 @@
 # Publish a GitHub release when a version tag is pushed.
-# Release:  git tag -a v2.1.0 -m v2.1.0 && git push origin v2.1.0
+# Release:  mise run release v2.2.0   (release commit + tag + push)
 name: Release
 
 on:
@@ -21,8 +21,13 @@ jobs:
       - name: Check CHANGELOG.md matches CHANGELOG.json
         run: scripts/changelog.sh | diff -u CHANGELOG.md -
 
-      # At the tagged commit the changelog hasn't recorded the release yet,
-      # so its Upcoming section is exactly what this release ships.
+      # The tag must sit on a release commit (scripts/release.sh), so the
+      # changelog already records this version when the release goes out.
+      - name: Check CHANGELOG.json records this release
+        run: |
+          jq -e --arg v "$GITHUB_REF_NAME" 'any(.releases[]; .version == $v)' CHANGELOG.json >/dev/null \
+            || { echo "::error::CHANGELOG.json has no $GITHUB_REF_NAME release — tag with mise run release"; exit 1; }
+
       - name: Render release notes
         run: |
           scripts/changelog.sh -r "$GITHUB_REF_NAME" > notes.md

@@ -12,3 +12,7 @@ run = [
 [tasks.changelog]
 description = "Regenerate CHANGELOG.md from CHANGELOG.json"
 run = "scripts/changelog.sh > CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md"
+
+[tasks.release]
+description = "Cut a release: scripts/release.sh v<major>.<minor>.<patch>"
+run = "scripts/release.sh"

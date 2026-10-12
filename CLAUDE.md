@@ -10,7 +10,7 @@ A collection of **Claude Code skills** — prose instruction sets under `skills/
 
 `CHANGELOG.md` is generated from `CHANGELOG.json` (the `skill-users` audience) by `scripts/changelog.sh` — edit the JSON, never `CHANGELOG.md`. The `.githooks/pre-commit` hook regenerates and stages it whenever either file is staged; `mise run setup` installs `jq` and enables the hook once per clone (`mise run changelog` regenerates by hand).
 
-Releasing = pushing a `v{major}.{minor}.{patch}` tag. `.github/workflows/release.yml` fails if `CHANGELOG.md` is stale, then publishes a GitHub release whose notes are `scripts/changelog.sh -r <tag>` — the changelog's Upcoming section at the tagged commit.
+Release with `mise run release v{major}.{minor}.{patch}` (`scripts/release.sh`): it moves Upcoming into a release section, commits `chore(release): <tag>`, tags that commit, and pushes both. The tag push runs `.github/workflows/release.yml`, which fails if `CHANGELOG.md` is stale or the changelog doesn't record the tag, then publishes the section (`scripts/changelog.sh -r <tag>`) as the GitHub release notes. Never push a bare tag.
 
 ## Skill file conventions
 
