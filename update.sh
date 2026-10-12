@@ -3,7 +3,8 @@
 # Replaces the skill directories in place; leaves the rest of ./.claude alone.
 # Usage:  curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh
 #         curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh -s -- tdd craft-review
-# Arguments name skill groups (directories under skills/); none means all.
+# Arguments name skill groups (directories under skills/); none means every
+# group with at least one skill already installed.
 set -eu
 
 REPO="sbradl/claude-skills"
@@ -20,7 +21,17 @@ curl -fsSL "https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz" \
 src="$tmp/claude-skills-$BRANCH/skills"
 [ -d "$src" ] || { echo "error: skills directory not found in archive" >&2; exit 1; }
 
-[ $# -gt 0 ] || set -- $(ls "$src")
+if [ $# -eq 0 ]; then
+  for group in $(ls "$src"); do
+    for d in "$src/$group"/*/; do
+      if [ -d "$DEST/$(basename "$d")" ]; then set -- "$@" "$group"; break; fi
+    done
+  done
+  [ $# -gt 0 ] || {
+    echo "error: no installed skill groups in $DEST; run install.sh first" >&2
+    exit 1
+  }
+fi
 for group in "$@"; do
   [ -d "$src/$group" ] || {
     echo "error: no skill group '$group' (available: $(echo $(ls "$src")))" >&2

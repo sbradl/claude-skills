@@ -2,7 +2,8 @@
 # Replaces the skill directories in place; leaves the rest of .\.claude alone.
 # Usage:  irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1 | iex
 #         & ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1))) tdd craft-review
-# Arguments name skill groups (directories under skills\); none means all.
+# Arguments name skill groups (directories under skills\); none means every
+# group with at least one skill already installed.
 param([Parameter(ValueFromRemainingArguments)][string[]]$Group)
 $ErrorActionPreference = 'Stop'
 
@@ -23,7 +24,13 @@ try {
     if (-not (Test-Path $src)) { throw "skills directory not found in archive" }
 
     $available = Get-ChildItem -Directory -Name $src
-    if (-not $Group) { $Group = $available }
+    if (-not $Group) {
+        $Group = @($available | Where-Object {
+            @(Get-ChildItem -Directory -Name (Join-Path $src $_)) |
+                Where-Object { Test-Path (Join-Path $dest $_) }
+        })
+        if (-not $Group) { throw "no installed skill groups in $dest; run install.ps1 first" }
+    }
     foreach ($g in $Group) {
         if ($available -notcontains $g) { throw "no skill group '$g' (available: $($available -join ' '))" }
     }

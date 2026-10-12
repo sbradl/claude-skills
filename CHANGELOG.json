@@ -1,5 +1,14 @@
 {
-  "upcoming": {},
+  "upcoming": {
+    "skill-users": {
+      "changed": [
+        {
+          "id": "update-installed-groups-only",
+          "en": "Running the update script without arguments updates only the skill groups you have installed, including skills newly added to them, instead of installing every group. Name a group to add it."
+        }
+      ]
+    }
+  },
   "releases": [
     {
       "version": "v2.1.2",

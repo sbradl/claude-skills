@@ -1,5 +1,13 @@
 # Changelog
 
+## Upcoming
+
+### Changed
+
+- Running the update script without arguments updates only the skill groups
+  you have installed, including skills newly added to them, instead of
+  installing every group. Name a group to add it.
+
 ## v2.1.2 — 2026-10-12
 
 ### Changed
