@@ -1,0 +1,34 @@
+# Publish a GitHub release when a version tag is pushed.
+# Release:  git tag -a v2.1.0 -m v2.1.0 && git push origin v2.1.0
+name: Release
+
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: jdx/mise-action@v2
+
+      # news.md is generated; a stale copy means the hook was bypassed.
+      - name: Check news.md matches CHANGELOG.json
+        run: scripts/news.sh | diff -u news.md -
+
+      # At the tagged commit the changelog hasn't recorded the release yet,
+      # so its Upcoming section is exactly what this release ships.
+      - name: Render release notes
+        run: |
+          scripts/news.sh -r "$GITHUB_REF_NAME" > notes.md
+          [ -s notes.md ] || echo "No user-facing changes." > notes.md
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md --verify-tag
