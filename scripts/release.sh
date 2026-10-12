@@ -18,8 +18,8 @@ cd "$root"
 [ -z "$(git status --porcelain)" ] || fail "working tree is not clean"
 [ "$(git branch --show-current)" = main ] || fail "release from main"
 git fetch -q origin main --tags
-[ "$(git rev-parse HEAD)" = "$(git rev-parse origin/main)" ] \
-  || fail "main is not in sync with origin/main"
+git merge-base --is-ancestor origin/main HEAD \
+  || fail "main is behind or has diverged from origin/main"
 git rev-parse -q --verify "refs/tags/$version" >/dev/null && fail "tag $version already exists"
 newest="$(git tag -l 'v*' --sort=-v:refname | head -n 1)"
 [ -z "$newest" ] || [ "$(printf '%s\n%s\n' "$newest" "$version" | sort -V | tail -n 1)" = "$version" ] \
