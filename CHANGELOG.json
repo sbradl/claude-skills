@@ -1,5 +1,14 @@
 {
-  "upcoming": {},
+  "upcoming": {
+    "skill-users": {
+      "changed": [
+        {
+          "id": "commit-setup-previews",
+          "en": "The `commit` skill's setup shows an example commit message for every option, so you pick the style, body, granularity, issue references, and attribution by how your commits will look."
+        }
+      ]
+    }
+  },
   "releases": [
     {
       "version": "v2.1.1",

@@ -12,6 +12,73 @@ Before asking, `git log -n 20 --format=%B`, and mark the option the existing his
 - **Issue references** — `required` (from the branch name, else ask), `when-available` (from the branch name when present), `never`.
 - **Attribution** — `keep` (Claude co-author trailers, as the harness asks), `omit` (no Claude attribution in commit messages).
 
+### Previews
+
+Every option carries a `preview` showing the commit message, or `git log --oneline`, it produces — the user picks by sight, not by name.
+
+- **Style** — the example block from the option's style file, verbatim.
+- **Everything else** — the examples below, rewritten in the style marked `(Recommended)` so the user sees their likely future log.
+
+**Body**
+
+```
+always:
+  feat(auth): add password reset via email
+
+  Users locked out had no self-service path and
+  filed support tickets.
+
+when-non-obvious:
+  fix(auth): reject reset links older than one hour
+
+  Links never expired, so a leaked email granted
+  account access indefinitely.
+
+  docs(auth): fix typo in reset email        ← obvious, no body
+
+never:
+  feat(auth): add password reset via email
+```
+
+**Granularity**
+
+```
+atomic:
+  a1b2c3d docs(auth): document the reset flow
+  d4e5f6a feat(auth): add password reset via email
+  9f8e7d6 refactor(auth): extract token generator
+
+single:
+  d4e5f6a feat(auth): add password reset, extract token generator, document flow
+```
+
+**Issue references** — on branch `ABC-123-password-reset`
+
+```
+required / when-available:
+  feat(auth): add password reset via email
+
+  Refs: ABC-123
+
+  (required asks for an ID on a branch without one;
+   when-available leaves it out)
+
+never:
+  feat(auth): add password reset via email
+```
+
+**Attribution**
+
+```
+keep:
+  feat(auth): add password reset via email
+
+  Co-Authored-By: Claude <noreply@anthropic.com>
+
+omit:
+  feat(auth): add password reset via email
+```
+
 ## 2. Changelog audiences
 
 The changelog is optional and written for **audiences** the user describes. Each audience gets a **brief** — the yardstick every later commit is measured against, so it must be sharp enough to decide "does this change get an entry?" without asking again.

@@ -1,5 +1,13 @@
 # Changelog
 
+## Upcoming
+
+### Changed
+
+- The `commit` skill's setup shows an example commit message for every option,
+  so you pick the style, body, granularity, issue references, and attribution
+  by how your commits will look.
+
 ## v2.1.1 — 2026-10-12
 
 ### Added

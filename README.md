@@ -110,7 +110,14 @@ Run it with `/craft-review [fixed-point]` — a SHA, branch, tag, or `main`. Wit
 
 **`commit`** turns your changes into commits that follow the project's convention. The first time it runs in a project it asks five questions and records the answers in `.claude/commit.md`:
 
-- **Style** — Conventional Commits, Gitmoji, or plain imperative subjects
+- **Style** — how the subject line looks:
+
+  | Style | Example |
+  | --- | --- |
+  | Conventional Commits | `feat(auth): add password reset via email` |
+  | Gitmoji | `✨ Add password reset via email` |
+  | Plain | `Add password reset via email` |
+
 - **Body** — always, only when the reason isn't obvious, or never
 - **Granularity** — one commit per logical change, or one for everything
 - **Issue references** — required, added when the branch name carries one, or never
