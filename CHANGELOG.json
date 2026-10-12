@@ -1,15 +1,18 @@
 {
-  "upcoming": {
-    "skill-users": {
-      "changed": [
-        {
-          "id": "engineering-testing-commands",
-          "en": "The `engineering-rules` testing area creates tasks to run one test file or test, report coverage for one file, and mutate only given files, and writes all test commands into your project's `CLAUDE.md` — so the TDD skills need no manual setup."
-        }
-      ]
-    }
-  },
+  "upcoming": {},
   "releases": [
+    {
+      "version": "v2.1.4",
+      "date": "2026-10-12",
+      "skill-users": {
+        "changed": [
+          {
+            "id": "engineering-testing-commands",
+            "en": "The `engineering-rules` testing area creates tasks to run one test file or test, report coverage for one file, and mutate only given files, and writes all test commands into your project's `CLAUDE.md` — so the TDD skills need no manual setup."
+          }
+        ]
+      }
+    },
     {
       "version": "v2.1.3",
       "date": "2026-10-12",
