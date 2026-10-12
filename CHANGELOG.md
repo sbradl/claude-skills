@@ -1,5 +1,14 @@
 # Changelog
 
+## Upcoming
+
+### Changed
+
+- The `engineering-rules` testing area creates tasks to run one test file or
+  test, report coverage for one file, and mutate only given files, and writes
+  all test commands into your project's `CLAUDE.md` — so the TDD skills need
+  no manual setup.
+
 ## v2.1.3 — 2026-10-12
 
 ### Changed

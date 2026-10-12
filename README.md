@@ -73,7 +73,7 @@ What each skill needs before it works, and when you set it up:
 | `engineering-rules` | — | it is the setup; run it once, and again to revisit an area |
 | `craft-review` | — | nothing |
 
-**TDD.** The phases run single tests, check per-file coverage, and mutate the files each batch changed. `/engineering-rules` creates the tasks for that — `test [filter]`, `coverage <file>`, and a `mutation` task that honours `MUTATE_FILES` — so nothing goes into `CLAUDE.md`. Pick mise as its task runner: `tdd-loop` calls `MUTATE_FILES="<paths>" mise run mutation`.
+**TDD.** The phases run single tests, check per-file coverage, and mutate the files each batch changed. `/engineering-rules` creates the tasks for that — `test [filter]`, `coverage <file>`, and a `mutation` task that honours `MUTATE_FILES` — and writes them into the project's `CLAUDE.md` for you. Pick mise as its task runner: `tdd-loop` calls `MUTATE_FILES="<paths>" mise run mutation`.
 
 Without `engineering-rules`, record the commands in `CLAUDE.md` instead and add the mise `mutation` task yourself. Paste this prompt into Claude Code once to have it do both:
 

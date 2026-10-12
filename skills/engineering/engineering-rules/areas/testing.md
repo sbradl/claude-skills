@@ -1,6 +1,6 @@
 # Testing strategy
 
-How the project proves its behaviour: which kinds of test exist, how each is written, and how strictly the suite itself is held to account. Tasks: `test`, `acceptance`, `mutation`, `e2e`, `contract`.
+How the project proves its behaviour: which kinds of test exist, how each is written, and how strictly the suite itself is held to account. Tasks: `test`, `coverage`, `acceptance`, `mutation`, `e2e`, `contract`.
 
 ## Research categories
 
@@ -43,13 +43,15 @@ Both rounds per category. Rulesets here are mostly thresholds — strictest = th
 Unit test names: <convention>
 Acceptance tests: <gherkin | coded | both>; split: <rule>        (both)
 Property-based tests required for: <rule>
-Run: `test` · `acceptance` · `mutation` · `e2e` · `contract`
+Run: `test [filter]` · `coverage <file>` · `acceptance` · `MUTATE_FILES="<paths>" mutation` · `e2e` · `contract`
 ```
 
 ## Apply
 
-- **`test`** runs the unit tests with the coverage threshold enforced.
+- **`test`** runs the unit tests with the coverage threshold enforced; given an argument, only the tests it matches — a test file or a test name — without the threshold, which only a full run can meet.
+- **`coverage`** takes one source file and reports its line and branch coverage under the full suite; a report, no threshold.
 - **`acceptance`** — `gherkin` or `both`: install the runner and run every feature file; `coded`: run the acceptance tests by the test runner's filter for them (category, folder, or name pattern), and record that filter. Add no example tests or features; the rulebook records the convention, the next feature's tests follow it.
-- **`mutation`** runs with the picked break threshold. A full run can take long — report its duration with the score.
+- **`mutation`** runs with the picked break threshold; with `MUTATE_FILES` set (space-separated paths), it mutates only those files. A full run can take long — report its duration with the score.
 - **`e2e`** configures the tool to start the app itself where it can (Playwright's `webServer`); otherwise it needs a running app.
 - **`contract`** — install the library and wire the task; contracts come from the first consumer test written against it. A contract broker is a server — note it in the rulebook if the user wants one; set none up.
+- **`CLAUDE.md`** — write a `Testing` section into the project's `CLAUDE.md` (replace an existing one) naming the exact commands to run the full suite, one test file or test by name, coverage for one file, and mutation testing scoped by `MUTATE_FILES` — agents look for test commands there.

@@ -47,5 +47,6 @@ A diff reviewed through **five lenses, each in its own parallel `general-purpose
 
 - Changing a phase's inputs/outputs (the red→green artifact handoff, the refactor mandate) ripples across the other skills — check `tdd-loop` when touching any TDD phase skill.
 - The `craft-review` reference `.md` files are cited by name in `SKILL.md` step 3; keep the list and the filenames in sync.
+- `engineering-rules`' testing area writes the project's `CLAUDE.md` `Testing` section, where `tdd-green` finds its coverage command, and the `MUTATE_FILES`-aware `mutation` task `tdd-loop` calls — keep both when editing either side.
 - `commit`'s changelog format (`changelog.md`: `upcoming`/`releases`, audience keys, entry `id`s) is also what this repo's `scripts/changelog.sh` and `scripts/release.sh` parse — change them together.
 - Preserve the isolation rationale in edits — it is the reason these are separate skills and separate sub-agents, not one prompt.
