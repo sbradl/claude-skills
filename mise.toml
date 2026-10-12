@@ -1,5 +1,6 @@
 [tools]
 jq = "1.8.2"
+gh = "2.102.0"
 
 [tasks.setup]
 description = "Install tools and enable the repo's git hooks"
