@@ -18,7 +18,7 @@ Rules, rule packs, and vulnerability databases sometimes carry their own license
 
 ## Report
 
-Per category, a section with the qualifying candidates ranked best-first — coverage for this stack, adoption, maintenance — ending in a **Recommendation**: the pick, or the complementary picks, with one line of why. Per tool:
+Per category, a section with the qualifying candidates in this order: `official` tools first, then `de facto standard`, then the rest; within each, the tool covering the most of this area's categories for this stack first (Trivy covers dependency vulnerabilities, licenses, SBOM, and secrets in one), then by adoption. End the section in a **Recommendation**: the pick, or the complementary picks, with one line of why. Per tool:
 
 - **Name** — and what it checks, in one line.
 - **Convention** — `official` (ships with the language's toolchain), `de facto standard` (what most projects in this stack use), `established alternative`, or `niche` — with the evidence.

@@ -33,6 +33,8 @@
   category — whether each tool is the language's convention, its strengths and
   weak spots, adoption, speed, overlaps, and license — with a recommendation
   and why.
+- `engineering-rules` lists tool candidates with the language's official and
+  de facto standard tools first, then the tools covering the most ground.
 
 ### Fixed
 
