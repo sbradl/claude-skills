@@ -36,6 +36,12 @@
           "id": "engineering-tool-comparison",
           "en": "Before you pick tools, `engineering-rules` shows a comparison table per category — whether each tool is the language's convention, its strengths and weak spots, adoption, speed, overlaps, and license — with a recommendation and why."
         }
+      ],
+      "fixed": [
+        {
+          "id": "engineering-multi-stack-pick",
+          "en": "`engineering-rules` no longer asks a stack's tool question again after you picked a tool for an earlier stack that already covers it — Trivy for Rust and Kotlin, say."
+        }
       ]
     }
   },

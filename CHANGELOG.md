@@ -34,6 +34,12 @@
   weak spots, adoption, speed, overlaps, and license — with a recommendation
   and why.
 
+### Fixed
+
+- `engineering-rules` no longer asks a stack's tool question again after you
+  picked a tool for an earlier stack that already covers it — Trivy for Rust
+  and Kotlin, say.
+
 ## v2.1.4 — 2026-10-12
 
 ### Changed
