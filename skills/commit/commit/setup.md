@@ -1,6 +1,6 @@
 # Commit convention setup
 
-Runs once per project: asks the user for the convention and records it in `<repo-root>/.claude/commit.md`. Ask multiple-choice questions with `AskUserQuestion`, packing them into as few calls as fit — four per call, and each question only once the answers it depends on are in. Ask free-text questions in plain chat.
+Runs once per project: asks the user for the convention and records it in `<repo-root>/.claude/commit.md`. Ask multiple-choice questions with `AskUserQuestion`, packing them into as few calls as fit — four per call, and each question only once the answers it depends on are in.
 
 ## 1. Commit questions
 
@@ -15,15 +15,15 @@ Before asking, `git log -n 20 --format=%s`, and mark the option the existing his
 
 The changelog is optional and written for **audiences** the user describes. Each audience gets a **brief** — the yardstick every later commit is measured against, so it must be sharp enough to decide "does this change get an entry?" without asking again.
 
-1. **Ask** in plain chat whether to keep a changelog and, if so, who reads it: one or two sentences per audience on who they are and what they care about. Offer suggestions from the repo as a starting point — UI or a human-facing CLI → end users; an exported library API, SDK, or OpenAPI spec → developers; Dockerfile, Helm, Terraform, env-var config, or migrations → operators; a plugin or extension interface → plugin authors. No changelog → skip to step 4.
-2. **Draft** a brief per audience from the user's words:
+1. **Draft** up to three briefs from the strongest clues in the repo — UI or a human-facing CLI → end users; an exported library API, SDK, or OpenAPI spec → developers; Dockerfile, Helm, Terraform, env-var config, or migrations → operators; a plugin or extension interface → plugin authors. Each brief names what this repo actually exposes to them:
    - **key** — kebab-case (`end-users`, `plugin-authors`); it is the audience's key in the JSON.
    - **who** — who they are, in one sentence.
    - **notices** — the concrete things they see or must act on in this repo.
    - **never** — the kinds of change that never reach them.
-   - **categories** — what their entries are filed under, from `added`, `changed`, `fixed`, `breaking`, `deprecated`, `removed`, `security`, or one the description calls for.
-3. **Confirm** — show every draft in one message; revise until the user accepts them.
-4. **Languages** — per audience, multi-select: English, German, French, Spanish; the free-text answer covers the rest. Record ISO 639-1 codes. The language of the project's README goes first when picked — entries are written in the first language and translated into the rest.
+   - **categories** — what their entries are filed under, from `added`, `changed`, `fixed`, `breaking`, `deprecated`, `removed`, `security`, or one the audience calls for.
+2. **Pick** — one single-select question: one option per drafted audience, plus "All of them" when there are several. Each option's `preview` shows its full brief(s). The question text says the free-text answer describes another audience, corrects a brief, or says `none` for no changelog.
+3. **Free-text answer** → `none` skips to step 4; anything else drafts or revises briefs from the user's words and asks step 2 again with them, until the user picks an option.
+4. **Languages** — per picked audience, multi-select: English, German, French, Spanish; the free-text answer covers the rest. Record ISO 639-1 codes. The language of the project's README goes first when picked — entries are written in the first language and translated into the rest.
 
 ## 3. Release tag format
 
@@ -74,4 +74,4 @@ Keep `commit.md` out of the change set you are about to commit. Tell the user, i
 
 ## Done
 
-`<repo-root>/.claude/commit.md` exists with all four commit values set to options listed above; with a changelog, its `## Changelog` section holds `path`, `tag-format`, and one block per audience the user confirmed, each with all five fields filled.
+`<repo-root>/.claude/commit.md` exists with all four commit values set to options listed above; with a changelog, its `## Changelog` section holds `path`, `tag-format`, and one block per audience the user picked, each with all five fields filled.

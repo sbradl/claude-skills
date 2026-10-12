@@ -4,7 +4,7 @@
       "added": [
         {
           "id": "commit-skill",
-          "en": "New `commit` skill: commits your changes in your project's convention — Conventional Commits, Gitmoji, or plain subjects — asking once per project about message style, body, granularity, and issue references, and optionally keeping a translated `CHANGELOG.json` for the audiences you describe."
+          "en": "New `commit` skill: commits your changes in your project's convention — Conventional Commits, Gitmoji, or plain subjects — asking once per project about message style, body, granularity, and issue references, and optionally keeping a translated `CHANGELOG.json` for the audiences you pick or describe."
         }
       ]
     }
