@@ -7,6 +7,9 @@
 - The `engineering-rules` testing area offers fuzzing for stacks that read
   untrusted input, with a `fuzz <target>` task that runs one target until
   coverage plateaus.
+- The `engineering-rules` testing area records what acceptance tests drive —
+  entry point, fakes, what they assert on — and how end-to-end tests are
+  structured, page objects recommended.
 
 ## v2.1.4 — 2026-10-12
 

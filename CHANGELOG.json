@@ -5,6 +5,10 @@
         {
           "id": "engineering-testing-fuzzing",
           "en": "The `engineering-rules` testing area offers fuzzing for stacks that read untrusted input, with a `fuzz <target>` task that runs one target until coverage plateaus."
+        },
+        {
+          "id": "engineering-acceptance-seam",
+          "en": "The `engineering-rules` testing area records what acceptance tests drive — entry point, fakes, what they assert on — and how end-to-end tests are structured, page objects recommended."
         }
       ]
     }

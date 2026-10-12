@@ -144,7 +144,7 @@ Edit the file or add house rules (they override every rule of the skill) at any 
 
 - **Static analysis and linting** — linters, formatters, type strictness, complexity and duplication, architecture rules, dead code, API spec linting
 - **Security analysis** — SAST (e.g. Opengrep), dependency vulnerabilities, license compliance, SBOM, infrastructure and container image scanning (e.g. Trivy), secret scanning (e.g. Gitleaks), DAST (e.g. ZAP)
-- **Testing strategy** — unit test framework and naming, coverage and mutation thresholds, property-based tests, fuzzing, acceptance tests in Gherkin, in code, or both, end-to-end and contract tests
+- **Testing strategy** — unit test framework and naming, coverage and mutation thresholds, property-based tests, fuzzing, acceptance tests in Gherkin, in code, or both, end-to-end tests with page objects, contract tests
 - **Enforcement** — which checks run in pre-commit and pre-push hooks and in CI, SARIF upload to code scanning, automated dependency updates
 - **Accessibility** — accessibility lint rules and runtime WCAG checks for UI stacks
 - **Performance budgets** — page scores, bundle size, benchmarks, load tests

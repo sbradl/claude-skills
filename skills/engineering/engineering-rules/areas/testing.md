@@ -33,6 +33,10 @@ Both rounds per category. Rulesets here are mostly thresholds — strictest = th
 
 `gherkin` or `both` → round 1 and 2 over the Gherkin runner candidates. `both` → ask which behaviour goes where: single-select with `Gherkin for behaviour agreed with stakeholders, coded for the rest` and `Gherkin for user-facing behaviour, coded for technical and integration behaviour`; the free-text answer states another split.
 
+**Acceptance seam** — ask in plain chat what acceptance tests drive: the entry point they call, the fakes that stand in for the outside world, and what Then asserts on. Propose it from the code: the outermost layer the app's UI or API calls, with every gateway faked.
+
+**E2E structure** — when an end-to-end tool is picked, single-select: page objects `(Recommended)` — one object per screen holds its locators and actions, so tests read as user steps; screenplay — actors performing tasks; direct calls — locators in the tests.
+
 **Property-based testing** — when a library is picked, ask where it is required: single-select with `Pure functions with a stateable invariant (round-trips, ordering, idempotence)` `(Recommended)` and `Wherever a test would otherwise list example inputs`; the free-text answer states another rule.
 
 ## Record
@@ -43,6 +47,8 @@ Both rounds per category. Rulesets here are mostly thresholds — strictest = th
 
 Unit test names: <convention>
 Acceptance tests: <gherkin | coded | both>; split: <rule>        (both)
+Acceptance seam: <entry point; fakes; what Then asserts on>
+E2E structure: <page objects | screenplay | direct calls>
 Property-based tests required for: <rule>
 Run: `test [filter]` · `coverage <file>` · `acceptance` · `MUTATE_FILES="<paths>" mutation` · `fuzz <target>` · `e2e` · `contract`
 ```
