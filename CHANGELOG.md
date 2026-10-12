@@ -35,6 +35,10 @@
   and why.
 - `engineering-rules` lists tool candidates with the language's official and
   de facto standard tools first, then the tools covering the most ground.
+- After you pick tools, `engineering-rules` shows where two picks check the
+  same thing — including tools already in your rulebook — recommends which to
+  keep, and removes the ones you drop, or switches off just the overlapping
+  part of a tool.
 
 ### Fixed
 
