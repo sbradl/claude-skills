@@ -6,7 +6,7 @@ Skills are prose instruction sets Claude loads on demand. These two families int
 
 ## Installing
 
-Run one command from the directory you want the skills in. It downloads the latest archive from GitHub and drops every skill into `./.claude/skills/`.
+Run one command from the directory you want the skills in. It downloads the latest archive from GitHub, shows a checklist of skill groups (`tdd`, `craft-review`) — arrow keys move, space selects, enter confirms — and drops the chosen skills into `./.claude/skills/`.
 
 **Linux / macOS**
 
@@ -22,7 +22,7 @@ irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1 | ie
 
 For an all-projects install, run it from your home directory so the skills land in `~/.claude/skills/`.
 
-To install only some skill groups (`tdd`, `craft-review`), name them:
+To skip the checklist, name the groups to install:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.sh | sh -s -- tdd

@@ -1,7 +1,8 @@
 # Install the claude-skills into .\.claude\skills\ in the current directory.
 # Usage:  irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1 | iex
 #         & ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1))) tdd craft-review
-# Arguments name skill groups (directories under skills\); none means all.
+# Arguments name skill groups (directories under skills\); none means pick from
+# a checklist.
 param([Parameter(ValueFromRemainingArguments)][string[]]$Group)
 $ErrorActionPreference = 'Stop'
 
@@ -21,8 +22,40 @@ try {
     $src = Join-Path $tmp "claude-skills-$branch\skills"
     if (-not (Test-Path $src)) { throw "skills directory not found in archive" }
 
-    $available = Get-ChildItem -Directory -Name $src
-    if (-not $Group) { $Group = $available }
+    $available = @(Get-ChildItem -Directory -Name $src)
+    if (-not $Group) {
+        # Checklist: up/down (or k/j) move, space toggles, enter confirms.
+        $n = $available.Count
+        $on = @($false) * $n
+        $cur = 0
+        Write-Host 'Select skill groups (up/down move, space toggles, enter confirms):'
+        $top = [Console]::CursorTop
+        [Console]::CursorVisible = $false
+        try {
+            :pick while ($true) {
+                [Console]::SetCursorPosition(0, $top)
+                for ($i = 0; $i -lt $n; $i++) {
+                    $mark = if ($i -eq $cur) { '>' } else { ' ' }
+                    $box = if ($on[$i]) { '[x]' } else { '[ ]' }
+                    $skills = (Get-ChildItem -Directory -Name (Join-Path $src $available[$i])) -join ' '
+                    Write-Host "$mark $box $($available[$i]) ($skills)"
+                }
+                # Writing past the bottom scrolls the console; re-anchor.
+                $top = [Console]::CursorTop - $n
+                switch ([Console]::ReadKey($true).Key) {
+                    { $_ -in 'UpArrow', 'K' }   { if ($cur -gt 0) { $cur-- } }
+                    { $_ -in 'DownArrow', 'J' } { if ($cur -lt $n - 1) { $cur++ } }
+                    'Spacebar'                  { $on[$cur] = -not $on[$cur] }
+                    'Enter'                     { break pick }
+                }
+            }
+        }
+        finally {
+            [Console]::CursorVisible = $true
+        }
+        $Group = for ($i = 0; $i -lt $n; $i++) { if ($on[$i]) { $available[$i] } }
+        if (-not $Group) { Write-Host 'Nothing selected.'; return }
+    }
     foreach ($g in $Group) {
         if ($available -notcontains $g) { throw "no skill group '$g' (available: $($available -join ' '))" }
     }
