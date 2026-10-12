@@ -22,6 +22,18 @@ irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1 | ie
 
 For an all-projects install, run it from your home directory so the skills land in `~/.claude/skills/`.
 
+To install only some skill groups (`tdd`, `craft-review`), name them:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.sh | sh -s -- tdd
+```
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1))) tdd
+```
+
+`tdd-loop` feeds on `craft-review`'s findings, so install both groups to run the full loop. The update scripts take the same arguments.
+
 Claude picks a skill up automatically when the task matches its description, or you can invoke one directly with `/tdd-loop`, `/craft-review`, and so on.
 
 ## Updating
@@ -98,14 +110,19 @@ tdd-loop
 ## Repository layout
 
 ```
-.claude/skills/
-  tdd-loop/SKILL.md
-  tdd-red/SKILL.md
-  tdd-green/SKILL.md
-  tdd-refactor/SKILL.md
+skills/
+  tdd/
+    tdd-loop/SKILL.md
+    tdd-red/SKILL.md
+    tdd-green/SKILL.md
+    tdd-refactor/SKILL.md
   craft-review/
-    SKILL.md
-    ddd.md  smells.md  clean-code.md  pragmatic.md  philosophy.md
+    craft-review/
+      SKILL.md
+      ddd.md  smells.md  clean-code.md  pragmatic.md  philosophy.md
+.claude/skills/   symlinks into skills/, so the skills load while working on this repo
 ```
+
+Skills are grouped by family under `skills/`; installing flattens the groups into `./.claude/skills/`, since Claude Code only discovers skills one level deep.
 
 The `craft-review` reference files are per-lens checklists, each loaded into a fresh sub-agent context by absolute path.

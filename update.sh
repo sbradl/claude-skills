@@ -2,6 +2,8 @@
 # Update the claude-skills in ./.claude/skills/ to the latest version.
 # Replaces the skill directories in place; leaves the rest of ./.claude alone.
 # Usage:  curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh
+#         curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh -s -- tdd craft-review
+# Arguments name skill groups (directories under skills/); none means all.
 set -eu
 
 REPO="sbradl/claude-skills"
@@ -15,17 +17,27 @@ echo "Downloading $REPO@$BRANCH ..."
 curl -fsSL "https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz" \
   | tar -xz -C "$tmp"
 
-src="$tmp/claude-skills-$BRANCH/.claude/skills"
+src="$tmp/claude-skills-$BRANCH/skills"
 [ -d "$src" ] || { echo "error: skills directory not found in archive" >&2; exit 1; }
 
-mkdir -p "$DEST"
-# Replace each skill directory wholesale so renamed or deleted files inside it
-# don't linger.
-for d in "$src"/*/; do
-  name="$(basename "$d")"
-  rm -rf "$DEST/$name"
+[ $# -gt 0 ] || set -- $(ls "$src")
+for group in "$@"; do
+  [ -d "$src/$group" ] || {
+    echo "error: no skill group '$group' (available: $(echo $(ls "$src")))" >&2
+    exit 1
+  }
 done
-cp -R "$src"/. "$DEST"/
+
+mkdir -p "$DEST"
+for group in "$@"; do
+  # Replace each skill directory wholesale so renamed or deleted files inside
+  # it don't linger.
+  for d in "$src/$group"/*/; do
+    name="$(basename "$d")"
+    rm -rf "$DEST/$name"
+  done
+  cp -R "$src/$group"/. "$DEST"/
+done
 
 echo "Updated skills in $DEST:"
 ls -1 "$DEST"

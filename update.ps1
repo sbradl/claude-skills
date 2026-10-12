@@ -1,6 +1,9 @@
 # Update the claude-skills in .\.claude\skills\ to the latest version.
 # Replaces the skill directories in place; leaves the rest of .\.claude alone.
 # Usage:  irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1 | iex
+#         & ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1))) tdd craft-review
+# Arguments name skill groups (directories under skills\); none means all.
+param([Parameter(ValueFromRemainingArguments)][string[]]$Group)
 $ErrorActionPreference = 'Stop'
 
 $repo   = 'sbradl/claude-skills'
@@ -16,17 +19,25 @@ try {
 
     Expand-Archive -Path $zip -DestinationPath $tmp -Force
 
-    $src = Join-Path $tmp "claude-skills-$branch\.claude\skills"
+    $src = Join-Path $tmp "claude-skills-$branch\skills"
     if (-not (Test-Path $src)) { throw "skills directory not found in archive" }
 
-    New-Item -ItemType Directory -Path $dest -Force | Out-Null
-    # Replace each skill directory wholesale so renamed or deleted files inside
-    # it don't linger.
-    foreach ($d in Get-ChildItem -Directory $src) {
-        $target = Join-Path $dest $d.Name
-        if (Test-Path $target) { Remove-Item -Recurse -Force $target }
+    $available = Get-ChildItem -Directory -Name $src
+    if (-not $Group) { $Group = $available }
+    foreach ($g in $Group) {
+        if ($available -notcontains $g) { throw "no skill group '$g' (available: $($available -join ' '))" }
     }
-    Copy-Item -Path (Join-Path $src '*') -Destination $dest -Recurse -Force
+
+    New-Item -ItemType Directory -Path $dest -Force | Out-Null
+    foreach ($g in $Group) {
+        # Replace each skill directory wholesale so renamed or deleted files
+        # inside it don't linger.
+        foreach ($d in Get-ChildItem -Directory (Join-Path $src $g)) {
+            $target = Join-Path $dest $d.Name
+            if (Test-Path $target) { Remove-Item -Recurse -Force $target }
+        }
+        Copy-Item -Path (Join-Path $src "$g\*") -Destination $dest -Recurse -Force
+    }
 
     Write-Host "Updated skills in $dest:"
     Get-ChildItem -Name $dest
