@@ -10,6 +10,9 @@
 - The `engineering-rules` testing area records what acceptance tests drive —
   entry point, fakes, what they assert on — and how end-to-end tests are
   structured, page objects recommended.
+- The `acceptance` task that `engineering-rules` sets up skips Gherkin
+  scenarios tagged `@wip`, so scenarios written before their code keep the
+  suite green.
 
 ## v2.1.4 — 2026-10-12
 

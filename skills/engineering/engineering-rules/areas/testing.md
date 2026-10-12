@@ -57,7 +57,7 @@ Run: `test [filter]` · `coverage <file>` · `acceptance` · `MUTATE_FILES="<pat
 
 - **`test`** runs the unit tests with the coverage threshold enforced; given an argument, only the tests it matches — a test file or a test name — without the threshold, which only a full run can meet.
 - **`coverage`** takes one source file and reports its line and branch coverage under the full suite; a report, no threshold.
-- **`acceptance`** — `gherkin` or `both`: install the runner and run every feature file; `coded`: run the acceptance tests by the test runner's filter for them (category, folder, or name pattern), and record that filter. Add no example tests or features; the rulebook records the convention, the next feature's tests follow it.
+- **`acceptance`** — `gherkin` or `both`: install the runner and run every scenario except those tagged `@wip` (written before their code) — the runner's tag filter, e.g. `--tags "not @wip"`, or `--filter "Category!=wip"` for Reqnroll; `coded`: run the acceptance tests by the test runner's filter for them (category, folder, or name pattern), and record that filter. Add no example tests or features; the rulebook records the convention, the next feature's tests follow it.
 - **`mutation`** runs with the picked break threshold; with `MUTATE_FILES` set (space-separated paths), it mutates only those files. A full run can take long — report its duration with the score.
 - **`fuzz`** takes one target name and runs it for the picked run length, keeping its corpus and any crashing input in the repo. Add no targets; the first feature that reads untrusted input writes its own.
 - **`e2e`** configures the tool to start the app itself where it can (Playwright's `webServer`); otherwise it needs a running app.
