@@ -16,6 +16,8 @@
 - The `engineering-rules` performance area offers instruction-count
   benchmarks: hardware-independent, so a 1% regression shows even on shared CI
   runners (Linux only).
+- The `engineering-rules` enforcement area sets up CI on Gitea Actions and
+  Jenkins too.
 
 ## v2.1.4 — 2026-10-12
 
