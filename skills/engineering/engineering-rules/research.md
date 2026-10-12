@@ -18,9 +18,14 @@ Rules, rule packs, and vulnerability databases sometimes carry their own license
 
 ## Report
 
-Per category, a section with the qualifying candidates ranked best-first — coverage for this stack, adoption, maintenance. Per tool:
+Per category, a section with the qualifying candidates ranked best-first — coverage for this stack, adoption, maintenance — ending in a **Recommendation**: the pick, or the complementary picks, with one line of why. Per tool:
 
 - **Name** — and what it checks, in one line.
+- **Convention** — `official` (ships with the language's toolchain), `de facto standard` (what most projects in this stack use), `established alternative`, or `niche` — with the evidence.
+- **Strengths** — what it does better than the other candidates.
+- **Weak spots** — noise and false positives at the strictest ruleset, setup effort, gaps against the other candidates.
+- **Adoption** — downloads from the package registry, or GitHub stars, with the date read.
+- **Speed** — run time on a mid-size repo, as its docs or a published benchmark state it; otherwise `unknown`.
 - **License** — the tool's; the rules' when different; "needs a server" when it does.
 - **Latest release** — version and date.
 - **Install** — exact command or package for this stack; the mise registry name for a standalone binary.
@@ -34,4 +39,4 @@ Per category, a section with the qualifying candidates ranked best-first — cov
 
 ## Done
 
-Every category in your prompt has a section — ranked candidates, or "none qualifies" with what you checked — and every fact in it cites a primary-source URL.
+Every category in your prompt has a section — ranked candidates with a recommendation, or "none qualifies" with what you checked — and every fact in it cites a primary-source URL.

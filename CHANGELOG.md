@@ -29,6 +29,10 @@
 - The install and update scripts fetch the latest release instead of the
   development version on `main`; `--ref <tag>` (PowerShell: `-Ref`) installs a
   specific release, `--ref main` the development version.
+- Before you pick tools, `engineering-rules` shows a comparison table per
+  category — whether each tool is the language's convention, its strengths and
+  weak spots, adoption, speed, overlaps, and license — with a recommendation
+  and why.
 
 ## v2.1.4 — 2026-10-12
 
