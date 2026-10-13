@@ -61,19 +61,21 @@ Run `sh <skill-dir>/check-coverage.sh <feature-dir>/design.md`. Present design a
 
 One at a time, in order. For each slice, note `HEAD` as its start, then:
 
-1. **Test gate.** Show the requirement, then one `AskUserQuestion` call:
+1. **Choose the test levels.** Show the requirement, then one `AskUserQuestion` call:
    - **Test levels** — multi-select: `acceptance`, `unit`, `e2e`, `benchmark` (only when the rulebook has a benchmark tool). Recommend acceptance; add unit for logic over many variants (formats, rules, calculations), e2e for what needs the real UI, platform, or storage, benchmark for a performance budget.
    - **Mutation** — only when the rulebook has a `mutation` task: `On` or `Off`, recommending on when the recommended levels include unit.
    - **Fuzz** — only when the rulebook has a `fuzz` task: `On` or `Off`, recommending on when its code reads untrusted input (files, network, pasted data).
 
-   More than one level picked → one single-select on **what goes where**: your proposed split `(Recommended)` — "acceptance: the main flows · unit: each format version" — the free-text answer states another. Record the answers in the requirement's `Levels:` line. A fresh **tests sub-agent** with `briefs/tests.md` gets the requirement and writes its tests, assumptions, and texts. Run `check-coverage.sh`, then present the tests, the assumptions, and the texts; the user approves, and the work is checkpointed.
-2. A fresh **slice sub-agent** with `briefs/slice.md` gets the requirement and its tests.
-3. It stops for the user on a wrong or impossible test (a mini-gate shows the changed test and its requirement's lines), an open rule (record the decision), or an unavailable environment (ask the user to fix it). Resume it with the answer.
-4. Check its report: every test of the requirement passes, `@wip` is gone from exactly its Gherkin scenarios, each named test exists in the file it reports, every check the config maps to `slice done` is green, mutation is clean on the files it reports when mutation is on, and `git status` is clean. Mark the slice done: append ` ✓` to its line in the build order.
-5. A fresh **test reviewer** with `briefs/test-review.md` gets the slice's test names and `git diff <slice start>..HEAD` of its tests and test helpers. Resume the slice sub-agent with the findings until a review comes back clean.
-6. Tell the user one line: `Slice 2/5 done (REQ-13): 2 acceptance, 3 unit green; review clean.`
+   More than one level picked → one single-select on **what goes where**: your proposed split `(Recommended)` — "acceptance: the main flows · unit: each format version" — the free-text answer states another. Record the answers in the requirement's `Levels:` line.
+2. **Write the tests.** A fresh **tests sub-agent** with `briefs/tests.md` gets the requirement and writes its tests, assumptions, and texts. Run `check-coverage.sh`.
+3. **Review the tests — a gate: stop here.** Show the user, verbatim: every new scenario, every test name grouped by level, the texts. Ask each assumption decision as its own single-select, the recommendation first; the defaults as one list to veto. Then one single-select: `Approve the tests` `(Recommended)` or `Change them` — the free-text answer says what; rework through the tests sub-agent and show the changes again. Checkpoint once approved. Step 4 starts only after `Approve the tests`.
+4. A fresh **slice sub-agent** with `briefs/slice.md` gets the requirement and its tests.
+5. It stops for the user on a wrong or impossible test (a mini-gate shows the changed test and its requirement's lines), an open rule (record the decision), or an unavailable environment (ask the user to fix it). Resume it with the answer.
+6. Check its report: every test of the requirement passes, `@wip` is gone from exactly its Gherkin scenarios, each named test exists in the file it reports, every check the config maps to `slice done` is green, mutation is clean on the files it reports when mutation is on, and `git status` is clean. Mark the slice done: append ` ✓` to its line in the build order.
+7. A fresh **test reviewer** with `briefs/test-review.md` gets the slice's test names and `git diff <slice start>..HEAD` of its tests and test helpers. Resume the slice sub-agent with the findings until a review comes back clean.
+8. Tell the user one line: `Slice 2/5 done (REQ-13): 2 acceptance, 3 unit green; review clean.`
 
-Done when every slice passed its test gate, its report checks out, and its test review is clean.
+Done when the user approved every slice's tests, its report checks out, and its test review is clean.
 
 ## 4. Feature checks
 
