@@ -5,11 +5,11 @@
 ### Added
 
 - New `build-feature` skill (group `feature`): takes a feature from
-  requirements to pushed code through three gates you approve — requirements,
-  walked through with you one at a time to settle scope and how each is
-  tested, tests, design and slices — then builds each slice test-first in its
-  own sub-agent with a fresh test review, and closes with a report. Needs the
-  `commit` and `engineering` groups set up first.
+  requirements to pushed code. You tick what is out of scope and approve the
+  design and build order; then each requirement becomes a slice — just before
+  it is built, you choose how it is tested and approve its tests — built
+  test-first by its own sub-agent with a fresh test review, closing with a
+  report. Needs the `commit` and `engineering` groups set up first.
 
 ### Changed
 

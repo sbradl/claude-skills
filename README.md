@@ -6,7 +6,7 @@
 
 | Skill | What it does | Group | Starts |
 | --- | --- | --- | --- |
-| **`build-feature`** | Builds a feature end to end: requirements, tests, and design, each approved by you, then one sub-agent per slice and a closing report | `feature` | `/build-feature` only |
+| **`build-feature`** | Builds a feature end to end: requirements and design approved by you, then one slice per requirement — its tests approved by you, then built by its own sub-agent — and a closing report | `feature` | `/build-feature` only |
 | **`tdd-loop`** | Builds a feature or fixes a bug test-first: red → green one behaviour at a time, with a refactor and a mutation-testing pass after every five | `tdd` | automatically, or `/tdd-loop` |
 | **`tdd-red`** | Writes one failing test and proves it fails for the right reason | `tdd` | automatically, or `/tdd-red` |
 | **`tdd-green`** | Makes a failing test pass with the smallest source change | `tdd` | automatically, or `/tdd-green` |
@@ -120,13 +120,13 @@ MUTATE_FILES environment variable.
 
 ### Build feature
 
-**`build-feature`** takes a feature from a ticket, a spec section, or a few words to green, pushed code. You approve three **gates**; everything between them runs on its own:
+**`build-feature`** takes a feature from a ticket, a spec section, or a few words to green, pushed code. You approve the **gates**; everything between them runs on its own:
 
-1. **Requirements** — gathered from your spec, tickets, glossary, and ADRs, then walked through with you one at a time: in scope or not, and how it gets tested: acceptance tests by default, or a mix with unit, e2e, and benchmark tests; mutation testing and fuzzing per requirement. Facts no document holds are researched, or you answer them.
-2. **Tests** — Gherkin scenarios and test names for every requirement, the assumptions to decide, and every user-visible text.
-3. **Design and slices** — a short feature design (names, not shapes, at most 150 lines), then vertical slices of at most six acceptance and e2e tests each.
+1. **Requirements** — gathered from your spec, tickets, glossary, and ADRs, shown as an overview; you tick what is out of scope. Facts no document holds are researched, or you answer them.
+2. **Design and build order** — a short feature design (names, not shapes, at most 150 lines), and the order the requirements get built in — one slice each.
+3. **Tests, per slice** — just before a requirement is built, you choose how it is tested: acceptance tests by default, or a mix with unit, e2e, and benchmark tests, and mutation testing and fuzzing on or off. Then you approve its Gherkin scenarios and test names, the assumptions to decide, and its user-visible texts.
 
-Each slice is built test-first by its own sub-agent, then a fresh reviewer checks that every test keeps the promise of its name. When a check fails on a rule you haven't settled, you decide: loosen it, or keep it — and a kept rule is final, fixed without asking from then on. At the end, the checks you reserved for it run once, the checkpoints are squashed through `commit` and pushed, CI is watched (GitHub, Gitea, or Jenkins), a PR is opened if you use them, and a report shows what was built and what to try by hand.
+Each slice is then built test-first by its own sub-agent, then a fresh reviewer checks that every test keeps the promise of its name. When a check fails on a rule you haven't settled, you decide: loosen it, or keep it — and a kept rule is final, fixed without asking from then on. At the end, the checks you reserved for it run once, the checkpoints are squashed through `commit` and pushed, CI is watched (GitHub, Gitea, or Jenkins), a PR is opened if you use them, and a report shows what was built and what to try by hand.
 
 ### TDD
 

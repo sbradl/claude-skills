@@ -41,7 +41,7 @@ A diff reviewed through **five lenses, each in its own parallel `general-purpose
 
 ### Build feature — `build-feature`
 
-Three user gates (requirements, tests, design and slices), then one **slice sub-agent** per slice and a fresh **test reviewer** per slice. The briefs in `briefs/` are the sub-agents' whole context besides the repo. Approved artefacts change only through their gate (a mini-gate mid-build); checkpoints stay local until the close step squashes them through `commit` and pushes.
+User gates for requirements and for design and build order, then one slice per requirement: its own test gate (levels chosen, a **tests sub-agent** writes them), a **slice sub-agent**, and a fresh **test reviewer**. The briefs in `briefs/` are the sub-agents' whole context besides the repo. Approved artefacts change only through their gate (a mini-gate mid-build); checkpoints stay local until the close step squashes them through `commit` and pushes.
 
 It requires `commit`'s convention and the `engineering-rules` rulebook, and reads from the rulebook: the testing record (acceptance format and seam, unit naming, e2e structure), the `mutation`, `fuzz`, and benchmark tasks, and the `## Rule decisions` section it writes itself (open vs final rules).
 
@@ -51,7 +51,7 @@ It requires `commit`'s convention and the `engineering-rules` rulebook, and read
 
 ## Editing guidance
 
-- `build-feature` reads the rulebook's testing record, its `mutation`/`fuzz`/benchmark tasks, and the `@wip` exclusion the testing area wires into `acceptance`, and owns `## Rule decisions` (which `engineering-rules` leaves alone on revisit) — change both sides together. `design.md`'s `## Requirements` and `## Slices` line format is what `check-coverage.sh` parses; `briefs/tests.md` and `SKILL.md` step 3 define it.
+- `build-feature` reads the rulebook's testing record, its `mutation`/`fuzz`/benchmark tasks, and the `@wip` exclusion the testing area wires into `acceptance`, and owns `## Rule decisions` (which `engineering-rules` leaves alone on revisit) — change both sides together. `design.md`'s `## Requirements` blocks (`Levels:` and level-tagged test lines) and `## Slices` build order are what `check-coverage.sh` parses; `briefs/tests.md` and `SKILL.md` step 2 define them.
 - Changing a phase's inputs/outputs (the red→green artifact handoff, the refactor mandate) ripples across the other skills — check `tdd-loop` when touching any TDD phase skill.
 - The `craft-review` reference `.md` files are cited by name in `SKILL.md` step 3; keep the list and the filenames in sync.
 - `engineering-rules`' testing area writes the project's `CLAUDE.md` `Testing` section, where `tdd-green` finds its coverage command, and the `MUTATE_FILES`-aware `mutation` task `tdd-loop` calls — keep both when editing either side.

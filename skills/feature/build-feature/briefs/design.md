@@ -10,7 +10,7 @@ Only these; read the sections named, not whole files:
 - `.claude/engineering-rules.md`: Stacks, and the static-analysis record (its `Layers:` lines)
 - the ADRs and glossary terms the feature touches
 - the research files in `<feature-dir>/research/`
-- the feature's approved tests and `<feature-dir>/design.md`
+- the in-scope requirements in `<feature-dir>/design.md`
 - the `mattpocock-skills:domain-modeling` skill, when available, for the glossary and ADR format; otherwise match the existing files
 
 ## Write
@@ -27,7 +27,7 @@ Only these; read the sections named, not whole files:
 2. **`<feature-dir>/design.md`** — under each requirement a `Design: <element>, <element>` line naming the design elements that serve it; a **Risks** section, each risk with its mitigation; an **Open points** section, each with your recommendation.
 3. New domain terms go into the glossary. A choice that is hard to reverse, surprising, and a real trade-off gets an ADR, numbered after the last one.
 
-Interfaces fit today's caller (YAGNI); forward constraints the requirements state are the only exception. The rulebook binds the design: its layers, its licence allow-list, and the names its lint rules accept. A requirement or test the design cannot meet becomes an open point; the tests stay as approved.
+Interfaces fit today's caller (YAGNI); forward constraints the requirements state are the only exception. The rulebook binds the design: its layers, its licence allow-list, and the names its lint rules accept. A requirement the design cannot meet becomes an open point; the requirements stay as approved.
 
 Done when every requirement has a `Design:` line and the design doc is at most 150 lines.
 
