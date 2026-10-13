@@ -40,6 +40,12 @@
           "id": "engineering-tool-order",
           "en": "`engineering-rules` picks the stack's built-in tool first, then its de facto standard, and only then a tool covering more ground — never a second tool for the same outcome; an installed tool duplicating another is marked for removal."
         }
+      ],
+      "fixed": [
+        {
+          "id": "tdd-loop-squash-via-commit",
+          "en": "`tdd-loop` squashes its checkpoints through the `commit` skill, so the squashed commit follows your project's commit convention and changelog instead of always being a Conventional Commit."
+        }
       ]
     }
   },

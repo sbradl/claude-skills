@@ -64,4 +64,4 @@ Stop at a batch boundary once nothing in the user's stated requirement is left u
 
 ## Squash
 
-With the loop done, offer to squash its checkpoint commits into one. On acceptance, combine everything since the base into a single **conventional commit** — a `type(scope): summary` subject, a body naming what each slice added, and a footer for issue refs and `Co-Authored-By` trailers.
+With the loop done, offer to squash its checkpoint commits into one. On acceptance, `git reset --soft <base>`, then invoke the `commit` skill.

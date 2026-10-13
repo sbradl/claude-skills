@@ -40,6 +40,12 @@
   for the same outcome; an installed tool duplicating another is marked for
   removal.
 
+### Fixed
+
+- `tdd-loop` squashes its checkpoints through the `commit` skill, so the
+  squashed commit follows your project's commit convention and changelog
+  instead of always being a Conventional Commit.
+
 ## v2.1.4 — 2026-10-12
 
 ### Changed
