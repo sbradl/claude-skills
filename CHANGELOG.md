@@ -39,6 +39,10 @@
   standard, and only then a tool covering more ground — never a second tool
   for the same outcome; an installed tool duplicating another is marked for
   removal.
+- The `engineering-rules` static-analysis area asks whether agents may write
+  code comments; `names instead` adds a `Code comments` section to your
+  `CLAUDE.md` telling agents to use better names and extracted functions
+  instead, keeping only comments a tool requires.
 
 ### Fixed
 
