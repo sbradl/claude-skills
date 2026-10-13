@@ -51,6 +51,7 @@ Each `###` block in the convention's `## Changelog` section is an **audience**: 
 }
 ```
 
+- **`planned`** — with a roadmap only: the work still to come, in the format `roadmap.md` defines.
 - **`upcoming`** — always present, holds what no release tag contains yet.
 - **`releases`** — newest first; `version` is the tag.
 - **Audience keys** — one per audience in the convention; an audience with no entries is left out of `upcoming` or a release.

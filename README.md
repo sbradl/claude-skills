@@ -12,7 +12,7 @@
 | **`tdd-green`** | Makes a failing test pass with the smallest source change | `tdd` | automatically, or `/tdd-green` |
 | **`tdd-refactor`** | Improves the design of working code without changing behaviour | `tdd` | automatically, or `/tdd-refactor` |
 | **`craft-review`** | Reviews a diff through five lenses — DDD, code smells, Clean Code, Pragmatic Programmer, Philosophy of Software Design — each in its own sub-agent | `craft-review` | `/craft-review` only |
-| **`commit`** | Commits in your project's convention, keeps a translated changelog per audience, and cuts releases | `commit` | automatically, or `/commit` |
+| **`commit`** | Commits in your project's convention, keeps a translated changelog per audience and a roadmap, and cuts releases | `commit` | automatically, or `/commit` |
 | **`engineering-rules`** | Sets up the checks your code must pass — static analysis, security scanning, testing strategy, hooks and CI, accessibility, performance budgets, logging conventions | `engineering` | `/engineering-rules` only |
 
 *Automatically* means Claude starts the skill when your request matches it. The group is what you pick when installing. `tdd-loop` feeds on `craft-review`'s findings, so install both groups to run the full loop. Details on each skill are [below](#skill-details).
@@ -176,7 +176,9 @@ Run it with `/craft-review [fixed-point]` — a SHA, branch, tag, or `main`. Wit
 
 It can also keep a changelog, `CHANGELOG.json`, written for the **audiences** you pick during setup — end users, developers, operators, plugin authors, whoever reads it. Setup drafts a short brief for each audience it spots in the repo (who they are, what they notice, what never reaches them, which categories they get); you pick, correct, or describe your own, then choose the languages to translate into. Every commit is measured against each brief, so one change can get an entry for several audiences, each in their own words. One JSON file holds every audience's entries with all translations side by side — a single source of truth you edit in one place and can generate Markdown, HTML, or release notes from. Entries land in an **Upcoming** section in the same commit as the change. Versions come from your release tags: setup reads the tag format from the repo (and asks when there are none or several). Ask it to **release** and it proposes the next version from what Upcoming holds (breaking or removed → major, added → minor, else patch), then makes one release commit that moves Upcoming under that version, tags it, and pushes both — or runs your project's own release task when there is one. A tag made elsewhere gets its entries filed on the next commit.
 
-The render script (needs `jq`) prints the changelog per audience as Markdown; setup can copy it into your project as `scripts/changelog.sh`.
+With a changelog, setup also offers a **roadmap** — now / next / later, milestones (target versions in your tag format), or quarters — kept in the same file under `planned`, highest priority first, and rendered to `ROADMAP.md` (and `ROADMAP.<lang>.md` per further language); an existing `ROADMAP.md` can be imported. Ask it to add, move, reword, or drop an item, or what's planned. The commit that finishes an item takes it off the roadmap and turns it into that commit's changelog entries, so it moves from planned to Upcoming to a release.
+
+The render script (needs `jq`) prints the changelog per audience — and the roadmap — as Markdown; setup can copy it into your project as `scripts/changelog.sh`.
 
 Edit the file or add house rules (they override every rule of the skill) at any time. Move it to `~/.claude/commit.md` to use it for every project without its own, or delete it to be asked again. Updates leave it alone.
 
@@ -227,7 +229,7 @@ skills/
       ddd.md  smells.md  clean-code.md  pragmatic.md  philosophy.md
   commit/
     commit/
-      SKILL.md  setup.md  changelog.md  render.sh
+      SKILL.md  setup.md  changelog.md  roadmap.md  render.sh
       styles/conventional.md  gitmoji.md  plain.md
   engineering/
     engineering-rules/

@@ -1,6 +1,7 @@
 #!/bin/sh
 # Checks the skill conventions CLAUDE.md states, plus build-feature's
-# check-coverage.sh against its fixtures. Run from anywhere in the repo.
+# check-coverage.sh and commit's render.sh against their fixtures.
+# Run from anywhere in the repo.
 set -u
 cd "$(git rev-parse --show-toplevel)" || exit 2
 bad=0
@@ -27,6 +28,9 @@ dupes=$(ls -d skills/*/*/ | awk -F/ '{print $3}' | sort | uniq -d)
 cov=skills/feature/build-feature/check-coverage.sh
 sh "$cov" tests/check-coverage/ok.md >/dev/null || fail "$cov rejects tests/check-coverage/ok.md"
 sh "$cov" tests/check-coverage/bad.md >/dev/null && fail "$cov accepts tests/check-coverage/bad.md"
+
+render=skills/commit/commit/render.sh
+sh "$render" -c tests/render/CHANGELOG.json -p -l de | diff -u tests/render/ROADMAP.de.md - || fail "$render -p output differs from tests/render/ROADMAP.de.md"
 
 [ $bad -eq 0 ] && echo "ok: skills"
 exit $bad

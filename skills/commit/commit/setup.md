@@ -92,7 +92,8 @@ The changelog is optional and written for **audiences** the user describes. Each
 2. **Pick** — one single-select question: one option per drafted audience, plus "All of them" when there are several. Each option's `preview` shows its full brief(s). The question text says the free-text answer describes another audience, corrects a brief, or says `none` for no changelog.
 3. **Free-text answer** → `none` skips to section 4, Record; anything else drafts or revises briefs from the user's words and asks step 2 again with them, until the user picks an option.
 4. **Languages** — per picked audience, multi-select: English, German, French, Spanish; the free-text answer covers the rest. Record ISO 639-1 codes. The language of the project's README goes first when picked — entries are written in the first language and translated into the rest.
-5. **Render script** — single-select: `Copy into the project` `(Recommended)` — `<skill-dir>/render.sh` becomes `scripts/changelog.sh`, so anyone can render the changelog as Markdown (needs `jq`) — or `Skill only`.
+5. **Roadmap** — single-select: `none`, `now-next-later` `(Recommended)` — three horizons, no dates — `milestones` — sections are target versions — or `quarters`. Its languages are the first audience's. A `ROADMAP.md` without the generated-file comment exists → ask one single-select: `Import its items` `(Recommended)`, one section per heading that fits the structure, or `Replace it`. Rendering needs `jq`: missing → `mise use jq` in a mise repo, otherwise ask the user to install it.
+6. **Render script** — single-select: `Copy into the project` `(Recommended)` — `<skill-dir>/render.sh` becomes `scripts/changelog.sh`, so anyone can render the changelog and roadmap as Markdown (needs `jq`) — or `Skill only`.
 
 ## 3. Release tag format
 
@@ -106,7 +107,7 @@ Record the format as a template: each `N` becomes `{major}`, `{minor}`, `{patch}
 
 ## 4. Record
 
-Write `<repo-root>/.claude/commit.md`. Include `## Changelog` only with a changelog, and in it one `###` block per audience. Copy the render script when picked. A file already at `CHANGELOG.json` that isn't this skill's changelog → ask the user for another path.
+Write `<repo-root>/.claude/commit.md`. Include `## Changelog` only with a changelog, and in it one `###` block per audience; `## Roadmap` only with a roadmap. With a roadmap, add `planned` to the changelog file — the imported items, or the structure's empty sections: `now-next-later` its three, titled in every language; `milestones` the next version from `tag-format`; `quarters` the current one — and render it as `roadmap.md` says. Copy the render script when picked. A file already at `CHANGELOG.json` that isn't this skill's changelog → ask the user for another path.
 
 ```markdown
 # Commit convention
@@ -130,6 +131,11 @@ never: <changes that never reach them>
 categories: <comma-separated>
 languages: <codes, comma-separated>
 
+## Roadmap
+
+structure: <now-next-later | milestones | quarters>
+languages: <codes, comma-separated>
+
 ## House rules
 
 <!-- Project-specific rules; these override the skill. E.g. "scope = package name". -->
@@ -140,8 +146,9 @@ Keep `commit.md` out of the change set you are about to commit. Tell the user, i
 - where the file is, and that they can edit it, sharpen a brief, add an audience, or add house rules;
 - moving it to `~/.claude/commit.md` applies it to every project without its own;
 - deleting it re-runs this setup;
-- with a changelog: tag releases as `<tag-format>` — the next commit after a tag files the `upcoming` entries under it.
+- with a changelog: tag releases as `<tag-format>` — the next commit after a tag files the `upcoming` entries under it;
+- with a roadmap: ask to add, move, or drop items — the commit that finishes one turns it into changelog entries.
 
 ## Done
 
-`<repo-root>/.claude/commit.md` exists with all five commit values set to options listed above; with a changelog, its `## Changelog` section holds `path`, `tag-format`, and one block per audience the user picked, each with all five fields filled.
+`<repo-root>/.claude/commit.md` exists with all five commit values set to options listed above; with a changelog, its `## Changelog` section holds `path`, `tag-format`, and one block per audience the user picked, each with all five fields filled; with a roadmap, its `## Roadmap` section holds `structure` and `languages` and the changelog file holds `planned`.

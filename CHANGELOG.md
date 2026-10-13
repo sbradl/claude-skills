@@ -10,9 +10,14 @@
   it is built, you choose how it is tested and approve its tests — built
   test-first by its own sub-agent with a fresh test review, closing with a
   report. Needs the `commit` and `engineering` groups set up first.
+- `commit` can keep a roadmap — now / next / later, milestones, or quarters —
+  in the changelog file under `planned`, rendered to `ROADMAP.md`. The commit
+  that finishes an item takes it off the roadmap and turns it into that
+  commit's changelog entries. Set it up by asking for a roadmap, or in the
+  commit setup.
 - `commit` ships a render script (needs `jq`) that prints the changelog per
-  audience and language, or one release's notes, as Markdown; setup can copy
-  it into your project as `scripts/changelog.sh`.
+  audience and language, one release's notes, or the roadmap as Markdown;
+  setup can copy it into your project as `scripts/changelog.sh`.
 
 ### Changed
 

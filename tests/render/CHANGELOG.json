@@ -1,0 +1,26 @@
+{
+  "planned": {
+    "title": { "en": "Roadmap", "de": "Roadmap" },
+    "sections": [
+      {
+        "key": "now",
+        "title": { "en": "Now", "de": "Jetzt" },
+        "items": [
+          {
+            "id": "password-reset-by-email",
+            "en": "Reset your password from the login screen, without asking support for a new one by email.",
+            "de": "Passwort direkt im Anmeldebildschirm zurücksetzen."
+          },
+          { "id": "dark-mode", "en": "Switch the app to a dark theme.", "de": "Die App auf ein dunkles Design umstellen." }
+        ]
+      },
+      { "key": "next", "title": { "en": "Next", "de": "Als Nächstes" }, "items": [] },
+      { "key": "v2.2.0", "items": [ { "id": "export-csv", "en": "Export reports as CSV.", "de": "Berichte als CSV exportieren." } ] }
+    ]
+  },
+  "upcoming": {
+    "end-users": { "added": [ { "id": "invoice-pdf", "en": "Download invoices as PDF.", "de": "Rechnungen als PDF herunterladen." } ] },
+    "developers": { "added": [ { "id": "invoice-pdf-api", "en": "New `GET /invoices/{id}.pdf` endpoint." } ] }
+  },
+  "releases": []
+}

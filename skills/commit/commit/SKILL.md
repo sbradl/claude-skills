@@ -1,6 +1,6 @@
 ---
 name: commit
-description: Commit changes in the project's own commit convention — message style, body, granularity, issue references, Claude attribution, a changelog for the audiences you describe — set up once per project. Use when the user asks to commit or to release, or when another skill needs a commit.
+description: Commit changes in the project's own commit convention — message style, body, granularity, issue references, Claude attribution, a changelog for the audiences you describe, a roadmap of what is planned — set up once per project. Use when the user asks to commit or to release, wants something on, moved within, or off the roadmap or asks what is planned, or when another skill needs a commit.
 ---
 
 # Commit
@@ -13,11 +13,13 @@ Resolve `<skill-dir>` to this skill folder's absolute path.
 
 Read the first that exists: `<repo-root>/.claude/commit.md`, then `~/.claude/commit.md`. Neither exists → follow `<skill-dir>/setup.md`, then continue here.
 
-Read `<skill-dir>/styles/<style>.md` for the `style:` value. The convention has a `## Changelog` section → also read `<skill-dir>/changelog.md`.
+Read `<skill-dir>/styles/<style>.md` for the `style:` value. The convention has a `## Changelog` section → also read `<skill-dir>/changelog.md`; a `## Roadmap` section → also `<skill-dir>/roadmap.md`.
 
 The convention's **House rules** section overrides the style file and every rule in this skill.
 
 **Release** — the user asks to release or cut a version → follow the Release section of `<skill-dir>/changelog.md` instead of the steps below. No changelog → a release is the tag and push alone: every step of that section except **Release commit**, with no `upcoming` to check.
+
+**Roadmap** — the user asks to add, move, reword, or drop a planned item, or what is planned → follow the Requests section of `<skill-dir>/roadmap.md` instead of the steps below. No `## Roadmap` section → the roadmap lives in the changelog: with no `## Changelog` either, ask `setup.md`'s changelog questions first; then its Roadmap question, and record the answers as its Record section says.
 
 ## 2. Pick the change set
 
@@ -55,10 +57,10 @@ Format the subject per the style file. Then apply:
 
 ## 5. Commit
 
-With a changelog, run the release rollover from `changelog.md` first, then add each group's changelog entries before committing that group.
+With a changelog, run the release rollover from `changelog.md` first. Then, per group before committing it: with a roadmap, ship what it finishes (`roadmap.md`); then add its changelog entries.
 
 Stage each group by path and commit it, passing the message via heredoc so newlines survive. A hook fails → fix the cause, re-stage, and create the commit again.
 
 ## Done
 
-`git status` shows none of the change set left uncommitted, and `git log` shows each new commit with a subject that matches the style file's format and a body and trailers that match the convention. With a changelog, `changelog.md`'s Done holds too.
+`git status` shows none of the change set left uncommitted, and `git log` shows each new commit with a subject that matches the style file's format and a body and trailers that match the convention. With a changelog, `changelog.md`'s Done holds too; with a roadmap, `roadmap.md`'s.
