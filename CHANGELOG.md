@@ -32,11 +32,13 @@
   specific release, `--ref main` the development version.
 - `engineering-rules` asks what your checks must catch instead of which tools
   you want, plus your developer platforms and allowed runtimes, then
-  recommends the smallest tool set covering it all as a table; swap any row,
-  each alternative shown with its comparison — convention, strengths, weak
-  spots, adoption, speed, license.
-- `engineering-rules` lists tool candidates with the language's official and
-  de facto standard tools first, then the tools covering the most ground.
+  recommends one tool per outcome and stack as a table; swap any row, each
+  alternative shown with its comparison — convention, strengths, weak spots,
+  adoption, speed, license.
+- `engineering-rules` picks the stack's built-in tool first, then its de facto
+  standard, and only then a tool covering more ground — never a second tool
+  for the same outcome; an installed tool duplicating another is marked for
+  removal.
 
 ## v2.1.4 — 2026-10-12
 

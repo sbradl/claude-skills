@@ -1,6 +1,6 @@
 ---
 name: engineering-rules
-description: Set up a project's engineering rules — static analysis, security, testing strategy, enforcement, accessibility, performance budgets, observability — by asking what the checks must catch, researching free tools per stack, and recommending the smallest tool set, then its rulesets.
+description: Set up a project's engineering rules — static analysis, security, testing strategy, enforcement, accessibility, performance budgets, observability — by asking what the checks must catch, researching free tools per stack, and recommending one tool per outcome — the stack's built-in or de facto standard tool first — then its rulesets.
 disable-model-invocation: true
 ---
 
@@ -53,9 +53,13 @@ The reports are the tool catalogue; recommend tools only from them.
 
 ## 7. Recommend the tool set
 
-Build the smallest set that covers every picked outcome on every stack it applies to. Per outcome and stack, choose from the reports' candidates that meet the constraints, in this order: `official`, then `de facto standard`, then the rest; within a tier, a tool already in the set — installed, or chosen for another row — or covering more outcomes and stacks. Tools the rulebook records stay in their rows, marked `installed`; two installed tools checking the same thing get "overlaps row N".
+Cover every picked outcome on every stack it applies to with **exactly one tool** — never a second tool for the same outcome and stack, not even to fill a gap: a tool covering only part of an outcome names the gap in its why. One tool may fill several rows.
 
-Print the set as a numbered table — `#`, outcome, stacks, tool, why (its convention and what else it covers) — then one single-select question: **Accept the set** `(Recommended)` or **Change rows**, naming the rows in the free-text answer. Per named row, one single-select: the chosen tool `(Recommended)` and up to three alternatives from the reports, each option's `preview` holding its comparison — convention, strengths, weak spots, adoption, speed, license, latest release. Rebuild the set after the swaps, merging rows a swapped-in tool also covers, and ask again until the set is accepted.
+Per outcome and stack, choose from the reports' candidates that meet the constraints, in this order: `official`, then `de facto standard`, then the rest. Tier beats breadth — a tool covering more outcomes never displaces a built-in or de facto standard one. Within a tier, prefer a tool already in the set — installed, or chosen for another row — then the one covering more outcomes and stacks.
+
+Tools the rulebook records keep their rows, marked `installed`. Two installed tools on the same outcome and stack → the one the pick order prefers keeps the row; the other is marked "remove — overlaps row N".
+
+Print the set as a numbered table — `#`, outcome, stacks, tool, why (its convention and what else it covers) — then one single-select question: **Accept the set** `(Recommended)` or **Change rows**, naming the rows in the free-text answer. Per named row, one single-select: the chosen tool `(Recommended)` and up to three alternatives from the reports, each option's `preview` holding its comparison — convention, strengths, weak spots, adoption, speed, license, latest release. Rebuild the set after the swaps — a swapped-in tool replaces its row's tool; the other rows rerun the pick order, so it takes over only rows where it ties within a tier — and ask again until the set is accepted.
 
 ## 8. Run each area
 
@@ -94,11 +98,11 @@ For each tool in the set, from its report — the area file's Apply section over
 1. **Install** — dev dependency of its stack; a standalone binary goes in mise's `[tools]`, pinned to the reported version, or — without mise — gets its install command recorded in the rulebook.
 2. **Configure** — write its config with the picked ruleset.
 3. **Wire** — a task per tool, named `<area task>:<tool>` (`lint:eslint`, `security:trivy`), and the area's task depending on all of them. An area naming several tasks (testing: `test`, `mutation`, …) puts each tool under the task it serves. In mise: `[tasks."lint:eslint"]` entries and `[tasks.lint] depends = [...]`. Without mise: the same names in the stack's runner. Each task checks without modifying files and exits non-zero on any finding.
-4. **Remove** — an installed tool swapped out in step 7: delete its task, config, and dev dependency or `[tools]` entry.
+4. **Remove** — an installed tool swapped out or marked "remove" in step 7: delete its task, config, and dev dependency or `[tools]` entry.
 5. **Run** each area task once. Findings in existing code are expected under the strictest rulesets: report the count per tool and fix nothing. A tool with baseline support → offer to record a baseline so only new findings fail. A task that needs a running app it cannot start itself → report it as not run, and what it needs.
 
 Leave everything uncommitted for the user to review.
 
 ## Done
 
-The rulebook names the task runner and the constraints, lists the confirmed stacks, and has a section per picked area with its outcomes; every picked outcome is covered on every stack it applies to by a tool in the accepted set; every tool in the set is installed, configured with its picked ruleset, wired as its own task under its area's task, and run once with its finding count reported — or reported as not run with what it needs; every installed tool swapped out is gone from the repo.
+The rulebook names the task runner and the constraints, lists the confirmed stacks, and has a section per picked area with its outcomes; every picked outcome is covered on every stack it applies to by exactly one tool in the accepted set; every tool in the set is installed, configured with its picked ruleset, wired as its own task under its area's task, and run once with its finding count reported — or reported as not run with what it needs; every installed tool swapped out or marked "remove" is gone from the repo.

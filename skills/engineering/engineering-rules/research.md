@@ -19,10 +19,10 @@ Rules, rule packs, and vulnerability databases sometimes carry their own license
 
 ## Report
 
-Per outcome, a section with the qualifying candidates in this order: `official` tools first, then `de facto standard`, then the rest; within each, the tool covering the most of your outcomes for this stack first (Trivy covers dependency vulnerabilities, licenses, SBOM, and secrets in one), then by adoption. End the section in a **Recommendation**: the pick, or the complementary picks, with one line of why. Per tool:
+Per outcome, a section with the qualifying candidates in this order: `official` tools first, then `de facto standard`, then the rest — tier beats breadth; only within a tier, the tool covering the most of your outcomes for this stack first (Trivy covers dependency vulnerabilities, licenses, SBOM, and secrets in one), then by adoption. End the section in a **Recommendation**: exactly one pick — the first candidate, unless you say why not — with one line of why and what of the outcome it leaves uncovered. Never recommend a second tool to fill that gap. Per tool:
 
 - **Name** — and what it checks, in one line.
-- **Convention** — `official` (ships with the language's toolchain), `de facto standard` (what most projects in this stack use), `established alternative`, or `niche` — with the evidence.
+- **Convention** — `official` (built in: ships with the language's toolchain, compiler, framework SDK, or package manager — `npm audit`, `dotnet format`, Roslyn analyzers, `go vet`, Clippy, Android Lint, a compiler's strict mode), `de facto standard` (what most projects in this stack use), `established alternative`, or `niche` — with the evidence.
 - **Strengths** — what it does better than the other candidates.
 - **Weak spots** — noise and false positives at the strictest ruleset, setup effort, gaps against the other candidates.
 - **Adoption** — downloads from the package registry, or GitHub stars, with the date read.
