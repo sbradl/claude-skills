@@ -44,9 +44,11 @@
   alternative shown with its comparison — convention, strengths, weak spots,
   adoption, speed, license.
 - `engineering-rules` picks the stack's built-in tool first, then its de facto
-  standard, and only then a tool covering more ground — never a second tool
-  for the same outcome; an installed tool duplicating another is marked for
-  removal.
+  standard, and only then a tool covering more ground — but a tool already in
+  the set takes every outcome it covers, and a tool that runs the built-in one
+  (golangci-lint runs `go vet`) counts as built-in, so the set stays small.
+  Never a second tool for the same outcome; an installed tool duplicating
+  another is marked for removal.
 - The `engineering-rules` static-analysis area asks whether agents may write
   code comments; `names instead` adds a `Code comments` section to your
   `CLAUDE.md` telling agents to use better names and extracted functions

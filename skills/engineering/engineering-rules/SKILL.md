@@ -47,7 +47,8 @@ One message, one `Agent` call (`general-purpose`, `model: sonnet`) per stack × 
 - "Read `<skill-dir>/research.md` and follow it."
 - the stack, with every field from step 2;
 - the constraints;
-- the area's name and its picked outcomes, verbatim from the area file — plus any research a Before research answer adds.
+- the area's name and its picked outcomes, verbatim from the area file — plus any research a Before research answer adds;
+- the other areas' picked outcomes, by name, for the Covers field.
 
 The reports are the tool catalogue; recommend tools only from them.
 
@@ -55,7 +56,9 @@ The reports are the tool catalogue; recommend tools only from them.
 
 Cover every picked outcome on every stack it applies to with **exactly one tool** — never a second tool for the same outcome and stack, not even to fill a gap: a tool covering only part of an outcome names the gap in its why. One tool may fill several rows.
 
-Per outcome and stack, choose from the reports' candidates that meet the constraints, in this order: `official`, then `de facto standard`, then the rest. Tier beats breadth — a tool covering more outcomes never displaces a built-in or de facto standard one. Within a tier, prefer a tool already in the set — installed, or chosen for another row — then the one covering more outcomes and stacks.
+Per outcome and stack, choose from the reports' candidates that meet the constraints, in this order: `official`, then `de facto standard`, then the rest — a tool that runs the stack's official tool as part of its own checks (golangci-lint runs `go vet`) ranks as `official` for that outcome. Breadth alone never displaces a built-in or de facto standard tool. Within a tier, prefer a tool already in the set — installed, or chosen for another row — then the one covering more outcomes and stacks.
+
+Then **reuse first**: a row whose outcome a tool chosen for another row also covers on that stack goes to that tool, whatever the tiers — the higher tier first when several do. Repeat until no row moves; a tool left with no rows leaves the set. Every tool added is one more to install, configure, and keep current.
 
 Tools the rulebook records keep their rows, marked `installed`. Two installed tools on the same outcome and stack → the one the pick order prefers keeps the row; the other is marked "remove — overlaps row N".
 

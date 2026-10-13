@@ -27,13 +27,13 @@ Per outcome, a section with the qualifying candidates in this order: `official` 
 Per candidate, the comparison fields:
 
 - **Name** — and what it checks, in one line.
-- **Convention** — `official` (built in: ships with the language's toolchain, compiler, framework SDK, or package manager — `npm audit`, `dotnet format`, Roslyn analyzers, `go vet`, Clippy, Android Lint, a compiler's strict mode), `de facto standard` (what most projects in this stack use), `established alternative`, or `niche` — with the evidence.
+- **Convention** — `official` (built in: ships with the language's toolchain, compiler, framework SDK, or package manager — `npm audit`, `dotnet format`, Roslyn analyzers, `go vet`, Clippy, Android Lint, a compiler's strict mode), `de facto standard` (what most projects in this stack use), `established alternative`, or `niche` — with the evidence. A tool that runs the official tool as part of its own checks (golangci-lint runs `go vet`) counts as `official` for that outcome; name the official tool it runs.
 - **Strengths** — what it does better than the other candidates.
 - **Weak spots** — noise and false positives at the strictest ruleset, setup effort, gaps against the other candidates.
 - **Adoption** — GitHub stars, or downloads from the package registry, with the date read.
 - **Speed** — run time on a mid-size repo, as its docs or a published benchmark state it; otherwise `unknown`.
 - **Runs on** — the developer platforms it supports, and the runtime it needs.
-- **Covers** — which of your other outcomes it also covers.
+- **Covers** — which of the other picked outcomes, in any area, it also covers.
 - **License** — the tool's; the rules' when different; "needs a server" when it does.
 - **Latest release** — version and date.
 - **Already configured** — yes with the file, or no.
