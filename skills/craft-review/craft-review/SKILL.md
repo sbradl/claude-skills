@@ -26,7 +26,7 @@ Within that diff, skip paths no lens has anything to say about: lockfiles (`pack
 
 ### 2. Gather shared context
 
-Read the project's domain model if present — `CONTEXT.md` (or the `CONTEXT-MAP.md` contexts touching the changed files) and any `docs/adr/` entries covering the changed area. Note any repo-documented coding standard (`CLAUDE.md`, `AGENTS.md`, `CODING_STANDARDS.md`, `CONTRIBUTING.md`, etc.) — including any review-scope note it gives (paths that aren't authored application code). Proceed silently if none exist.
+Read the project's domain model if present — `CONTEXT.md` (or the `CONTEXT-MAP.md` contexts touching the changed files) and any `docs/adr/` entries covering the changed area. Note any repo-documented coding standard (`CLAUDE.md`, `AGENTS.md`, `CODING_STANDARDS.md`, `CONTRIBUTING.md`, etc.) — including any review-scope note it gives (paths that aren't authored application code).
 
 This context is pasted to every sub-agent so a documented standard or ADR can override a lens heuristic.
 

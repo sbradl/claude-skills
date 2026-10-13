@@ -32,15 +32,11 @@ Choose the change by the **Transformation Priority Premise**: apply the transfor
 11. `expression → function` — extract an expression into a named computation
 12. `variable → assignment` — reassign an existing variable
 
-Higher is simpler and safer. Faking it — returning the literal the test expects (`nil → constant`) — is legitimate green; a later test forces the code more generic. A constant that greens the current test **is done** — even when you can see the next case coming. Adding its handling now writes code no assertion pins; the next red is what forces the generality.
-
-Write only what a currently-failing assertion demands: no unused branches, no speculative parameters, no handling for inputs nothing asserts.
+Higher is simpler and safer. Every construct you write is **forced**: a currently-failing assertion fails without it. Faking it — returning the literal the test expects (`nil → constant`) — is legitimate green, and a constant that greens the current test **is done** even when you can see the next case coming; the next red is what forces the generality.
 
 ## 3. Audit the change against the assertions
 
-Before running the suite, read `git diff` of the source. For every line, branch, condition, parameter, and guard you added, name the assertion in the current test that fails without it. Revert anything you cannot tie to a failing assertion — a branch nothing forces down it, a parameter nothing passes, a validation nothing checks, a boundary nothing pins. The suite still has to go green with only what survives the audit; if it doesn't, you cut too much or the earlier choice was wrong.
-
-This is what keeps coverage and mutation holes out of the suite: every construct exists because an assertion demanded it.
+Before running the suite, read `git diff` of the source. For every line, branch, condition, parameter, and guard you added, name the assertion in the current test that forces it. Revert anything unforced — a branch nothing sends execution down, a parameter nothing passes, a validation nothing checks, a boundary nothing pins. The suite still has to go green with only what survives the audit; if it doesn't, you cut too much or the earlier choice was wrong.
 
 Then, if `CLAUDE.md` records a coverage command, run it scoped to the file you changed and read the report against your diff. Any line or branch you added that the suite does not execute is over-coding the audit missed — revert it and re-run. Coverage only proves a construct runs, not that anything pins its result; the batch-boundary mutation pass covers what it can't.
 
@@ -50,4 +46,4 @@ Run every test, not just the one you started from. Paste the runner output verba
 
 ## Done
 
-The pasted transcript shows the full suite passing — zero failures, zero errors — `git diff --name-only` lists no path under the test directory, and every construct in the source diff traces to an assertion (step 3). All hold → stop. Refactoring is the next phase, not this one.
+The pasted transcript shows the full suite passing — zero failures, zero errors — `git diff --name-only` lists no path under the test directory, and every construct in the source diff is forced (step 3). All hold → stop. Refactoring is the next phase, not this one.
