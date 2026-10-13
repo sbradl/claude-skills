@@ -45,6 +45,8 @@
 - `tdd-loop` squashes its checkpoints through the `commit` skill, so the
   squashed commit follows your project's commit convention and changelog
   instead of always being a Conventional Commit.
+- `tdd-loop`'s mutation pass runs the `mutation` command from your project's
+  `CLAUDE.md` Testing section, so it works in projects that don't use mise.
 
 ## v2.1.4 — 2026-10-12
 

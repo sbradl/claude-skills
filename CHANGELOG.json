@@ -45,6 +45,10 @@
         {
           "id": "tdd-loop-squash-via-commit",
           "en": "`tdd-loop` squashes its checkpoints through the `commit` skill, so the squashed commit follows your project's commit convention and changelog instead of always being a Conventional Commit."
+        },
+        {
+          "id": "tdd-loop-mutation-without-mise",
+          "en": "`tdd-loop`'s mutation pass runs the `mutation` command from your project's `CLAUDE.md` Testing section, so it works in projects that don't use mise."
         }
       ]
     }

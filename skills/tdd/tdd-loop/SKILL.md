@@ -40,7 +40,7 @@ A review that finds nothing → say so in the report and open no refactor. Do no
 
 ## The mutation pass
 
-Once per batch, alongside the refactor pass, with the suite green: run mutation testing scoped to the batch's changed files (`MUTATE_FILES="<paths>" mise run mutation`). Never leave a survivor unexplained.
+Once per batch, alongside the refactor pass, with the suite green: run the project's `mutation` task (its command is in `CLAUDE.md`'s Testing section) scoped to the batch's changed files with `MUTATE_FILES="<paths>"`. Never leave a survivor unexplained.
 
 A survivor in code this batch wrote is a loop failure, and fixing it means fixing what the loop should have done — not bolting on a test:
 

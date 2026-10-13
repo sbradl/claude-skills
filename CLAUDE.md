@@ -55,6 +55,6 @@ It requires `commit`'s convention and the `engineering-rules` rulebook, and read
 
 - `build-feature` reads the rulebook's testing record, its `mutation`/`fuzz`/benchmark tasks, and the `@wip` exclusion the testing area wires into `acceptance`, and owns `## Rule decisions` (which `engineering-rules` leaves alone on revisit) — change both sides together. `design.md`'s `## Requirements` blocks (`Levels:` and level-tagged test lines) and `## Slices` build order are what `check-coverage.sh` parses; `briefs/tests.md` and `SKILL.md` step 2 define them.
 - Changing a phase's inputs/outputs (the red→green artifact handoff, the refactor mandate) ripples across the other skills — check `tdd-loop` when touching any TDD phase skill.
-- `engineering-rules`' testing area writes the project's `CLAUDE.md` `Testing` section, where `tdd-green` finds its coverage command, and the `MUTATE_FILES`-aware `mutation` task `tdd-loop` calls — keep both when editing either side.
+- `engineering-rules`' testing area writes the project's `CLAUDE.md` `Testing` section, where `tdd-green` finds its coverage command and `tdd-loop` its `MUTATE_FILES`-aware `mutation` command — keep both when editing either side.
 - `commit`'s changelog format (`changelog.md`: `upcoming`/`releases`, audience keys, entry `id`s) is also what this repo's `scripts/changelog.sh` and `scripts/release.sh` parse — change them together.
 - Preserve the isolation rationale in edits — it is the reason these are separate skills and separate sub-agents, not one prompt.
