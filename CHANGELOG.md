@@ -10,6 +10,9 @@
   it is built, you choose how it is tested and approve its tests — built
   test-first by its own sub-agent with a fresh test review, closing with a
   report. Needs the `commit` and `engineering` groups set up first.
+- `commit` ships a render script (needs `jq`) that prints the changelog per
+  audience and language, or one release's notes, as Markdown; setup can copy
+  it into your project as `scripts/changelog.sh`.
 
 ### Changed
 

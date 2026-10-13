@@ -56,6 +56,7 @@ Each `###` block in the convention's `## Changelog` section is an **audience**: 
 - **Audience keys** — one per audience in the convention; an audience with no entries is left out of `upcoming` or a release.
 - **`id`** — a kebab-case slug, unique across the whole file, never changed once written. Rollover finds an entry's origin by it.
 - Every entry carries every language in its audience's `languages`. Empty categories are left out; 2-space indent.
+- **Render** — `sh <skill-dir>/render.sh -a <audience> -l <lang>` prints an audience's changelog as Markdown; `-r <tag>` only one release's notes.
 
 ## Release — when the user asks for one
 

@@ -12,7 +12,7 @@ sh "$root/scripts/check-skills.sh" || exit 1
 
 git diff --cached --quiet -- CHANGELOG.json CHANGELOG.md && exit 0
 
-git show :CHANGELOG.json | "$root/scripts/changelog.sh" -c - >"$root/CHANGELOG.md.tmp" || {
+git show :CHANGELOG.json | sh "$root/skills/commit/commit/render.sh" -c - >"$root/CHANGELOG.md.tmp" || {
   rm -f "$root/CHANGELOG.md.tmp"
   echo "pre-commit: could not render CHANGELOG.md from CHANGELOG.json" >&2
   exit 1

@@ -92,6 +92,7 @@ The changelog is optional and written for **audiences** the user describes. Each
 2. **Pick** — one single-select question: one option per drafted audience, plus "All of them" when there are several. Each option's `preview` shows its full brief(s). The question text says the free-text answer describes another audience, corrects a brief, or says `none` for no changelog.
 3. **Free-text answer** → `none` skips to section 4, Record; anything else drafts or revises briefs from the user's words and asks step 2 again with them, until the user picks an option.
 4. **Languages** — per picked audience, multi-select: English, German, French, Spanish; the free-text answer covers the rest. Record ISO 639-1 codes. The language of the project's README goes first when picked — entries are written in the first language and translated into the rest.
+5. **Render script** — single-select: `Copy into the project` `(Recommended)` — `<skill-dir>/render.sh` becomes `scripts/changelog.sh`, so anyone can render the changelog as Markdown (needs `jq`) — or `Skill only`.
 
 ## 3. Release tag format
 
@@ -105,7 +106,7 @@ Record the format as a template: each `N` becomes `{major}`, `{minor}`, `{patch}
 
 ## 4. Record
 
-Write `<repo-root>/.claude/commit.md`. Include `## Changelog` only with a changelog, and in it one `###` block per audience. A file already at `CHANGELOG.json` that isn't this skill's changelog → ask the user for another path.
+Write `<repo-root>/.claude/commit.md`. Include `## Changelog` only with a changelog, and in it one `###` block per audience. Copy the render script when picked. A file already at `CHANGELOG.json` that isn't this skill's changelog → ask the user for another path.
 
 ```markdown
 # Commit convention

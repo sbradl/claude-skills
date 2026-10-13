@@ -1,19 +1,19 @@
 #!/usr/bin/env sh
-# Render CHANGELOG.json as Markdown on stdout.
-# Usage:  scripts/changelog.sh [-c changelog] [-r tag] [-a audience] [-l lang]
+# Render the commit skill's changelog JSON as Markdown on stdout: the
+# changelog for one audience, or one release's notes.
+# Usage:  sh render.sh [-c changelog] [-r tag] [-a audience] [-l lang]
 #   -c  changelog to read; - reads stdin       (default: CHANGELOG.json)
 #   -r  print only the notes for release <tag>: its release section, or
 #       Upcoming when the changelog hasn't recorded the release yet
-#   -a  audience                               (default: skill-users)
+#   -a  audience; optional when the changelog has only one
 #   -l  language                               (default: en)
-# Without -r prints the whole changelog:  scripts/changelog.sh > CHANGELOG.md
+# Without -r prints the whole changelog:  sh render.sh > CHANGELOG.md
 # Requires jq.
 set -eu
 
-root="$(cd "$(dirname "$0")/.." && pwd)"
-changelog="$root/CHANGELOG.json"
+changelog="CHANGELOG.json"
 release=""
-audience="skill-users"
+audience=""
 lang="en"
 
 while getopts c:r:a:l: opt; do
@@ -27,7 +27,7 @@ while getopts c:r:a:l: opt; do
 done
 
 command -v jq >/dev/null || {
-  echo "error: jq is required (mise install, or your package manager)" >&2
+  echo "error: jq is required (mise use jq, or your package manager)" >&2
   exit 1
 }
 
@@ -47,7 +47,7 @@ jq -r --arg audience "$audience" --arg lang "$lang" --arg release "$release" '
     | .lines + [.cur];
 
   def bullet:
-    (.[$lang] // error("entry \(.id) has no \($lang) text"))
+    (.[$lang] // error("\(.id) has no \($lang) text"))
     | wrap(76) | "- " + .[0] + (.[1:] | map("\n  " + .) | join(""));
 
   # One audience'"'"'s categories, as ### sections.
@@ -60,14 +60,19 @@ jq -r --arg audience "$audience" --arg lang "$lang" --arg release "$release" '
 
   def section($heading): if length > 0 then "## \($heading)\n\n" + categories else "" end;
 
-  if $release != "" then
-    (first(.releases[] | select(.version == $release) | .[$audience]) // .upcoming[$audience] // {})
-    | categories
-  else
-    "# Changelog\n\n"
-    + (.upcoming[$audience] // {} | section("Upcoming"))
-    + (.releases | map(.[$audience] as $cats | "\(.version) — \(.date)" as $h
-         | $cats // {} | section($h)) | join(""))
-  end
+  (if $audience != "" then $audience else
+    ([.upcoming, .releases[]] | map(keys) | add // [] | unique - ["version", "date"]) as $all
+    | if ($all | length) == 1 then $all[0]
+      else error("name the audience with -a: \($all | join(", "))") end
+  end) as $audience
+  | if $release != "" then
+      (first(.releases[] | select(.version == $release) | .[$audience]) // .upcoming[$audience] // {})
+      | categories
+    else
+      "# Changelog\n\n"
+      + (.upcoming[$audience] // {} | section("Upcoming"))
+      + (.releases | map(.[$audience] as $cats | "\(.version) — \(.date)" as $h
+           | $cats // {} | section($h)) | join(""))
+    end
   | sub("\n+$"; "")
 '

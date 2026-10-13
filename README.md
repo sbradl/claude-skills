@@ -176,6 +176,8 @@ Run it with `/craft-review [fixed-point]` — a SHA, branch, tag, or `main`. Wit
 
 It can also keep a changelog, `CHANGELOG.json`, written for the **audiences** you pick during setup — end users, developers, operators, plugin authors, whoever reads it. Setup drafts a short brief for each audience it spots in the repo (who they are, what they notice, what never reaches them, which categories they get); you pick, correct, or describe your own, then choose the languages to translate into. Every commit is measured against each brief, so one change can get an entry for several audiences, each in their own words. One JSON file holds every audience's entries with all translations side by side — a single source of truth you edit in one place and can generate Markdown, HTML, or release notes from. Entries land in an **Upcoming** section in the same commit as the change. Versions come from your release tags: setup reads the tag format from the repo (and asks when there are none or several). Ask it to **release** and it proposes the next version from what Upcoming holds (breaking or removed → major, added → minor, else patch), then makes one release commit that moves Upcoming under that version, tags it, and pushes both — or runs your project's own release task when there is one. A tag made elsewhere gets its entries filed on the next commit.
 
+The render script (needs `jq`) prints the changelog per audience as Markdown; setup can copy it into your project as `scripts/changelog.sh`.
+
 Edit the file or add house rules (they override every rule of the skill) at any time. Move it to `~/.claude/commit.md` to use it for every project without its own, or delete it to be asked again. Updates leave it alone.
 
 ### Engineering rules
@@ -225,7 +227,7 @@ skills/
       ddd.md  smells.md  clean-code.md  pragmatic.md  philosophy.md
   commit/
     commit/
-      SKILL.md  setup.md  changelog.md
+      SKILL.md  setup.md  changelog.md  render.sh
       styles/conventional.md  gitmoji.md  plain.md
   engineering/
     engineering-rules/
@@ -235,7 +237,7 @@ skills/
 .claude/skills/        symlinks into skills/, so the skills load while working on this repo
 install.sh  install.ps1  update.sh  update.ps1
 CHANGELOG.json         the changelog's source of truth
-CHANGELOG.md           generated from it by scripts/changelog.sh
+CHANGELOG.md           generated from it by skills/commit/commit/render.sh
 scripts/release.sh     cuts a release: release commit, tag, push
 .githooks/pre-commit   regenerates CHANGELOG.md when CHANGELOG.json is staged
 .github/workflows/     publishes a GitHub release for each version tag

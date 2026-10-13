@@ -30,7 +30,7 @@ jq -e '[.upcoming[][][]] | length > 0' CHANGELOG.json >/dev/null \
 jq --indent 2 --arg v "$version" --arg d "$(date -u +%F)" \
   '.releases = [{version: $v, date: $d} + .upcoming] + .releases | .upcoming = {}' \
   CHANGELOG.json > CHANGELOG.json.tmp && mv CHANGELOG.json.tmp CHANGELOG.json
-scripts/changelog.sh > CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md
+sh skills/commit/commit/render.sh > CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md
 
 git add CHANGELOG.json CHANGELOG.md
 git commit -q -m "chore(release): $version"

@@ -19,7 +19,7 @@ jobs:
 
       # CHANGELOG.md is generated; a stale copy means the hook was bypassed.
       - name: Check CHANGELOG.md matches CHANGELOG.json
-        run: scripts/changelog.sh | diff -u CHANGELOG.md -
+        run: sh skills/commit/commit/render.sh | diff -u CHANGELOG.md -
 
       # The tag must sit on a release commit (scripts/release.sh), so the
       # changelog already records this version when the release goes out.
@@ -30,7 +30,7 @@ jobs:
 
       - name: Render release notes
         run: |
-          scripts/changelog.sh -r "$GITHUB_REF_NAME" > notes.md
+          sh skills/commit/commit/render.sh -r "$GITHUB_REF_NAME" > notes.md
           [ -s notes.md ] || echo "No user-facing changes." > notes.md
 
       - name: Create GitHub release
