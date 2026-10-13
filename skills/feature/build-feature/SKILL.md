@@ -31,17 +31,22 @@ Sub-agents are `general-purpose`. Each gets its brief, `<skill-dir>/briefs/<brie
 
 ## 1. Requirements (gate 1)
 
-Gather every requirement that applies to the feature from the config's requirement sources, including those that apply to every feature. Present them in chat as two lists, **functional** and **non-functional** (budgets, platforms, constraints). Per requirement: an id, a one-sentence summary, its source, and
+Gather every requirement that applies to the feature from the config's requirement sources, including those that apply to every feature. Show an **overview**: a numbered list, one line per requirement — its id and a one-sentence summary — functional and non-functional (budgets, platforms, constraints) apart, then the related open points. Show no file names; the sources go into `design.md` only.
 
-- **Test split** — the levels that prove it: `acceptance` (the default), `unit`, `e2e`, `benchmark` (only when the rulebook has a benchmark tool), or a mix — "acceptance for the main flows, unit per format".
-- **Mutation** — only when the rulebook has a `mutation` task: on by default when the split includes unit tests.
-- **Fuzz** — only when the rulebook has a `fuzz` task: on by default when its code reads untrusted input (files, network, pasted data).
+Then **walk** the requirements, one at a time: show its id and what it demands, then one `AskUserQuestion` call.
 
-Then the related open points, then the **open facts** — facts the tests will rest on that no repo document holds (a file format's fields per version, real-world sizes, a platform's behaviour). Per open fact, one single-select question: `Research it` (only when the `mattpocock-skills:research` skill is available — a sub-agent following it writes `<feature-dir>/research/<fact>.md`), `I'll research it`, `I'll answer it` (record the answer in the same folder).
+- **In scope** — `Yes`, `Change it` (the free-text answer states the change; it goes into the requirement's source first, as a checkpoint), `Drop it`.
+- **Test levels** — multi-select: `acceptance`, `unit`, `e2e`, `benchmark` (only when the rulebook has a benchmark tool). Recommend acceptance; add unit for logic over many variants (formats, rules, calculations), e2e for what needs the real UI, platform, or storage, benchmark for a performance budget.
+- **Mutation** — only when the rulebook has a `mutation` task: `On` or `Off`, recommending on when the recommended levels include unit.
+- **Fuzz** — only when the rulebook has a `fuzz` task: `On` or `Off`, recommending on when its code reads untrusted input (files, network, pasted data).
 
-A requirement the user adds or changes goes into its source first, as a checkpoint. Write the confirmed lists into `design.md` under `## Requirements`, in the format `briefs/tests.md` defines.
+More than one level picked → one single-select on **what goes where**: your proposed split `(Recommended)` — "acceptance: the main flows · unit: each format version" — the free-text answer states another.
 
-Done when the user confirms the lists with every split and flag, every open fact has a research file or a recorded answer, and the work is checkpointed.
+Then the **open facts** — facts the tests will rest on that no repo document holds (a file format's fields per version, real-world sizes, a platform's behaviour) — one at a time, each a single-select: `Research it` (only when the `mattpocock-skills:research` skill is available — a sub-agent following it writes `<feature-dir>/research/<fact>.md`), `I'll research it`, `I'll answer it` (record the answer in the same folder).
+
+Last, a compact summary — per requirement its levels, split, and flags — for the user to confirm. Write the confirmed requirements into `design.md` under `## Requirements`, in the format `briefs/tests.md` defines.
+
+Done when every requirement and open fact is answered, every open fact has a research file or a recorded answer, the user confirms the summary, and the work is checkpointed.
 
 ## 2. Tests (gate 2)
 

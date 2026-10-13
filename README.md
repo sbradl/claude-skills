@@ -122,7 +122,7 @@ MUTATE_FILES environment variable.
 
 **`build-feature`** takes a feature from a ticket, a spec section, or a few words to green, pushed code. You approve three **gates**; everything between them runs on its own:
 
-1. **Requirements** — gathered from your spec, tickets, glossary, and ADRs, each with a one-line summary and how it gets tested: acceptance tests by default, or a mix with unit, e2e, and benchmark tests; mutation testing and fuzzing per requirement. Facts no document holds are researched, or you answer them.
+1. **Requirements** — gathered from your spec, tickets, glossary, and ADRs, then walked through with you one at a time: in scope or not, and how it gets tested: acceptance tests by default, or a mix with unit, e2e, and benchmark tests; mutation testing and fuzzing per requirement. Facts no document holds are researched, or you answer them.
 2. **Tests** — Gherkin scenarios and test names for every requirement, the assumptions to decide, and every user-visible text.
 3. **Design and slices** — a short feature design (names, not shapes, at most 150 lines), then vertical slices of at most six acceptance and e2e tests each.
 
