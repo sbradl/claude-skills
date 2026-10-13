@@ -90,7 +90,7 @@ The changelog is optional and written for **audiences** the user describes. Each
    - **never** — the kinds of change that never reach them.
    - **categories** — what their entries are filed under, from `added`, `changed`, `fixed`, `breaking`, `deprecated`, `removed`, `security`, or one the audience calls for.
 2. **Pick** — one single-select question: one option per drafted audience, plus "All of them" when there are several. Each option's `preview` shows its full brief(s). The question text says the free-text answer describes another audience, corrects a brief, or says `none` for no changelog.
-3. **Free-text answer** → `none` skips to step 4; anything else drafts or revises briefs from the user's words and asks step 2 again with them, until the user picks an option.
+3. **Free-text answer** → `none` skips to section 4, Record; anything else drafts or revises briefs from the user's words and asks step 2 again with them, until the user picks an option.
 4. **Languages** — per picked audience, multi-select: English, German, French, Spanish; the free-text answer covers the rest. Record ISO 639-1 codes. The language of the project's README goes first when picked — entries are written in the first language and translated into the rest.
 
 ## 3. Release tag format
