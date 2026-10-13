@@ -25,31 +25,11 @@ Release with `mise run release v{major}.{minor}.{patch}` (`scripts/release.sh`):
 
 ## Architecture: how the skills compose
 
-Two families that interlock, the standalone `commit` and `engineering-rules` skills, and `build-feature`, which builds on those two.
+Each `SKILL.md` explains its own design; these are the seams between skills.
 
-### TDD family — `tdd-loop` orchestrates `tdd-red`, `tdd-green`, `tdd-refactor`
-
-The central design constraint is **context isolation between phases**. `tdd-loop` runs slices (one named behaviour) in batches of five:
-
-- **`tdd-red`** runs in a sub-agent, edits test files only, and returns two *artifacts*: the test file path and the verbatim runner transcript.
-- **`tdd-green`** runs in a *fresh* sub-agent given **only those artifacts** — never a prose summary, because a summary smuggles in the author's imagined implementation and that coupling is what TDD prevents. It edits source only (the mount enforces read-only tests) and picks the change via the Transformation Priority Premise.
-- **`tdd-refactor`** runs in the main context at each batch boundary, driven by review findings as its mandate. It proves behaviour preservation against the pinned "green commit" and confirms the design improved via a before/after review.
-
-Each phase commits a checkpoint. `tdd-loop` also runs a mutation pass per batch (`MUTATE_FILES="<paths>" mise run mutation`) and stops at every batch boundary for user review.
-
-### Craft-review family — `craft-review`
-
-A diff reviewed through **five lenses, each in its own parallel `general-purpose` sub-agent**: DDD, Code Smells, Clean Code, Pragmatic Programmer, Philosophy of Software Design. Isolation is deliberate — a clean bill on one lens must not mask a failure on another, and overlapping findings (primitive obsession, Law of Demeter) must not be deduped away. Results are presented per-lens with **no cross-lens reranking**; head-to-head contradictions resolve by the precedence DDD → Pragmatic → Clean Code → Smells → Philosophy.
-
-### Build feature — `build-feature`
-
-User gates for requirements and for design and build order, then one slice per requirement: its own test gate (levels chosen, a **tests sub-agent** writes them), a **slice sub-agent**, and a fresh **test reviewer**. The briefs in `briefs/` are the sub-agents' whole context besides the repo. Approved artefacts change only through their gate (a mini-gate mid-build); checkpoints stay local until the close step squashes them through `commit` and pushes.
-
-It requires `commit`'s convention and the `engineering-rules` rulebook, and reads from the rulebook: the testing record (acceptance format and seam, unit naming, e2e structure), the `mutation`, `fuzz`, and benchmark tasks, and the `## Rule decisions` section it writes itself (open vs final rules).
-
-### The seam between them
-
-`tdd-loop`'s refactor pass consumes `craft-review`'s aggregated findings as the refactor mandate. `craft-review` is user-invoked (`disable-model-invocation`), so `tdd-loop` cannot spawn it — it asks the user to run `/craft-review` and waits.
+- **TDD family** — `tdd-loop` drives `tdd-red` and `tdd-green` in separate sub-agents per slice and `tdd-refactor` in the main context per batch of five. Red hands green only its two artifacts (test file, runner transcript), never a summary.
+- **`craft-review`** — five lenses, one isolated sub-agent each, no cross-lens reranking. It is user-invoked, so `tdd-loop` asks the user to run `/craft-review`; its findings are `tdd-refactor`'s mandate.
+- **`build-feature`** — requires `commit`'s convention and the `engineering-rules` rulebook, and squashes through `commit`; `briefs/` is its sub-agents' whole context besides the repo.
 
 ## Editing guidance
 
