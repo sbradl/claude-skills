@@ -42,7 +42,7 @@ Per picked area, first its **Before research** questions, if it has them. Then o
 
 ## 6. Research
 
-One message, one `Agent` call (`general-purpose`) per stack × area with a picked outcome that applies to the stack — all in parallel. Each prompt carries:
+One message, one `Agent` call (`general-purpose`, `model: sonnet`) per stack × area with a picked outcome that applies to the stack — all in parallel. Outcomes whose tools are the same for every stack — secret scanning, infrastructure and image scanning, git hooks, dependency updates — go to one call per area for the whole repo instead. Each prompt carries:
 
 - "Read `<skill-dir>/research.md` and follow it."
 - the stack, with every field from step 2;
@@ -60,6 +60,8 @@ Per outcome and stack, choose from the reports' candidates that meet the constra
 Tools the rulebook records keep their rows, marked `installed`. Two installed tools on the same outcome and stack → the one the pick order prefers keeps the row; the other is marked "remove — overlaps row N".
 
 Print the set as a numbered table — `#`, outcome, stacks, tool, why (its convention and what else it covers) — then one single-select question: **Accept the set** `(Recommended)` or **Change rows**, naming the rows in the free-text answer. Per named row, one single-select: the chosen tool `(Recommended)` and up to three alternatives from the reports, each option's `preview` holding its comparison — convention, strengths, weak spots, adoption, speed, license, latest release. Rebuild the set after the swaps — a swapped-in tool replaces its row's tool; the other rows rerun the pick order, so it takes over only rows where it ties within a tier — and ask again until the set is accepted.
+
+A tool in the accepted set whose report holds no setup fields — swapped in, or chosen by the pick order over its report's recommendation — gets one research call — step 6's prompt plus "setup facts only: <tool>"; all such calls in one message.
 
 ## 8. Run each area
 

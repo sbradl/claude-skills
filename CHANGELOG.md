@@ -51,6 +51,11 @@
   code comments; `names instead` adds a `Code comments` section to your
   `CLAUDE.md` telling agents to use better names and extracted functions
   instead, keeping only comments a tool requires.
+- `engineering-rules` researches tools faster and with far fewer tokens:
+  research runs on Sonnet, keeps four candidates per outcome, gathers GitHub
+  facts in one call, researches setup details only for the tools you pick, and
+  researches stack-independent tools (secret scanning, infrastructure, hooks,
+  dependency updates) once for the repo.
 
 ### Fixed
 
