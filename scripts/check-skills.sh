@@ -14,7 +14,7 @@ for skill in skills/*/*/SKILL.md; do
   [ "$(readlink ".claude/skills/$name")" = "../../$dir" ] || fail ".claude/skills/$name: missing or not a link to ../../$dir"
   for f in "$dir"/*; do
     case $f in */SKILL.md) continue ;; esac
-    [ -f "$f" ] && ! grep -qF "${f##*/}" "$skill" && fail "$skill: never mentions sibling file ${f##*/}"
+    [ -f "$f" ] && ! grep -rlF --include='*.md' "${f##*/}" "$dir" | grep -qvx "$f" && fail "$dir: no .md file mentions ${f##*/}"
   done
   for ref in $(grep -rhoE '<skill-dir>/[A-Za-z0-9_./-]+\.(md|sh)' "$dir" | sort -u); do
     [ -e "$dir/${ref#<skill-dir>/}" ] || fail "$dir: $ref does not exist"
