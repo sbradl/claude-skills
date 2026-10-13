@@ -1,0 +1,11 @@
+# Check the skill conventions on every push and pull request.
+name: Check
+
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - run: sh scripts/check-skills.sh

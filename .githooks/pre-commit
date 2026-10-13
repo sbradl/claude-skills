@@ -1,12 +1,14 @@
 #!/usr/bin/env sh
-# Regenerate CHANGELOG.md from the staged CHANGELOG.json and stage it with
-# the commit. Renders from the index, not the working tree, so unstaged
+# Check the skill conventions, then regenerate CHANGELOG.md from the staged
+# CHANGELOG.json and stage it with the commit. Renders from the index, not the working tree, so unstaged
 # changelog edits stay out. Also overwrites a hand-edited CHANGELOG.md:
 # CHANGELOG.json is the source of truth.
 # Enable once per clone:  mise run setup
 set -eu
 
 root="$(git rev-parse --show-toplevel)"
+
+sh "$root/scripts/check-skills.sh" || exit 1
 
 git diff --cached --quiet -- CHANGELOG.json CHANGELOG.md && exit 0
 

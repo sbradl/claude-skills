@@ -9,6 +9,10 @@ run = [
   "git config core.hooksPath .githooks",
 ]
 
+[tasks.check]
+description = "Check the skill conventions and check-coverage.sh"
+run = "sh scripts/check-skills.sh"
+
 [tasks.changelog]
 description = "Regenerate CHANGELOG.md from CHANGELOG.json"
 run = "scripts/changelog.sh > CHANGELOG.md.tmp && mv CHANGELOG.md.tmp CHANGELOG.md"
