@@ -36,7 +36,7 @@ Gather every requirement that applies to the feature from the config's requireme
 
 Then ask **which are out of scope**: multi-selects, four requirements per question, four questions per call; nothing ticked keeps them all. The free-text answer states changes to a requirement — each goes into its source first, as a checkpoint.
 
-Then the **open facts** — facts the tests will rest on that no repo document holds (a file format's fields per version, real-world sizes, a platform's behaviour) — one at a time, each a single-select: `Research it` (only when the `mattpocock-skills:research` skill is available — a sub-agent following it writes `<feature-dir>/research/<fact>.md`), `I'll research it`, `I'll answer it` (record the answer in the same folder).
+Then the **open facts** — facts the tests will rest on that no repo document holds (a file format's fields per version, real-world sizes, a platform's behaviour) — one at a time, each a single-select: `Research it` (only when the `mattpocock-skills:research` skill is available — a sub-agent (`general-purpose`, `model: sonnet`) following it writes `<feature-dir>/research/<fact>.md`), `I'll research it`, `I'll answer it` (record the answer in the same folder).
 
 Write the in-scope requirements into `design.md` under `## Requirements`, one block each, in the format `briefs/tests.md` defines.
 
@@ -69,7 +69,7 @@ One at a time, in order. For each slice, note `HEAD` as its start, then:
    More than one level picked → one single-select on **what goes where**: your proposed split `(Recommended)` — "acceptance: the main flows · unit: each format version" — the free-text answer states another. Record the answers in the requirement's `Levels:` line.
 2. **Write the tests.** A fresh **tests sub-agent** with `briefs/tests.md` gets the requirement and writes its tests, assumptions, and texts. Run `check-coverage.sh`.
 3. **Review the tests — a gate: stop here.** Commit the tests, assumptions, and texts as a checkpoint (`checkpoint: <id> tests`) and give the user its hash to review (`git show <hash>`) — list no tests in chat. Ask each assumption decision as its own single-select, the recommendation first; the defaults as one list to veto. Then one single-select: `Approve the tests` `(Recommended)` or `Change them` — the free-text answer says what; rework through the tests sub-agent, commit the rework as a new checkpoint, and give its hash. Step 4 starts only after `Approve the tests`.
-4. A fresh **slice sub-agent** with `briefs/slice.md` gets the requirement and its tests.
+4. A fresh **slice sub-agent** (`model: sonnet`) with `briefs/slice.md` gets the requirement and its tests.
 5. It stops for the user on a wrong or impossible test (a mini-gate shows the changed test and its requirement's lines), an open rule (record the decision), or an unavailable environment (ask the user to fix it). Resume it with the answer.
 6. Check its report: every test of the requirement passes, `@wip` is gone from exactly its Gherkin scenarios, each named test exists in the file it reports, every check the config maps to `slice done` is green, mutation is clean on the files it reports when mutation is on, and `git status` is clean. Mark the slice done: append ` ✓` to its line in the build order.
 7. A fresh **test reviewer** with `briefs/test-review.md` gets the slice's test names and `git diff <slice start>..HEAD` of its tests and test helpers. Resume the slice sub-agent with the findings until a review comes back clean.
