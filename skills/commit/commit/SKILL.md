@@ -17,7 +17,7 @@ Read `<skill-dir>/styles/<style>.md` for the `style:` value. The convention has 
 
 The convention's **House rules** section overrides the style file and every rule in this skill.
 
-**Release** — the user asks to release or cut a version → follow the Release section of `<skill-dir>/changelog.md` instead of the steps below. No changelog → a release is the tag and push alone: steps 1–4, 6, and 7 of that section, with no `upcoming` to check.
+**Release** — the user asks to release or cut a version → follow the Release section of `<skill-dir>/changelog.md` instead of the steps below. No changelog → a release is the tag and push alone: every step of that section except **Release commit**, with no `upcoming` to check.
 
 ## 2. Pick the change set
 
