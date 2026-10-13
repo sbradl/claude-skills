@@ -55,3 +55,7 @@ Present the five reports verbatim (or lightly cleaned) under `## Domain-Driven D
 When two lenses **directly contradict** — one says do X, another says do not-X on the same hunk — keep both findings but mark the losing one "overridden by <lens>", following this precedence: **DDD → Pragmatic Programmer → Clean Code → Code Smells → Philosophy of Software Design**. This resolves head-to-head conflicts only; it is not licence to rerank non-conflicting findings by lens.
 
 End with one line per lens: finding count and the worst finding within that lens. No single cross-lens winner — that reranking is what the separation exists to prevent.
+
+## Done
+
+All five lens sections are shown, each holding its sub-agent's report or "no findings"; every head-to-head contradiction marks its losing finding "overridden by <lens>"; the closing lines give each lens's finding count and worst finding.
