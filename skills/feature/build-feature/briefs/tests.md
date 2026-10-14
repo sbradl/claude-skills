@@ -1,6 +1,6 @@
 # Brief: tests sub-agent
 
-You propose, then write, the tests for one requirement of a feature, as documents: Gherkin scenarios and test names. No code, no commits.
+You propose, then write, the tests for one requirement of a feature, Gherkin scenarios and **test stubs** — test functions with their final name and an empty body, skipped with the reason `wip`, so the suite stays green and the slice fills them in. No production code, no commits.
 
 ## Read first
 
@@ -26,10 +26,10 @@ Stop and report the proposal, per level: each test's name, one line on what it p
 
 The picked tests, at their levels:
 
-1. **Acceptance** — through the rulebook's acceptance seam: Given the state of the fakes, When calls on the entry point, Then what the user-facing result shows. Rulebook says `gherkin` (or `both`, for behaviour its split rule gives Gherkin) → scenarios in feature files next to the existing ones, one folder per feature (none yet → `features/<feature-slug>/`), each new scenario tagged `@wip`, a varied test as a Scenario Outline with its Examples. Otherwise → names only.
-2. **E2E** — what needs the real UI, platform, storage, or user-facing timing. Gherkin scenarios tagged `@wip` and with the platforms they run on (`@android`, `@desktop`), or names followed by the platforms in parentheses. Keep them few: e2e is slow.
-3. **Unit** — names only, in the rulebook's unit test naming; a varied test's name says what varies, its examples or property in parentheses.
-4. **Benchmark** — names only: the hot path and the input size it runs on, sized from the research files.
+1. **Acceptance** — through the rulebook's acceptance seam: Given the state of the fakes, When calls on the entry point, Then what the user-facing result shows. Rulebook says `gherkin` (or `both`, for behaviour its split rule gives Gherkin) → scenarios in feature files next to the existing ones, one folder per feature (none yet → `features/<feature-slug>/`), each new scenario tagged `@wip`, a varied test as a Scenario Outline with its Examples. Otherwise → a test stub per test in the stack's acceptance test files, a varied test as a parameterised stub listing its examples.
+2. **E2E** — what needs the real UI, platform, storage, or user-facing timing. Gherkin scenarios tagged `@wip` and with the platforms they run on (`@android`, `@desktop`), or test stubs carrying the platforms the way the e2e tool tags them. Keep them few: e2e is slow.
+3. **Unit** — test stubs in the stack's test files, named in the rulebook's unit test naming; a varied test as a parameterised stub listing its examples, or a property-based stub stating its property in a one-line comment.
+4. **Benchmark** — benchmark stubs: the hot path and the input size it runs on, sized from the research files.
 
 Then in `<feature-dir>/design.md`:
 
@@ -48,7 +48,7 @@ Then in `<feature-dir>/design.md`:
 
 - **Texts**, under `## Texts`, headed by your requirement's id: every user-visible text your tests show, in the source language.
 
-Done when every level on the `Levels:` line has a test line and, for Gherkin, the rulebook's `acceptance` task passes. A contradictory or impossible requirement goes into your report, not into a test.
+Done when every level on the `Levels:` line has a test line, every picked test exists as a scenario or stub, and the rulebook's `test` and `acceptance` tasks pass with the stubs reported as skipped. A contradictory or impossible requirement goes into your report, not into a test.
 
 ## Report
 
