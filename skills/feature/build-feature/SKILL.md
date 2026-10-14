@@ -9,7 +9,9 @@ disable-model-invocation: true
 The user names a feature (a ticket, a spec section, or a few words). Take it from agreed requirements to green code. The user owns the **gates** — requirements, design and build order, and one test gate per slice; everything between them is yours.
 
 - **Gate** — present the artefact, stop, wait for explicit approval. Feedback reworks the artefact and the gate repeats. An approved artefact changes only through its gate; mid-build, that is a **mini-gate** showing only the change.
-- **Decisions** — at a gate, a real trade-off goes to the user one at a time, with a recommendation; obvious defaults go as one list to veto.
+- **Requirement question** — anything about what the feature does — what the user sees, can do, or gets back — that no approved requirement states. Never assume one: ask it alone, a single-select with your recommendation and one line of why, never inside a list and never as a default to veto. The answer goes into the requirement's source and its block in `design.md`, as a checkpoint. Sub-agents report requirement questions; they never answer them.
+- **Technical choice** — how the feature is built. A real trade-off goes to the user one at a time, with a recommendation; the rest are the design's key decisions, reviewed with it.
+- **Approval** covers what was shown and answered — never an assumption.
 - **Checkpoint** — `git commit -m "checkpoint: <what>"` whenever work reaches a state worth keeping: a reworked artefact, an approved gate, a green test. Checkpoints stay local; the close step squashes and pushes them.
 - **Open rule** — a rulebook rule with no final decision. Violated → stop and ask: loosen it (the new value goes into the tool's config; the rule stays open), keep it (it becomes **final**), or suppress it at this one site with a comment giving the reason. Final rules are fixed, never suppressed.
 - **Slice** — one requirement, built end to end: its test gate, then its build.
@@ -26,7 +28,7 @@ Record every rule decision in the rulebook's `## Rule decisions` section, one ro
 
 Note `HEAD` as the feature's **base** before the first checkpoint. With `Integration: branch`, first create a branch named after the ticket (its id and slug), so `commit` finds the issue reference.
 
-The feature's folder, `<feature-dir>`, is where `docs/agents/issue-tracker.md` (or the config) puts it. `<feature-dir>/design.md` holds the working state: requirements, assumptions, texts, risks, open points, slices.
+The feature's folder, `<feature-dir>`, is where `docs/agents/issue-tracker.md` (or the config) puts it. `<feature-dir>/design.md` holds the working state: requirements, texts, risks, requirement questions, open points, slices.
 
 Sub-agents are `general-purpose`. Each gets its brief, `<skill-dir>/briefs/<brief>.md`, by absolute path, plus `<feature-dir>` and the inputs its step names. A sub-agent that stops for the user is resumed with `SendMessage` and the answer.
 
@@ -44,7 +46,7 @@ Done when the user has answered the scope questions, every open fact has a resea
 
 ## 2. Design and build order (gate 2)
 
-A sub-agent with `briefs/design.md` writes the feature's design into `docs/design/<feature-slug>.md` and adds the design lines, risks, and open points to `design.md`. When a rulebook check reads the config's app-wide design doc (an architecture test), merge the parts it reads now; the rest waits for the close step.
+A sub-agent with `briefs/design.md` writes the feature's design into `docs/design/<feature-slug>.md` and adds the design lines, risks, requirement questions, and open points to `design.md`. When a rulebook check reads the config's app-wide design doc (an architecture test), merge the parts it reads now; the rest waits for the close step.
 
 Then write the **build order** — one slice per requirement, each depending only on earlier ones; a requirement whose e2e test needs another's platform piece comes after it:
 
@@ -55,7 +57,13 @@ Then write the **build order** — one slice per requirement, each depending onl
 2. REQ-13
 ```
 
-Run `sh <skill-dir>/check-coverage.sh <feature-dir>/design.md`. Present design and build order together. Done when every requirement maps to design elements, the script passes, the user approves, and the work is checkpointed.
+Run `sh <skill-dir>/check-coverage.sh <feature-dir>/design.md` and checkpoint. Then, in this order:
+
+1. Each requirement question the design raised, one at a time. An answer that changes the design → rework through the design sub-agent and checkpoint again.
+2. Each technical trade-off, one at a time.
+3. The gate: present design and build order together, then one single-select: `Approve design and build order` `(Recommended)` or `Change them`.
+
+Done when every requirement maps to design elements, the script passes, every requirement question is answered, the user approves, and the work is checkpointed.
 
 ## 3. Slices
 
@@ -67,10 +75,10 @@ One at a time, in order. For each slice, note `HEAD` as its start, then:
    - **Fuzz** — only when the rulebook has a `fuzz` task: `On` or `Off`, recommending on when its code reads untrusted input (files, network, pasted data).
 
    More than one level picked → one single-select on **what goes where**: your proposed split `(Recommended)` — "acceptance: the main flows · unit: each format version" — the free-text answer states another. Record the answers in the requirement's `Levels:` line.
-2. **Write the tests.** A fresh **tests sub-agent** with `briefs/tests.md` gets the requirement and writes its tests, assumptions, and texts. Run `check-coverage.sh`.
-3. **Review the tests — a gate: stop here.** Commit the tests, assumptions, and texts as a checkpoint (`checkpoint: <id> tests`) and give the user its hash to review (`git show <hash>`) — list no tests in chat. Ask each assumption decision as its own single-select, the recommendation first; the defaults as one list to veto. Then one single-select: `Approve the tests` `(Recommended)` or `Change them` — the free-text answer says what; rework through the tests sub-agent, commit the rework as a new checkpoint, and give its hash. Step 4 starts only after `Approve the tests`.
+2. **Write the tests.** A fresh **tests sub-agent** with `briefs/tests.md` gets the requirement and writes its tests and texts. It stops first with any requirement question the requirement leaves open; ask each one alone, record the answer, and resume it with the answers. Run `check-coverage.sh`.
+3. **Review the tests — a gate: stop here.** Commit the tests and texts as a checkpoint (`checkpoint: <id> tests`) and give the user its hash to review (`git show <hash>`) — list no tests in chat. Then one single-select: `Approve the tests` `(Recommended)` or `Change them` — the free-text answer says what; rework through the tests sub-agent, commit the rework as a new checkpoint, and give its hash. Step 4 starts only after `Approve the tests`.
 4. A fresh **slice sub-agent** (`model: sonnet`) with `briefs/slice.md` gets the requirement and its tests.
-5. It stops for the user on a wrong or impossible test (a mini-gate shows the changed test and its requirement's lines), an open rule (record the decision), or an unavailable environment (ask the user to fix it). Resume it with the answer.
+5. It stops for the user on a wrong or impossible test (a mini-gate shows the changed test and its requirement's lines), a requirement question (ask it alone), an open rule (record the decision), or an unavailable environment (ask the user to fix it). Resume it with the answer.
 6. Check its report: every test of the requirement passes, `@wip` is gone from exactly its Gherkin scenarios, each named test exists in the file it reports, every check the config maps to `slice done` is green, mutation is clean on the files it reports when mutation is on, and `git status` is clean. Mark the slice done: append ` ✓` to its line in the build order.
 7. A fresh **test reviewer** with `briefs/test-review.md` gets the slice's test names and `git diff <slice start>..HEAD` of its tests and test helpers. Resume the slice sub-agent with the findings until a review comes back clean.
 8. Tell the user one line: `Slice 2/5 done (REQ-13): 2 acceptance, 3 unit green; review clean.`

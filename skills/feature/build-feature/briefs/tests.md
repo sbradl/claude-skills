@@ -6,13 +6,15 @@ You write the tests for one requirement of a feature, as documents: Gherkin scen
 
 Only these; read the sections named, not whole files:
 
-- your requirement's block in `<feature-dir>/design.md` — its `Levels:` line says which levels you write and what goes where — and the Assumptions and Texts written so far
+- your requirement's block in `<feature-dir>/design.md` — its `Levels:` line says which levels you write and what goes where — and the Texts written so far
 - the source section the requirement's `Source:` line names, and the glossary terms it uses
 - the feature's `docs/design/<feature-slug>.md` and the research files in `<feature-dir>/research/`
 - `.claude/engineering-rules.md`, Testing: the acceptance test format and seam, unit test naming, the e2e structure
 - existing feature files and tests, to match their style
 
 ## Write
+
+First, find what the requirement leaves open about what the feature does — what the user sees, can do, or gets back — where a reasonable person could decide differently. Each is a **requirement question**: stop before writing any test and report them all, each with your recommendation and one line of why. You are resumed with the answers, now in the requirement; assume none yourself.
 
 The tests at every level the `Levels:` line names, split as it says. Cover behaviour and edge cases. Name each test in the domain's words, as behaviour: no UI or implementation detail (storage keys, file names, widget types).
 
@@ -36,11 +38,10 @@ Then in `<feature-dir>/design.md`:
   - unit: reads v3 header; reads v4 header; reads v5 header.
   ```
 
-- **Assumptions**, under `## Assumptions`, headed by your requirement's id, in two lists. *Decisions*: what the requirement leaves open and a reasonable person could decide differently — each with your recommendation and one line of why. *Defaults*: the obvious choices, one line each, for the user to veto.
 - **Texts**, under `## Texts`, headed by your requirement's id: every user-visible text your tests show, in the source language.
 
 Done when every level on the `Levels:` line has a test line and, for Gherkin, the rulebook's `acceptance` task passes. A contradictory or impossible requirement goes into your report, not into a test.
 
 ## Report
 
-Files written, the test count per level, both assumption lists verbatim, and anything in the requirement you could not cover.
+Files written, the test count per level, and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations.
