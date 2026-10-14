@@ -13,7 +13,7 @@ For dependency updates, the ruleset is the update policy: Renovate's strictest p
 
 ## Questions
 
-**Where checks run** — per task the other areas created, one multi-select question (four tasks per call): `pre-commit hook`, `pre-push hook`, `CI`. Recommend fast, file-scoped checks (`lint` on staged files, secret scanning) for `pre-commit`, `test` for `pre-push`, and every task for `CI`. Tasks that need a running app (`dast`, `e2e`) and slow ones (`mutation`, `fuzz`) recommend `CI` only.
+**Where checks run** — per task the other areas created, one multi-select question (four tasks per call): `pre-commit hook`, `pre-push hook`, `CI`. Recommend fast, file-scoped checks (`lint` on staged files, secret scanning) for `pre-commit`, `test` for `pre-push`, and every task for `CI`. Tasks that need a running app (`dast`, `e2e`) and slow ones (`mutation`, `fuzz`) recommend `CI` only; in CI, `fuzz` runs each target with `FUZZ_TIME=1m` on every push and with its full budget in a nightly scheduled run.
 
 **CI platform** — detect it (`.github/workflows/`, `.gitea/workflows/`, `.gitlab-ci.yml`, `azure-pipelines.yml`, `Jenkinsfile`) and confirm; nothing detected → ask: GitHub Actions, Gitea Actions, GitLab CI, Azure Pipelines, Jenkins — two single-select questions when one cannot hold them all.
 

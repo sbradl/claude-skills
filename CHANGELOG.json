@@ -18,7 +18,7 @@
       "changed": [
         {
           "id": "engineering-testing-fuzzing",
-          "en": "The `engineering-rules` testing area offers fuzzing for stacks that read untrusted input, with a `fuzz <target>` task that runs one target until coverage plateaus."
+          "en": "The `engineering-rules` testing area offers fuzzing for stacks that read untrusted input, with a `fuzz <target>` task that runs one target until coverage plateaus or its time budget (10 minutes recommended) runs out; CI fuzzes each target for a minute on every push and with the full budget nightly."
         },
         {
           "id": "engineering-acceptance-seam",

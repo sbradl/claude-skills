@@ -24,7 +24,7 @@ Acceptance tests `gherkin` or `both` → research also covers a **Gherkin runner
 
 ## Rulesets
 
-Mostly thresholds — strictest = the highest: coverage `100% lines and branches` `(Recommended)` then `90%`, `80%`; mutation score break threshold likewise. For end-to-end, the ruleset is the browser matrix: all engines the tool supports `(Recommended)`, then Chromium only. For fuzzing, it is the run length per target: until coverage plateaus `(Recommended)`, then a fixed time.
+Mostly thresholds — strictest = the highest: coverage `100% lines and branches` `(Recommended)` then `90%`, `80%`; mutation score break threshold likewise. For end-to-end, the ruleset is the browser matrix: all engines the tool supports `(Recommended)`, then Chromium only. For fuzzing, it is the time budget per target — the run stops at the budget or when coverage plateaus, whichever comes first: `10 minutes` `(Recommended)`, `30 minutes`, `60 minutes`; here the shortest is recommended, since the run gates every feature.
 
 ## Questions
 
@@ -51,7 +51,7 @@ Acceptance tests: <gherkin | coded | both>; split: <rule>        (both)
 Acceptance seam: <entry point; fakes; what Then asserts on>
 E2E structure: <page objects | screenplay | direct calls>
 Property-based tests required for: <rule>
-Run: `test [filter]` · `coverage <file>` · `acceptance` · `MUTATE_FILES="<paths>" mutation` · `fuzz <target>` · `e2e` · `contract`
+Run: `test [filter]` · `coverage <file>` · `acceptance` · `MUTATE_FILES="<paths>" mutation` · `[FUZZ_TIME=<duration>] fuzz <target>` · `e2e` · `contract`
 ```
 
 ## Apply
@@ -60,7 +60,7 @@ Run: `test [filter]` · `coverage <file>` · `acceptance` · `MUTATE_FILES="<pat
 - **`coverage`** takes one source file and reports its line and branch coverage under the full suite; a report, no threshold.
 - **`acceptance`** — `gherkin` or `both`: install the runner and run every scenario except those tagged `@wip` (written before their code) — the runner's tag filter, e.g. `--tags "not @wip"`, or `--filter "Category!=wip"` for Reqnroll; `coded`: run the acceptance tests by the test runner's filter for them (category, folder, or name pattern), and record that filter. Add no example tests or features; the rulebook records the convention, the next feature's tests follow it.
 - **`mutation`** runs with the picked break threshold; with `MUTATE_FILES` set (space-separated paths), it mutates only those files. A full run can take long — report its duration with the score.
-- **`fuzz`** takes one target name and runs it for the picked run length, keeping its corpus and any crashing input in the repo. Add no targets; the first feature that reads untrusted input writes its own.
+- **`fuzz`** takes one target name and runs it until coverage plateaus or the picked budget runs out; `FUZZ_TIME=<duration>` overrides the budget. It keeps its corpus and any crashing input in the repo, and the seeds run with the ordinary `test` task. Add no targets; the first feature that reads untrusted input writes its own.
 - **`e2e`** configures the tool to start the app itself where it can (Playwright's `webServer`); otherwise it needs a running app.
 - **`contract`** — install the library and wire the task; contracts come from the first consumer test written against it. A contract broker is a server — note it in the rulebook if the user wants one; set none up.
 - **`CLAUDE.md`** — write a `Testing` section into the project's `CLAUDE.md` (replace an existing one) naming the exact commands to run the full suite, one test file or test by name, coverage for one file, mutation testing scoped by `MUTATE_FILES`, and fuzzing one target — agents look for test commands there.
