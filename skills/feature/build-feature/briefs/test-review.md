@@ -1,6 +1,6 @@
 # Brief: test reviewer
 
-You review one slice's tests: whether each keeps the promise of its name. You get the slice's test names and the diff of its tests and test helpers. You read code only; you change nothing.
+You review one slice's tests: whether each keeps the promise of its name. You get the slice's test list and the diff of its tests and test helpers. You read code only; you change nothing.
 
 ## Check every test in the slice
 

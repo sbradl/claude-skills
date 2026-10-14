@@ -33,7 +33,7 @@ Each `SKILL.md` explains its own design; these are the seams between skills.
 
 ## Editing guidance
 
-- `build-feature` reads the rulebook's testing record, its `mutation`/`fuzz`/benchmark tasks, and the `@wip` exclusion the testing area wires into `acceptance`, and owns `## Rule decisions` (which `engineering-rules` leaves alone on revisit) — change both sides together. `design.md`'s `## Requirements` blocks (`Levels:` and level-tagged test lines) and `## Slices` build order are what `check-coverage.sh` parses; `briefs/tests.md` and `SKILL.md` step 2 define them.
+- `build-feature` reads the rulebook's testing record, its `mutation`/`fuzz`/benchmark tasks, and the `@wip` exclusion the testing area wires into `acceptance`, and owns `## Rule decisions` (which `engineering-rules` leaves alone on revisit) — change both sides together. `design.md`'s `## Requirements` blocks (their `Levels:` lines) and `## Slices` build order are what `check-coverage.sh` parses; `briefs/tests.md` and `SKILL.md` step 2 define them.
 - Changing a phase's inputs/outputs (the red→green artifact handoff, the refactor mandate) ripples across the other skills — check `tdd-loop` when touching any TDD phase skill.
 - `engineering-rules`' testing area writes the project's `CLAUDE.md` `Testing` section, where `tdd-green` finds its coverage command and `tdd-loop` its `MUTATE_FILES`-aware `mutation` command — keep both when editing either side.
 - `commit`'s changelog format (`changelog.md`: `upcoming`/`releases`, audience keys, entry `id`s; `roadmap.md`: `planned`) is what its `render.sh` and this repo's `scripts/release.sh` parse — change them together.

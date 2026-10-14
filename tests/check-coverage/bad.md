@@ -2,8 +2,7 @@
 
 ### REQ-12 Opens song files in versions 3–5; older versions get a clear message
 Source: SPEC §4.3
-Levels: acceptance, unit
-- acceptance open-file: opens a v4 file.
+Levels: acceptance, smoke
 
 ## Slices
 

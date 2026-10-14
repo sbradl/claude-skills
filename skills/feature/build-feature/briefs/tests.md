@@ -1,6 +1,6 @@
 # Brief: tests sub-agent
 
-You propose, then write, the tests for one requirement of a feature, Gherkin scenarios and **test stubs** — test functions with their final name and an empty body, skipped with the reason `wip`, so the suite stays green and the slice fills them in. No production code, no commits.
+You propose, then write, the tests for one requirement of a feature: Gherkin scenarios and **test stubs** — test functions with their final name and an empty body, skipped with the reason `wip`, so the suite stays green and the slice fills them in. No production code, no commits.
 
 ## Read first
 
@@ -31,25 +31,17 @@ The picked tests, at their levels:
 3. **Unit** — test stubs in the stack's test files, named in the rulebook's unit test naming; a varied test as a parameterised stub listing its examples, or a property-based stub stating its property in a one-line comment.
 4. **Benchmark** — benchmark stubs: the hot path and the input size it runs on, sized from the research files.
 
-Then in `<feature-dir>/design.md`:
+The tests live in code only. In `<feature-dir>/design.md`, under `## Texts` headed by your requirement's id, write every user-visible text your tests show, in the source language. A requirement's block there looks like this:
 
-- under your requirement, one line per level and feature file, `- <level> <feature file stem>: <name>; <name>.` for Gherkin scenarios, `- <level>: <name>; <name>.` for named tests:
+```markdown
+### REQ-12 Opens song files in versions 3–5; older versions get a clear message
+Source: SPEC §4.3
+Design: Library, SongReader
+Levels: acceptance, unit · Split: acceptance the main flows, unit each format version · Mutation: on · Fuzz: on
+```
 
-  ```markdown
-  ## Requirements
-
-  ### REQ-12 Opens song files in versions 3–5; older versions get a clear message
-  Source: SPEC §4.3
-  Design: Library, SongReader
-  Levels: acceptance, unit · Split: acceptance the main flows, unit each format version · Mutation: on · Fuzz: on
-  - acceptance open-file: opens a file of every supported version; rejects a v2 file with a message.
-  - unit: reads the header of every supported version (v3, v4, v5).
-  ```
-
-- **Texts**, under `## Texts`, headed by your requirement's id: every user-visible text your tests show, in the source language.
-
-Done when every level on the `Levels:` line has a test line, every picked test exists as a scenario or stub, and the rulebook's `test` and `acceptance` tasks pass with the stubs reported as skipped. A contradictory or impossible requirement goes into your report, not into a test.
+Done when every picked test exists as a scenario or stub at its level, and the rulebook's `test` and `acceptance` tasks pass with the stubs reported as skipped. A contradictory or impossible requirement goes into your report, not into a test.
 
 ## Report
 
-Files written, the test count per level, and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations, or the proposal.
+The **test list** — per test, its level, name, and file — and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations, or the proposal.

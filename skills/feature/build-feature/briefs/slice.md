@@ -10,7 +10,7 @@ Only these; read the sections named, not whole files:
 - `.claude/build-feature.md`: the check mapping and the Translations line
 - the feature's `docs/design/<feature-slug>.md` and the research files in `<feature-dir>/research/`
 - `<feature-dir>/design.md`: your requirement's block, its Texts, and the build order — read the other requirements too, so you build only yours
-- your tests: their feature files, and the names under your requirement
+- your tests: the scenarios and stubs your test list names
 
 ## Rules
 
