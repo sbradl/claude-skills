@@ -29,6 +29,7 @@ Fill these into the rulebook's Testing section when they are missing:
     `while :; do j=$(curl -fsS -u "$JENKINS_USER:$JENKINS_TOKEN" "$JENKINS_URL/<job path>/lastBuild/api/json"); case $j in *"$SHA"*'"building":false'*|*'"building":false'*"$SHA"*) break;; esac; sleep 15; done; case $j in *'"result":"SUCCESS"'*) exit 0;; *) exit 1;; esac`
 - **Check mapping** — per task in the rulebook except `check`, `mutation`, and `fuzz` (gate 1 decides those per requirement): one multi-select with `slice done` and `feature end`; neither means the skill leaves it to CI. Recommend `slice done` for tasks the rulebook's enforcement runs in pre-commit or pre-push, `feature end` for the rest.
 - **Walking skeleton** — does every stack and boundary already have the thinnest path through it, built and run by CI? Detect: a stack in the rulebook with no source at its path, or no CI workflow → recommend `needed`; otherwise `done`. Single-select: `needed` (build it as the first feature) or `done`.
+- **Review** — how the user gets the built product in hand: detect run tasks and scripts (`mise tasks`, `package.json` scripts, a Gradle `run` or `installDebug`, `go run`) and propose the command that builds and starts it, or the steps when it runs elsewhere (on a device). Single-select over what was found; the free-text answer states another.
 - **Translations** — `agent` (then ask in plain chat for the languages besides the source language) or `none` (only the source language; translation happens outside this skill).
 
 ## 4. Record
@@ -43,6 +44,7 @@ Integration: <main | branch> · PR: <gh | tea | none>
 CI watch: <command | none>
 Translations: <agent → <languages> | none>
 Walking skeleton: <needed | done>
+Review: <command | steps>
 
 | Task | slice done | feature end |
 | --- | --- | --- |

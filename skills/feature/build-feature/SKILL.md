@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Build a feature
 
-The user names a feature (a ticket, a spec section, or a few words). Take it from agreed requirements to green code. The user owns the **gates** — requirements, design and build order, and one test gate per slice; everything between them is yours.
+The user names a feature (a ticket, a spec section, or a few words). Take it from agreed requirements to green code. The user owns the **gates** — requirements, design and build order, one test gate per slice, and the review of the finished product; everything between them is yours.
 
 - **Gate** — present the artefact, stop, wait for explicit approval. Feedback reworks the artefact and the gate repeats. An approved artefact changes only through its gate; mid-build, that is a **mini-gate** showing only the change.
 - **Requirement question** — anything about what the feature does — what the user sees, can do, or gets back — that no approved requirement states. Never assume one: ask it alone, a single-select with your recommendation and one line of why, never inside a list and never as a default to veto. The answer goes into the requirement's source and its block in `design.md`, as a checkpoint. Sub-agents report requirement questions; they never answer them.
@@ -21,7 +21,7 @@ The user names a feature (a ticket, a spec section, or a few words). Take it fro
 
 Resolve `<skill-dir>` to this skill folder's absolute path. Read `<repo-root>/.claude/build-feature.md` (the **config**); missing → follow `<skill-dir>/setup.md`, then continue here. The **rulebook** is `<repo-root>/.claude/engineering-rules.md`.
 
-The config's `Walking skeleton:` line is missing → ask `setup.md`'s walking-skeleton question and record the answer. It says `needed` → tell the user the skeleton comes first, and build it as its own feature, `walking-skeleton`, through steps 1–5: its requirements are those that apply to every feature — platforms, boundaries, build, CI, packaging — plus the one thing it shows, asked as a requirement question. Then set `Walking skeleton: done` in the config and start the named feature. Its requirements the skeleton already meets show in its overview as met by the skeleton and stay out of scope.
+A `Walking skeleton:` or `Review:` line missing from the config → ask `setup.md`'s question for it and record the answer. It says `needed` → tell the user the skeleton comes first, and build it as its own feature, `walking-skeleton`, through steps 1–6: its requirements are those that apply to every feature — platforms, boundaries, build, CI, packaging — plus the one thing it shows, asked as a requirement question. Then set `Walking skeleton: done` in the config and start the named feature. Its requirements the skeleton already meets show in its overview as met by the skeleton and stay out of scope.
 
 Record every rule decision in the rulebook's `## Rule decisions` section, one row per rule, updated in place — create it on the first decision:
 
@@ -94,14 +94,19 @@ Done when, for every slice, the user approved its tests, each test failed for th
 
 Run every check the config maps to `feature end`, and `fuzz <target>` until plateau for each fuzz target the slices reported. A violated open rule goes to the user; a violated final rule or a defect (a crash, a failing test) becomes a fix slice; an unavailable environment goes to the user to fix, then the check reruns. Done when every check passes.
 
-## 5. Close
+## 5. Product review (gate)
+
+The user reviews the real product before anything is pushed. Build it and start it the way the config's `Review:` line says — on this machine when it runs here, otherwise hand the user the steps (install on the device). Then give **what to try** — 3–5 flows as actions with the expected result, in plain words: the feature's user-facing behaviour first, flows touched by several slices, and what no e2e test proves; a feature without a UI gets the command or call that shows its outcome. Stop, then one single-select: `It works` `(Recommended)` or `Found a problem` — the free-text answer says what.
+
+A defect becomes a fix slice; a change to what the feature does is a requirement change through gate 1's mini-gate, then a slice. Then the review repeats. Done when the user answers `It works`.
+
+## 6. Close
 
 1. **Report** — build it now, while `design.md` exists; show it last:
    - the requirements and fixes, each with its tests, ticked ✓ once its slice is done;
    - feature-check results — for budgets, measured against the limit;
    - the changes to the app-wide design doc as bullets, new or changed glossary terms with their definitions, new ADRs by number and title;
    - new open points;
-   - **what to try by hand** — 3–5 flows as actions with the expected result: user-facing, touched by several slices, or proven without e2e. None for a feature without user-facing behaviour.
 2. **Merge** the feature design's "Merge into …" section into the config's app-wide design doc.
 3. **Delete** `design.md` and the research files; delete `docs/design/<feature-slug>.md` when the config names an app-wide design doc.
 4. **Open points** — list them; one multi-select picks which become tickets, filed as `docs/agents/issue-tracker.md` defines.
@@ -113,4 +118,4 @@ Run every check the config maps to `feature end`, and `fuzz <target>` until plat
 
 ## Done
 
-CI is green on the last pushed commit (with a PR tool: the PR is open), the ticket is resolved, the feature's working files are deleted, and the report has been shown.
+The user confirmed the real product works, CI is green on the last pushed commit (with a PR tool: the PR is open), the ticket is resolved, the feature's working files are deleted, and the report has been shown.
