@@ -61,7 +61,7 @@ Run `sh <skill-dir>/check-coverage.sh <feature-dir>/design.md` and checkpoint. T
 
 1. Each requirement question the design raised, one at a time. An answer that changes the design → rework through the design sub-agent and checkpoint again.
 2. Each technical trade-off, one at a time.
-3. The gate: present design and build order together, then one single-select: `Approve design and build order` `(Recommended)` or `Change them`.
+3. The gate: give the checkpoint's hash to review (`git show <hash>`). In chat, the design in at most five lines and the build order as its **phases** — each a run of slices, one line naming what it builds and why it comes there; the full order stays in the checkpoint. Then one single-select: `Approve design and build order` `(Recommended)` or `Change them`.
 
 Done when every requirement maps to design elements, the script passes, every requirement question is answered, the user approves, and the work is checkpointed.
 
