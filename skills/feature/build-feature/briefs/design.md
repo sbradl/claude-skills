@@ -15,21 +15,22 @@ Only these; read the sections named, not whole files:
 
 ## Write
 
-1. **`docs/design/<feature-slug>.md`** — the feature's design, at most 150 lines including the diagram. **Names, not shapes**: every element by name with one line of purpose; types, fields, and signatures emerge in the slices. It holds:
-   - the modules it touches and how they relate, in one diagram
-   - each module's responsibility
+1. **`docs/design/<feature-slug>.md`** — the feature's **architecture**, 60–80 lines including the diagram. Every element by name with one line of purpose. It holds:
+   - the modules it touches and each one's responsibility, in one diagram
    - the main entities and use cases
-   - the ports and the entry-point calls
-   - the data flow of the main paths
-   - the test harnesses (fakes, builders, page objects), build and CI pieces
+   - the boundaries between stacks or processes it crosses (a Go core and a Kotlin UI) — what passes each one
+   - the main data flow
+   - a relation between two classes only when the design hinges on it — one line, no class diagram
    - the key decisions with their reasons
    - **Merge into <app-wide doc>** — every change to the app-wide design, merged once the feature is complete. Only when you were given an app-wide doc.
+
+   Everything below that level emerges in the slices: classes, types, signatures, file paths, library choices, byte and file formats, constants and tuning numbers, build tooling, CI steps, and test setup.
 2. **`<feature-dir>/design.md`** — under each requirement a `Design: <element>, <element>` line naming the design elements that serve it; a **Risks** section, each risk with its mitigation; an **Open points** section, each with your recommendation.
 3. New domain terms go into the glossary. A choice that is hard to reverse, surprising, and a real trade-off gets an ADR, numbered after the last one.
 
 Interfaces fit today's caller (YAGNI); forward constraints the requirements state are the only exception. The rulebook binds the design: its layers, its licence allow-list, and the names its lint rules accept. A requirement the design cannot meet becomes an open point; the requirements stay as approved.
 
-Done when every requirement has a `Design:` line and the design doc is at most 150 lines.
+Done when every requirement has a `Design:` line and the design doc is at most 80 lines.
 
 ## Report
 

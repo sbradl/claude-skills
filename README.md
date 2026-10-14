@@ -123,7 +123,7 @@ MUTATE_FILES environment variable.
 **`build-feature`** takes a feature from a ticket, a spec section, or a few words to green, pushed code. You approve the **gates**; everything between them runs on its own:
 
 1. **Requirements** — gathered from your spec, tickets, glossary, and ADRs, shown as an overview; you tick what is out of scope. Facts no document holds are researched, or you answer them.
-2. **Design and build order** — a short feature design (names, not shapes, at most 150 lines), and the order the requirements get built in — one slice each.
+2. **Design and build order** — a short feature design (high-level architecture — modules, entities, boundaries, main data flow, key decisions — about 60–80 lines), and the order the requirements get built in — one slice each.
 3. **Tests, per slice** — just before a requirement is built, you choose how it is tested: acceptance tests by default, or a mix with unit, e2e, and benchmark tests, and mutation testing and fuzzing on or off. Then you approve its Gherkin scenarios and test names, the assumptions to decide, and its user-visible texts.
 
 Each slice is then built test-first by its own sub-agent, then a fresh reviewer checks that every test keeps the promise of its name. When a check fails on a rule you haven't settled, you decide: loosen it, or keep it — and a kept rule is final, fixed without asking from then on. At the end, the checks you reserved for it run once, the checkpoints are squashed through `commit` and pushed, CI is watched (GitHub, Gitea, or Jenkins), a PR is opened if you use them, and a report shows what was built and what to try by hand.
