@@ -15,9 +15,12 @@ The user names a feature (a ticket, a spec section, or a few words). Take it fro
 - **Checkpoint** — `git commit -m "checkpoint: <what>"` whenever work reaches a state worth keeping: a reworked artefact, an approved gate, a green test. Checkpoints stay local; the close step squashes and pushes them.
 - **Open rule** — a rulebook rule with no final decision. Violated → stop and ask: loosen it (the new value goes into the tool's config; the rule stays open), keep it (it becomes **final**), or suppress it at this one site with a comment giving the reason. Final rules are fixed, never suppressed.
 - **Slice** — one requirement, built end to end: its test gate, then its build.
+- **Walking skeleton** — the thinnest end-to-end path through every stack and boundary the architecture has (UI, bridges, core, storage, packaging): built, tested at the rulebook's levels, run by CI, and doing one trivial thing a user can see. The first feature in a project builds only the skeleton, so the first real feature only adds behaviour.
 - **Fix slice** — a slice added to repair a defect: a `FIX-<n>` entry under `## Requirements` and in the build order, its test gate showing the regression test, then step 3 as for any slice.
 
 Resolve `<skill-dir>` to this skill folder's absolute path. Read `<repo-root>/.claude/build-feature.md` (the **config**); missing → follow `<skill-dir>/setup.md`, then continue here. The **rulebook** is `<repo-root>/.claude/engineering-rules.md`.
+
+The config's `Walking skeleton:` line is missing → ask `setup.md`'s walking-skeleton question and record the answer. It says `needed` → tell the user the skeleton comes first, and build it as its own feature, `walking-skeleton`, through steps 1–5: its requirements are those that apply to every feature — platforms, boundaries, build, CI, packaging — plus the one thing it shows, asked as a requirement question. Then set `Walking skeleton: done` in the config and start the named feature. Its requirements the skeleton already meets show in its overview as met by the skeleton and stay out of scope.
 
 Record every rule decision in the rulebook's `## Rule decisions` section, one row per rule, updated in place — create it on the first decision:
 

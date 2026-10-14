@@ -120,7 +120,7 @@ MUTATE_FILES environment variable.
 
 ### Build feature
 
-**`build-feature`** takes a feature from a ticket, a spec section, or a few words to green, pushed code. You approve the **gates**; everything between them runs on its own:
+**`build-feature`** takes a feature from a ticket, a spec section, or a few words to green, pushed code. You approve the **gates**; everything between them runs on its own. In a project without a **walking skeleton** — the thinnest path through every stack and boundary, built and run by CI — the first feature builds only that, so the first real feature only adds behaviour.
 
 1. **Requirements** — gathered from your spec, tickets, glossary, and ADRs, shown as an overview; you tick what is out of scope. Facts no document holds are researched, or you answer them.
 2. **Design and build order** — a short feature design (high-level architecture — modules, entities, boundaries, main data flow, key decisions — about 60–80 lines), and the order the requirements get built in — one slice each, shown in chat as a few phases. Whatever the requirements leave open about what the feature does is asked of you one question at a time; nothing is assumed.
