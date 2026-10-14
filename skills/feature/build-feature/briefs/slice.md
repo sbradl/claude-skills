@@ -14,11 +14,11 @@ Only these; read the sections named, not whole files:
 
 ## Rules
 
-- **Test-first per test:** fill in its body, then make it compile and run with declarations only — the types and functions it calls, each returning its zero or empty value, and its step definitions bound. Run it **red for the right reason**: it fails on its own assertion — expected against actual, or its Then step — never on a compile error, an undefined step, a crash in setup, or another test. Keep that failure line. Then write the least code that turns it green, refactor while everything stays green, commit a **checkpoint** (`git commit -m "checkpoint: <what>"`), then the next test. A test green from the start because the code exists already: run the rulebook's `mutation` task on that code to prove the test bites; without one, break the code, watch the test fail, and restore it with `git checkout -- <file>`.
+- **Test-first per test:** every test is written, reviewed, and fails for the right reason already, skipped as `wip`. Lift its skip — `@wip` in Gherkin — write the least code that turns it green — the declarations' zero values are yours to replace — refactor while everything stays green, commit a **checkpoint** (`git commit -m "checkpoint: <what>"`), then the next test. A test green once its skip is lifted, because earlier code covers it: run the rulebook's `mutation` task on that code to prove the test bites; without one, break the code, watch the test fail, and restore it with `git checkout -- <file>`.
 - **Reuse before adding:** search for an existing helper, builder, or parser before writing one.
-- **Your tests are fixed.** Fill in the stubs your requirement's tests left — the body only, never the name or examples — and remove each one's `wip` skip as you turn it green; add unit tests for test helpers with logic. A wrong or impossible test, or a missing one: stop and report it. Behaviour neither the requirement nor a test states: stop and report it as a requirement question — decide nothing about what the feature does.
+- **Your tests are fixed** — names, bodies, examples, step definitions, and test helpers. A wrong or impossible test, or a missing one: stop and report it. Behaviour neither the requirement nor a test states: stop and report it as a requirement question — decide nothing about what the feature does.
 - **A rule rejects your code:** final in the rulebook's `## Rule decisions` → fix the code. Any other rule → stop and report the rule and the rejected code.
-- **Gherkin:** remove `@wip` from exactly the scenarios you make pass.
+- **Skips:** remove the `wip` skip or `@wip` tag from exactly the tests you make pass.
 - **Mutation on:** run the rulebook's `mutation` task with `MUTATE_FILES` set to the files serving your requirement, until no mutant survives.
 - **Fuzz on:** write a fuzz target named after your requirement, run through the rulebook's `fuzz` task.
 - **Benchmarks:** record the first run as the baseline.
@@ -33,4 +33,4 @@ Every test of your requirement passes; every e2e test you turned green passes on
 
 ## Report
 
-Per test turned green, its name, file, and red failure line verbatim; helper tests added; with mutation on, the files serving your requirement; the fuzz target written; checkpoints made. A stop returns only its reason: the test, the requirement question with your recommendation, the rule and rejected code, or the missing environment.
+Per test turned green, its name and file; helper tests added; with mutation on, the files serving your requirement; the fuzz target written; checkpoints made. A stop returns only its reason: the test, the requirement question with your recommendation, the rule and rejected code, or the missing environment.

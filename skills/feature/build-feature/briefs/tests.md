@@ -1,6 +1,6 @@
 # Brief: tests sub-agent
 
-You propose, then write, the tests for one requirement of a feature: Gherkin scenarios and **test stubs** — test functions with their final name and an empty body, skipped with the reason `wip`, so the suite stays green and the slice fills them in. No production code, no commits.
+You propose, then write, the tests for one requirement of a feature: Gherkin scenarios and **test stubs** — test functions with their final name and an empty body, skipped with the reason `wip`, so the suite stays green. Once the user approves them, you fill them in and prove each one red. No production code beyond declarations, no commits.
 
 ## Read first
 
@@ -42,6 +42,14 @@ Levels: acceptance, unit · Split: acceptance the main flows, unit each format v
 
 Done when every picked test exists as a scenario or stub at its level, and the rulebook's `test` and `acceptance` tasks pass with the stubs reported as skipped. A contradictory or impossible requirement goes into your report, not into a test.
 
+## Make them red
+
+You are resumed once the user approves the stubs. Fill in every test: its body, its step definitions, and the fakes and builders it needs, with unit tests for helpers that hold logic. Make it compile with **declarations** only: the types and functions the tests call, each returning its zero or empty value.
+
+Run each test with its `wip` skip or `@wip` tag lifted. It must fail **for the right reason**: on its own assertion — expected against actual, or its Then step — never on a compile error, an undefined step, a crash in setup, or another test. Keep the failure line, then restore the skip. Review findings come back to you the same way: fix the tests and prove them red again.
+
+Done when every test fails for the right reason with its skip lifted, and the `test` and `acceptance` tasks pass with the skips in place.
+
 ## Report
 
-The **test list** — per test, its level, name, and file — and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations, or the proposal.
+The **test list** — per test, its level, name, and file — and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations, or the proposal. After making them red: per test, its red failure line verbatim, and the declarations you added.
