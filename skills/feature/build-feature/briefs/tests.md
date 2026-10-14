@@ -14,7 +14,7 @@ Only these; read the sections named, not whole files:
 
 ## Propose
 
-First, find what the requirement leaves open about what the feature does — what the user sees, can do, or gets back — where a reasonable person could decide differently. Each is a **requirement question**: stop before proposing any test and report them all, each with your recommendation and one line of why. You are resumed with the answers, now in the requirement; assume none yourself.
+First, find what the requirement leaves open about what the feature does — what the user sees, can do, or gets back — where a reasonable person could decide differently. Each is a **requirement question**, and each cites its evidence — the research file, spec line, or real sample showing the case occurs. A case nothing shows is an unseen case: list it in one line, ask nothing about it. Stop before proposing any test and report the questions, each with its evidence, your recommendation, and one line of why. You are resumed with the answers, now in the requirement; assume none yourself.
 
 Then propose the tests at every level the `Levels:` line names, split as it says. Cover behaviour and edge cases. Name each test in the domain's words, as behaviour: no UI or implementation detail (storage keys, file names, widget types).
 
