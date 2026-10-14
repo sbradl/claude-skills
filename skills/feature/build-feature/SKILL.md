@@ -12,6 +12,7 @@ The user names a feature (a ticket, a spec section, or a few words). Take it fro
 - **Requirement question** — anything about what the feature does — what the user sees, can do, or gets back — that no approved requirement states. Never assume one: ask it alone, a single-select with your recommendation and one line of why, never inside a list and never as a default to veto. The answer goes into the requirement's source and its block in `design.md`, as a checkpoint. Sub-agents report requirement questions; they never answer them.
 - **Technical choice** — how the feature is built. A real trade-off goes to the user one at a time, with a recommendation; the rest are the design's key decisions, reviewed with it.
 - **Approval** covers what was shown and answered — never an assumption.
+- **Plain names** — in every question, summary, and line to the user, name a requirement by what it says and a step by what it does: "opens GPX files", "the test gate". An id or step number may follow in parentheses, never stand alone — the user knows the feature, not your numbering.
 - **Checkpoint** — `git commit -m "checkpoint: <what>"` whenever work reaches a state worth keeping: a reworked artefact, an approved gate, a green test. Checkpoints stay local; the close step squashes and pushes them.
 - **Open rule** — a rulebook rule with no final decision. Violated → stop and ask: loosen it (the new value goes into the tool's config; the rule stays open), keep it (it becomes **final**), or suppress it at this one site with a comment giving the reason. Final rules are fixed, never suppressed.
 - **Slice** — one requirement, built end to end: its test gate, then its build.
@@ -84,7 +85,7 @@ One at a time, in order. For each slice, note `HEAD` as its start, then:
 5. It stops for the user on a wrong or impossible test (a mini-gate shows the changed test and its requirement's lines), a requirement question (ask it alone), an open rule (record the decision), or an unavailable environment (ask the user to fix it). Resume it with the answer.
 6. Check its report: every test of the requirement passes, `@wip` is gone from exactly its Gherkin scenarios, each named test exists in the file it reports, every check the config maps to `slice done` is green, mutation is clean on the files it reports when mutation is on, and `git status` is clean. Mark the slice done: append ` ✓` to its line in the build order.
 7. A fresh **test reviewer** with `briefs/test-review.md` gets the slice's test names and `git diff <slice start>..HEAD` of its tests and test helpers. Resume the slice sub-agent with the findings until a review comes back clean.
-8. Tell the user one line: `Slice 2/5 done (REQ-13): 2 acceptance, 3 unit green; review clean.`
+8. Tell the user one line: `Slice 2/5 done — opens GPX files (REQ-13): 2 acceptance, 3 unit green; review clean.`
 
 Done when the user approved every slice's tests, its report checks out, and its test review is clean.
 
