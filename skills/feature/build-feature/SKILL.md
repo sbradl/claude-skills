@@ -76,7 +76,6 @@ One at a time, in order. For each slice, note `HEAD` as its start, then:
 
 1. **Choose the test levels.** Show the requirement, then one `AskUserQuestion` call:
    - **Test levels** — multi-select: `acceptance`, `unit`, `e2e`, `benchmark` (only when the rulebook has a benchmark tool). Recommend acceptance; add unit for logic over many variants (formats, rules, calculations), e2e for what needs the real UI, platform, or storage, benchmark for a performance budget.
-   - **Mutation** — only when the rulebook has a `mutation` task: `On` or `Off`, recommending on when the recommended levels include unit.
    - **Fuzz** — only when the rulebook has a `fuzz` task: `On` or `Off`, recommending on when its code reads untrusted input (files, network, pasted data).
 
    More than one level picked → one single-select on **what goes where**: your proposed split `(Recommended)` — "acceptance: the main flows · unit: each format version" — the free-text answer states another. Record the answers in the requirement's `Levels:` line.
@@ -86,14 +85,14 @@ One at a time, in order. For each slice, note `HEAD` as its start, then:
 5. **Review the tests, before any code.** A fresh **test reviewer** with `briefs/test-review.md` gets the test list and `git diff <slice start>..HEAD` of the tests and test helpers. Resume the tests sub-agent with the findings, checkpointing each round, until a review comes back clean. Note `HEAD` as the **reviewed tests**.
 6. A fresh **slice sub-agent** (`model: sonnet`) with `briefs/slice.md` gets the requirement and its test list.
 7. It stops for the user on a wrong or impossible test (a mini-gate shows the changed test and its requirement's lines), a requirement question (ask it alone), an open rule (record the decision), or an unavailable environment (ask the user to fix it). Resume it with the answer.
-8. Check its report: every test of the requirement passes, `git diff <reviewed tests>..HEAD` of the test files changes nothing but removed skips and tags and what a mini-gate approved, `@wip` is gone from exactly its Gherkin scenarios and no `wip` skip is left in its stubs, each named test exists in the file it reports, every check the config maps to `slice done` is green, mutation is clean on the files it reports when mutation is on, and `git status` is clean. Mark the slice done: append ` ✓` to its line in the build order.
+8. Check its report: every test of the requirement passes, `git diff <reviewed tests>..HEAD` of the test files changes nothing but removed skips and tags and what a mini-gate approved, `@wip` is gone from exactly its Gherkin scenarios and no `wip` skip is left in its stubs, each named test exists in the file it reports, every check the config maps to `slice done` is green, and `git status` is clean. Mark the slice done: append ` ✓` to its line in the build order.
 9. Tell the user one line: `Slice 2/5 done — opens GPX files (REQ-13): 2 acceptance, 3 unit green; review clean.`
 
 Done when, for every slice, the user approved its tests, each test failed for the right reason, its test review is clean, and its report checks out.
 
 ## 4. Feature checks
 
-Run every check the config maps to `feature end`, and `fuzz <target>` until plateau for each fuzz target the slices reported. A violated open rule goes to the user; a violated final rule or a defect (a crash, a failing test) becomes a fix slice; an unavailable environment goes to the user to fix, then the check reruns. Done when every check passes.
+Run every check the config maps to `feature end`; the rulebook's `mutation` task, when it has one, with `MUTATE_FILES` set to the source files the feature changed (`git diff --name-only <base>..HEAD`, tests left out); and `fuzz <target>` until plateau for each fuzz target the slices reported. Each surviving mutant goes to the user alone, in plain words — what was changed, where, and that no test noticed: `Add a test` `(Recommended)` makes it a fix slice; `Equivalent` — the change alters nothing observable — goes into the report. A violated open rule goes to the user; a violated final rule or a defect (a crash, a failing test) becomes a fix slice; an unavailable environment goes to the user to fix, then the check reruns. Done when every check passes.
 
 ## 5. Product review (gate)
 

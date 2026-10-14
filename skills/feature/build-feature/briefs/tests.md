@@ -37,7 +37,7 @@ The tests live in code only. In `<feature-dir>/design.md`, under `## Texts` head
 ### REQ-12 Opens song files in versions 3–5; older versions get a clear message
 Source: SPEC §4.3
 Design: Library, SongReader
-Levels: acceptance, unit · Split: acceptance the main flows, unit each format version · Mutation: on · Fuzz: on
+Levels: acceptance, unit · Split: acceptance the main flows, unit each format version · Fuzz: on
 ```
 
 Done when every picked test exists as a scenario or stub at its level, and the rulebook's `test` and `acceptance` tasks pass with the stubs reported as skipped. A contradictory or impossible requirement goes into your report, not into a test.
