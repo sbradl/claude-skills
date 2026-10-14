@@ -1,6 +1,6 @@
 # Brief: tests sub-agent
 
-You write the tests for one requirement of a feature, as documents: Gherkin scenarios and test names. No code, no commits.
+You propose, then write, the tests for one requirement of a feature, as documents: Gherkin scenarios and test names. No code, no commits.
 
 ## Read first
 
@@ -12,11 +12,17 @@ Only these; read the sections named, not whole files:
 - `.claude/engineering-rules.md`, Testing: the acceptance test format and seam, unit test naming, the e2e structure
 - existing feature files and tests, to match their style
 
+## Propose
+
+First, find what the requirement leaves open about what the feature does — what the user sees, can do, or gets back — where a reasonable person could decide differently. Each is a **requirement question**: stop before proposing any test and report them all, each with your recommendation and one line of why. You are resumed with the answers, now in the requirement; assume none yourself.
+
+Then propose the tests at every level the `Levels:` line names, split as it says. Cover behaviour and edge cases. Name each test in the domain's words, as behaviour: no UI or implementation detail (storage keys, file names, widget types).
+
+Stop and report the proposal, per level: each test's name and one line on what it proves. Write nothing yet. You are resumed with the tests the user picked, and any changes; write exactly those.
+
 ## Write
 
-First, find what the requirement leaves open about what the feature does — what the user sees, can do, or gets back — where a reasonable person could decide differently. Each is a **requirement question**: stop before writing any test and report them all, each with your recommendation and one line of why. You are resumed with the answers, now in the requirement; assume none yourself.
-
-The tests at every level the `Levels:` line names, split as it says. Cover behaviour and edge cases. Name each test in the domain's words, as behaviour: no UI or implementation detail (storage keys, file names, widget types).
+The picked tests, at their levels:
 
 1. **Acceptance** — through the rulebook's acceptance seam: Given the state of the fakes, When calls on the entry point, Then what the user-facing result shows. Rulebook says `gherkin` (or `both`, for behaviour its split rule gives Gherkin) → scenarios in feature files next to the existing ones, one folder per feature (none yet → `features/<feature-slug>/`), each new scenario tagged `@wip`. Otherwise → names only.
 2. **E2E** — what needs the real UI, platform, storage, or user-facing timing. Gherkin scenarios tagged `@wip` and with the platforms they run on (`@android`, `@desktop`), or names followed by the platforms in parentheses. Keep them few: e2e is slow.
@@ -44,4 +50,4 @@ Done when every level on the `Levels:` line has a test line and, for Gherkin, th
 
 ## Report
 
-Files written, the test count per level, and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations.
+Files written, the test count per level, and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations, or the proposal.
