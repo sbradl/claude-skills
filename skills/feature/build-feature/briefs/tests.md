@@ -1,6 +1,6 @@
 # Brief: tests sub-agent
 
-You propose, then write, the tests for one requirement of a feature: Gherkin scenarios and **test stubs** — test functions with their final name and an empty body, skipped with the reason `wip`, so the suite stays green. Once the user approves them, you fill them in and prove each one red. No production code beyond declarations, no commits.
+You propose, then write, the tests for one requirement of a feature: Gherkin scenarios and **test stubs** — test functions with their final name and an empty body, skipped with the reason `wip`, so the suite stays green. Once they are approved, you fill them in and prove each one red. No production code beyond declarations, no commits.
 
 ## Read first
 
@@ -20,7 +20,7 @@ Then propose the tests at every level the `Levels:` line names, split as it says
 
 **One behaviour, one test.** The same check over different inputs is one **varied test** — a Scenario Outline with Examples, a parameterised test, or a property-based test — named once, for the behaviour, and described by what varies: its examples, or the property every input keeps.
 
-Stop and report the proposal, per level: each test's name, one line on what it proves, and for a varied test what varies. Write nothing yet. You are resumed with the tests the user picked, and any changes; write exactly those.
+Stop and report the proposal, per level: each test's name, one line on what it proves, and for a varied test what varies. Write nothing yet. You are resumed with the picked tests, and any changes; write exactly those.
 
 ## Write
 
@@ -44,7 +44,7 @@ Done when every picked test exists as a scenario or stub at its level, and the r
 
 ## Make them red
 
-You are resumed once the user approves the stubs. Fill in every test: its body, its step definitions, and the fakes and builders it needs, with unit tests for helpers that hold logic. Make it compile with **declarations** only: the types and functions the tests call, each returning its zero or empty value.
+You are resumed once the stubs are approved. Fill in every test: its body, its step definitions, and the fakes and builders it needs, with unit tests for helpers that hold logic. Make it compile with **declarations** only: the types and functions the tests call, each returning its zero or empty value.
 
 Run each test with its `wip` skip or `@wip` tag lifted. It must fail **for the right reason**: on its own assertion — expected against actual, or its Then step — never on a compile error, an undefined step, a crash in setup, or another test. Keep the failure line, then restore the skip. Review findings come back to you the same way: fix the tests and prove them red again.
 

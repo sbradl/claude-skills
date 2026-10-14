@@ -1,0 +1,81 @@
+---
+name: build-feature-auto
+description: Build one or more features hands-off — one up-front round of necessary questions, then each feature from requirements to a local commit on logged decisions, with a product review after each feature or after all.
+disable-model-invocation: true
+---
+
+# Build features autonomously
+
+The user names one or more features (tickets, spec sections, or a few words each). Take each from requirements to green code in one local commit while the user is away; pushing is the user's. Where `build-feature` stops at a gate, you make an **informed decision** and log it; the user answers only the **necessary questions**, all in one round up front, and reviews the real product with your decision log in hand.
+
+- **Run** — this invocation: its features in build order. A run file already present at the start → read it and resume where its statuses say.
+- **Run dir** — `<run-dir>` = `$(git rev-parse --absolute-git-dir)/build-run/`: untracked working state that survives checkouts and resets and never lands in a commit. `<run-dir>/run.md` is the **run file**: each feature with its status (`planned`, `building`, `built`, `blocked: <reason>`), its base, its branch, and the run's review mode. Update it at every status change.
+- **Feature dir** — `<feature-dir>` = `<run-dir>/<feature-slug>/`: `design.md` (requirements, texts, risks, open points, slices, decisions) and `research/`.
+- **Evidence** — what shows a case occurs or an answer holds: a source line, a research file, a real sample, existing code, the rulebook.
+- **Informed decision** — every choice `build-feature` puts to the user: scope, requirement questions, technical trade-offs, test levels and picks, a changed test, a surviving mutant. Take the option the evidence backs; none does → your recommendation, the one cheapest to reverse. Log it in its feature's `design.md` under `## Decisions`: what was open, what you chose, the evidence, the alternative. A requirement answer also goes into the requirement's source.
+- **Necessary question** — a requirement question no evidence answers where a wrong pick would rebuild a slice or change what users see beyond a quick fix, or a fact only the user holds (a real sample, a device's behaviour). Only these reach the user, only in step 1's round. Every later question is an informed decision.
+- **Unseen case** — a case nothing shows occurs: it takes the feature's path for unexpected input (a damaged file gets a clear error) — that path is the feature's first informed decision when no requirement states it. List unseen cases in one line in the log.
+- **Blocked** — a feature that cannot finish without the user: an unavailable environment, a check still red after two fix slices for the same failure, a rule the code cannot meet. Checkpoint, then **park** it: `Integration: main` → `git branch blocked/<feature-slug>` and `git reset --hard <base>`; `branch` → leave its branch. Record the reason in the run file, mark every feature depending on it blocked too, and go on with the next.
+- **Plain names** — in every line to the user, name a requirement by what it says and a step by what it does: "opens GPX files", "the test review". An id may follow in parentheses.
+- **Checkpoint** — `git commit -m "checkpoint: <what>"` whenever work reaches a state worth keeping: a written design, a green test. The close squashes them.
+- **Open rule** — a rulebook rule with no final decision. Violated → make the code comply; it cannot → suppress it at that one site with a comment giving the reason, and log it. Loosening a rule or making it final is the user's: an open point. Final rules are fixed, never suppressed.
+- **Slice** — one requirement, built end to end. A **fix slice** repairs a defect: a `FIX-<n>` block under `## Requirements` and in the build order, its regression test as its test, then built like any slice.
+
+Resolve `<skill-dir>` to this skill folder's absolute path. The briefs, setup, and coverage script are `build-feature`'s, beside this skill. Read `<repo-root>/.claude/build-feature.md` (the **config**); missing → follow `<skill-dir>/../build-feature/setup.md` with the user, then continue here; a `Walking skeleton:` or `Review:` line missing → ask setup's question for it. The **rulebook** is `<repo-root>/.claude/engineering-rules.md`; record every rule decision in its `## Rule decisions` table as `build-feature` does.
+
+Sub-agents are `general-purpose`. Each gets its brief, `<skill-dir>/../build-feature/briefs/<brief>.md`, by absolute path, plus `<feature-dir>` and the inputs its step names. A sub-agent that stops is resumed with `SendMessage` and your informed decision.
+
+## 1. Plan the run
+
+1. **Features** — `Walking skeleton: needed` → `walking-skeleton` is the run's first feature: its requirements are those that apply to every feature — platforms, boundaries, build, CI, packaging — plus one trivial thing a user can see; set `Walking skeleton: done` once it is built. Order the rest as named, each after any run feature its requirements need.
+2. **Requirements** — per feature, every requirement from the config's requirement sources that applies to it, including those that apply to every feature. In scope: all of them, except what a source excludes or the skeleton already meets. Write them into `design.md` under `## Requirements`, one block each, in the format `<skill-dir>/../build-feature/briefs/tests.md` defines.
+3. **Open facts** — facts the tests will rest on that no repo document holds. Each gets a research sub-agent (`model: sonnet`) following the `mattpocock-skills:research` skill when available, otherwise primary sources, writing `<feature-dir>/research/<fact>.md`. A fact only the user holds is a necessary question.
+4. **Requirement questions** — per feature, what its requirements leave open about what it does — what the user sees, can do, or gets back — each with its evidence. Decide each; keep the necessary ones.
+5. **Ask** — one round, single-selects with your recommendation first and one line of why, four per call: the necessary questions, then — more than one feature in the run — the **review mode**: `After all features` `(Recommended)` or `After each feature`. Nothing to ask → ask nothing. Answers go into the requirements' sources and `design.md`.
+6. Write the run file, then tell the user one line: the features in build order, the decisions logged so far, and that the run goes on hands-off until the review.
+
+Done when every feature has its in-scope requirements in its `design.md`, every open fact a research file or answer, every necessary question an answer, and the run file lists the build order and review mode.
+
+## 2. Build each feature
+
+Per feature, in build order, skipping blocked ones; set it `building`.
+
+1. **Base** — `Integration: main` → `HEAD`. `branch` → create a branch named after the ticket (its id and slug), from the default branch, or from the branch of the run feature it depends on. Note `HEAD` as its **base**.
+2. **Design** — a sub-agent with `briefs/design.md` writes the feature's design. Write the build order under `## Slices` — one slice per requirement, each depending only on earlier ones; a requirement whose e2e test needs another's platform piece comes after it. Decide the design's requirement questions and trade-offs; an answer that changes the design → rework through the design sub-agent. When a rulebook check reads the app-wide design doc, merge the parts it reads now. Run `sh <skill-dir>/../build-feature/check-coverage.sh <feature-dir>/design.md` and checkpoint.
+3. **Slices** — one at a time, in order; note `HEAD` as the slice's start.
+   1. **Test levels** — acceptance always; unit for logic over many variants (formats, rules, calculations); e2e for what needs the real UI, platform, or storage; benchmark for a performance budget, when the rulebook has a benchmark tool; fuzz on when the rulebook has a `fuzz` task and the code reads untrusted input. Record them and the split in the requirement's `Levels:` line.
+   2. **Tests** — a fresh tests sub-agent with `briefs/tests.md` gets the requirement. Decide the questions it stops with and record them. From its proposal, pick each test that proves the requirement's behaviour or an evidenced edge case; drop duplicates and tests of unseen cases. It writes the picked tests and their texts and reports the slice's **test list**. Run `check-coverage.sh`; checkpoint (`checkpoint: <id> tests`).
+   3. **Red** — resume it: it fills in every test and proves each one fails for the right reason. Every red failure line is the test's own assertion failing → checkpoint (`checkpoint: <id> red`).
+   4. **Test review** — a fresh test reviewer with `briefs/test-review.md` gets the test list and `git diff <slice start>..HEAD` of the tests and test helpers. Resume the tests sub-agent with the findings, checkpointing each round, until a review comes back clean. Note `HEAD` as the **reviewed tests**.
+   5. **Build** — a fresh slice sub-agent (`model: sonnet`) with `briefs/slice.md` gets the requirement and its test list. It stops on a wrong or impossible test (the tests sub-agent changes it when the requirement backs the change, the test reviewer rechecks it, and it is logged), a requirement question (decide it), an open rule (as defined above), or an unavailable environment (the feature is blocked).
+   6. **Check its report** — every test of the requirement passes, `git diff <reviewed tests>..HEAD` of the test files changes nothing but removed skips and tags and logged test changes, `@wip` is gone from exactly its Gherkin scenarios and no `wip` skip is left in its stubs, each named test exists in the file it reports, every check the config maps to `slice done` is green, and `git status` is clean. Append ` ✓` to its line in the build order.
+   7. Tell the user one line: `Feature 1/3 · slice 2/5 done — opens GPX files (REQ-13): 2 acceptance, 3 unit green; review clean.`
+4. **Feature checks** — every check the config maps to `feature end`; the rulebook's `mutation` task, when it has one, with `MUTATE_FILES` set to the source files the feature changed (`git diff --name-only <base>..HEAD`, tests left out); `fuzz <target>` for each fuzz target the slices reported, until coverage plateaus or the rulebook's budget per target runs out. A crash or hang → save the input as a seed and make it a fix slice with that input as its regression test. A surviving mutant → a fix slice adding the test that kills it, unless it is equivalent — it alters nothing observable — then log it. A violated open rule → as defined above. A violated final rule or a defect → a fix slice. Done when every check passes.
+5. **Review** — mode `After each feature`, or a one-feature run → step 3 for this feature now.
+6. **Close** — merge the feature design's "Merge into …" section into the config's app-wide design doc and delete `docs/design/<feature-slug>.md` when the config names one. Resolve the ticket as `docs/agents/issue-tracker.md` defines when its tracker lives in the repo; a ticket in a hosted tracker stays open for the commit's issue reference to close on push. The feature covers it only in part → leave it open with a comment on what is done, and log it. `git reset --soft <base>`, then invoke the `commit` skill. Set it `built`.
+
+Done when every feature is `built` or blocked.
+
+## 3. Product review
+
+The features under review: the one just built, or with `After all features` every built one. Build the product and start it the way the config's `Review:` line says — on this machine when it runs here, otherwise hand the user the steps. Then show, per feature:
+
+- **What to try** — 3–5 flows as actions with the expected result, in plain words: the feature's user-facing behaviour first, flows touched by several slices, what no e2e test proves; a feature without a UI gets the command or call that shows its outcome.
+- **Decisions** — every logged decision, one plain line each, requirement answers first, then the unseen cases.
+
+Then the blocked features, each with its reason. Stop, then one single-select: `It works` `(Recommended)` or `Found a problem` — the free-text answer says what, or reverses a decision.
+
+A defect, or a reversed decision that changes what a feature does (its source and `design.md` updated first), becomes a fix slice of its feature, built through step 2.3: before the close on the open checkpoints; after it, on the feature's branch or on top of `main`, committed through the `commit` skill, with the run features branched from it rebased onto it (`git rebase <branch>`). Then the review repeats. Done when the user answers `It works`.
+
+## 4. Close the run
+
+Once every feature is `built` or blocked:
+
+1. **Report** — per feature: its commit and branch, or blocked with its reason; the requirements and fixes, each with its tests, ticked ✓ when built; feature-check results — budgets measured against the limit; the changes to the app-wide design doc as bullets, new or changed glossary terms with their definitions, new ADRs by number and title.
+2. **Open points** — all features' open points and rule changes for the user; one multi-select picks which become tickets, filed as `docs/agents/issue-tracker.md` defines.
+3. **Clean up** — delete the run dir, except the feature dirs and run-file entries of blocked features: invoking this skill again resumes them.
+4. Show the report, ending with what is ready to push: `main`'s new commits, or the feature branches in build order — a branch built from another's merges after it.
+
+## Done
+
+Every feature is one local commit — on its own branch with `Integration: branch` — with nothing pushed, or blocked with its reason in the report; the user answered `It works` at every review; the run dir holds only blocked features; the report has been shown.

@@ -7,6 +7,7 @@
 | Skill | What it does | Group | Starts |
 | --- | --- | --- | --- |
 | **`build-feature`** | Builds a feature end to end: requirements and design approved by you, then one slice per requirement — its tests approved by you, then built by its own sub-agent — and a closing report | `feature` | `/build-feature` only |
+| **`build-feature-auto`** | Builds one or more features hands-off: only the questions no evidence answers are asked, up front; every other choice is decided and logged; you review the product and the decision log after each feature or after all; commits locally, never pushes | `feature` | `/build-feature-auto` only |
 | **`tdd-loop`** | Builds a feature or fixes a bug test-first: red → green one behaviour at a time, with a refactor and a mutation-testing pass after every five | `tdd` | automatically, or `/tdd-loop` |
 | **`tdd-red`** | Writes one failing test and proves it fails for the right reason | `tdd` | automatically, or `/tdd-red` |
 | **`tdd-green`** | Makes a failing test pass with the smallest source change | `tdd` | automatically, or `/tdd-green` |
@@ -97,7 +98,7 @@ What each skill needs before it works, and when you set it up:
 
 | Skill | Needs | Set up |
 | --- | --- | --- |
-| `build-feature` | the `commit` and `engineering` groups, a commit convention, and a rulebook | once per project — run `/engineering-rules` and `/commit` first; the first `/build-feature` checks both, asks how features are built here, and records it in `.claude/build-feature.md` |
+| `build-feature`, `build-feature-auto` | the `commit` and `engineering` groups, a commit convention, and a rulebook | once per project — run `/engineering-rules` and `/commit` first; the first `/build-feature` checks both, asks how features are built here, and records it in `.claude/build-feature.md` |
 | `tdd-*` | `test`, `coverage`, and `mutation` tasks | once per project, before the first loop — run `/engineering-rules` with the **Testing strategy** area |
 | `commit` | the project's commit convention | nothing to do — the first commit asks and records it in `.claude/commit.md` |
 | `engineering-rules` | — | it is the setup; run it once, and again to revisit an area |
@@ -127,6 +128,10 @@ MUTATE_FILES environment variable.
 3. **Tests, per slice** — just before a requirement is built, you choose how it is tested: acceptance tests by default, or a mix with unit, e2e, and benchmark tests, and fuzzing on or off. Any question the requirement leaves open comes to you one at a time first. Then you pick its tests in rounds — a test run over several inputs counts as one, described by what varies — and approve them once they exist — Gherkin scenarios and empty, skipped test functions — with its user-visible texts.
 
 The tests are then filled in and proven to fail for the right reason, and a fresh reviewer checks that every test keeps the promise of its name — all before any production code. Only then is the slice built test-first by its own sub-agent, the tests fixed. When a check fails on a rule you haven't settled, you decide: loosen it, or keep it — and a kept rule is final, fixed without asking from then on. At the end, the checks you reserved for it run once, mutation testing runs on the files the feature changed — each surviving mutant comes to you: add a test, or mark it equivalent — and you review the real product — it is built and started, and you get a few flows to try; a problem becomes a fix before anything is pushed. Then the checkpoints are squashed through `commit` and pushed, CI is watched (GitHub, Gitea, or Jenkins), a PR is opened if you use them, and a report shows what was built.
+
+### Build feature, hands-off
+
+**`build-feature-auto`** runs `build-feature`'s pipeline — same setup, config, sub-agents, test review, feature checks — for one or more features without stopping at the gates. Up front it gathers every feature's requirements, researches open facts, and asks you in one round only what no evidence answers and a wrong guess would make expensive, plus whether to review after each feature or after all. Every other choice — scope, requirement questions, test levels and picks, surviving mutants, rule violations — it decides on the evidence and logs. You then review the real product with the decision log beside it; a problem or a reversed decision becomes a fix. Each feature ends as one local commit — on its own branch if you integrate through branches — and nothing is pushed: the report lists what is ready for you to push. A feature that needs you (a missing device, a check that stays red) is parked and the run goes on; running the skill again resumes it. Its working state lives in `.git/build-run/`, so it never lands in a commit.
 
 ### TDD
 
@@ -218,6 +223,7 @@ skills/
     build-feature/
       SKILL.md  setup.md  check-coverage.sh
       briefs/tests.md  design.md  slice.md  test-review.md
+    build-feature-auto/SKILL.md
   tdd/
     tdd-loop/SKILL.md
     tdd-red/SKILL.md

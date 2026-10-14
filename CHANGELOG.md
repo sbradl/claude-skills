@@ -10,6 +10,12 @@
   it is built, you choose how it is tested and approve its tests — built
   test-first by its own sub-agent with a fresh test review, closing with a
   report. Needs the `commit` and `engineering` groups set up first.
+- New `build-feature-auto` skill (group `feature`): builds one or more
+  features hands-off with `build-feature`'s pipeline. It asks one round of
+  questions up front — only what no evidence answers, and whether you review
+  after each feature or after all — decides and logs everything else, parks a
+  feature that needs you while the run goes on, and leaves each feature as one
+  local commit for you to push.
 - `commit` can keep a roadmap — now / next / later, milestones, or quarters —
   in the changelog file under `planned`, rendered to `ROADMAP.md`. The commit
   that finishes an item takes it off the roadmap and turns it into that

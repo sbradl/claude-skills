@@ -18,7 +18,7 @@ Release with `mise run release v{major}.{minor}.{patch}` (`scripts/release.sh`):
 
 - Each skill is a directory under `skills/<group>/`, with `SKILL.md` as the entry point. Skill names must be unique across groups — install flattens them into one directory.
 - `.claude/skills/<name>` is a relative symlink to `../../skills/<group>/<name>` so the skills load when working in this repo — Claude Code only discovers `.claude/skills/<name>/SKILL.md`, never a nested group. Add one per new skill.
-- `SKILL.md` starts with YAML frontmatter: `name`, `description` (when the skill triggers — write it as the recall cue), optional `disable-model-invocation: true` for skills only a human may start — no other skill can spawn them (`build-feature`, `craft-review`, `engineering-rules`).
+- `SKILL.md` starts with YAML frontmatter: `name`, `description` (when the skill triggers — write it as the recall cue), optional `disable-model-invocation: true` for skills only a human may start — no other skill can spawn them (`build-feature`, `build-feature-auto`, `craft-review`, `engineering-rules`).
 - Sibling `.md` files are disclosed reference the `SKILL.md` points at by absolute path (`<skill-dir>/…`): `craft-review`'s lens checklists, `commit`'s `setup.md`, `changelog.md`, `roadmap.md`, and `styles/`, `engineering-rules`' `research.md` and `areas/`, `build-feature`'s `setup.md` and `briefs/`. Files handed to a sub-agent — the lens checklists, `research.md`, the briefs — load into a fresh context with no other repo knowledge; keep them self-contained.
 - **Per-project decisions** live outside the skill directory, in `<repo-root>/.claude/<skill>.md` (`commit.md`, `engineering-rules.md`, `build-feature.md`), because the update scripts replace skill directories wholesale. The skill asks when the file is missing and writes it. `commit` also falls back to `~/.claude/commit.md` and keeps its setup in a disclosed `setup.md`; its option bodies sit in the skill directory (`styles/<value>.md`) so updates still improve them.
 - House style: terse, imperative, second person. Bold term → em-dash → definition. The `## Done` section states the exact observable completion condition.
@@ -30,6 +30,7 @@ Each `SKILL.md` explains its own design; these are the seams between skills.
 - **TDD family** — `tdd-loop` drives `tdd-red` and `tdd-green` in separate sub-agents per slice and `tdd-refactor` in the main context per batch of five. Red hands green only its two artifacts (test file, runner transcript), never a summary.
 - **`craft-review`** — five lenses, one isolated sub-agent each, no cross-lens reranking. It is user-invoked, so `tdd-loop` asks the user to run `/craft-review`; its findings are `tdd-refactor`'s mandate.
 - **`build-feature`** — requires `commit`'s convention and the `engineering-rules` rulebook, and squashes through `commit`; `briefs/` is its sub-agents' whole context besides the repo.
+- **`build-feature-auto`** — the hands-off variant: reuses `build-feature`'s `setup.md`, config, `briefs/`, and `check-coverage.sh` through `<skill-dir>/../build-feature/` (same group, so installed side by side), and replaces each gate with a logged decision. Keep the briefs free of who answers their stops — either skill's coordinator does — and mirror changes to `build-feature`'s steps (slice report checks, feature checks, close) in it.
 
 ## Editing guidance
 
