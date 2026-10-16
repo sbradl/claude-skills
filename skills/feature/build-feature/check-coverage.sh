@@ -15,7 +15,7 @@ awk '
 function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t\r]+$/, "", s); return s }
 function fail(msg) { print "FAIL: " msg; bad = 1 }
 
-BEGIN { valid["acceptance"]; valid["unit"]; valid["e2e"]; valid["benchmark"] }
+BEGIN { valid["acceptance"]; valid["unit"]; valid["e2e"]; valid["benchmark"]; valid["manual"] }
 
 /^## / { sec = trim(substr($0, 4)); req = ""; next }
 

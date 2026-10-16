@@ -8,7 +8,7 @@
         },
         {
           "id": "build-feature-auto-skill",
-          "en": "New `build-feature-auto` skill (group `feature`): builds one or more features hands-off with `build-feature`'s pipeline. It asks one round of questions up front — only what no evidence answers, and whether you review after each feature or after all — decides and logs everything else (one test proposal per feature, tests and their red proof in one pass per slice), parks a feature that needs you while the run goes on, and leaves each feature as one local commit for you to push. Runs are kept per project, and a second run in the same working tree needs its own worktree. It keeps its own context small on long runs: command output goes to log files, and a run resumes from its run file after compaction or `/clear`."
+          "en": "New `build-feature-auto` skill (group `feature`): builds one or more features hands-off with `build-feature`'s pipeline. It asks one round of questions up front — only what no evidence answers, and whether you review after each feature or after all — decides and logs everything else (one test proposal and all test stubs per feature, then each slice's red proof in its own pass; appearance gets no test and goes to your product review, and e2e stays at one test per requirement), parks a feature that needs you while the run goes on, and leaves each feature as one local commit for you to push. Runs are kept per project, and a second run in the same working tree needs its own worktree. It keeps its own context small on long runs: command output goes to log files, and a run resumes from its run file after compaction or `/clear`."
         },
         {
           "id": "commit-roadmap",

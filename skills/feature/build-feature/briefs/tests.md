@@ -14,11 +14,11 @@ Only these; read the sections named, not whole files:
 
 ## Propose
 
-You may be given all requirements of a feature for the proposal: then propose per requirement, once. In the write and red steps you get one requirement and the picks for it.
+You may be given all requirements of a feature for the proposal: then propose per requirement, once. In the write step you get the picks, for all requirements of the feature or for one; in the red step you get one requirement, its picks, and its stubs. A requirement whose `Levels:` line is `manual` gets no proposal and no test.
 
 First, find what the requirement leaves open about what the feature does — what the user sees, can do, or gets back — where a reasonable person could decide differently. Each is a **requirement question**, and each cites its evidence — the research file, spec line, or real sample showing the case occurs. A case nothing shows is an unseen case: list it in one line, ask nothing about it. Stop before proposing any test and report the questions, each with its evidence, your recommendation, and one line of why. You are resumed with the answers, now in the requirement; assume none yourself.
 
-Then propose the tests at every level the `Levels:` line names, split as it says. Cover behaviour and edge cases. Name each test in the domain's words, as behaviour: no UI or implementation detail (storage keys, file names, widget types).
+Then propose the tests at every level the `Levels:` line names, split as it says. Cover behaviour and edge cases; never the look of the screen (spacing, margins, colour, typography, alignment) — the product review shows that. Name each test in the domain's words, as behaviour: no UI or implementation detail (storage keys, file names, widget types).
 
 **One behaviour, one test.** The same check over different inputs is one **varied test** — a Scenario Outline with Examples, a parameterised test, or a property-based test — named once, for the behaviour, and described by what varies: its examples, or the property every input keeps.
 
@@ -26,10 +26,10 @@ Stop and report the proposal, per level: each test's name, one line on what it p
 
 ## Write
 
-The picked tests, at their levels:
+The picked tests, at their levels — for all requirements you were given, in one run:
 
 1. **Acceptance** — through the rulebook's acceptance seam: Given the state of the fakes, When calls on the entry point, Then what the user-facing result shows. Rulebook says `gherkin` (or `both`, for behaviour its split rule gives Gherkin) → scenarios in feature files next to the existing ones, one folder per feature (none yet → `features/<feature-slug>/`), each new scenario tagged `@wip`, a varied test as a Scenario Outline with its Examples. Otherwise → a test stub per test in the stack's acceptance test files, a varied test as a parameterised stub listing its examples.
-2. **E2E** — what needs the real UI, platform, storage, or user-facing timing. Gherkin scenarios tagged `@wip` and with the platforms they run on (`@android`, `@desktop`), or test stubs carrying the platforms the way the e2e tool tags them. Keep them few: e2e is slow.
+2. **E2E** — what needs the real UI, platform, storage, or user-facing timing. Gherkin scenarios tagged `@wip` and with the platforms they run on (`@android`, `@desktop`), or test stubs carrying the platforms the way the e2e tool tags them. E2E only for what no lower level can show, one test per requirement at most, never for geometry or appearance: e2e is slow.
 3. **Unit** — test stubs in the stack's test files, named in the rulebook's unit test naming; a varied test as a parameterised stub listing its examples, or a property-based stub stating its property in a one-line comment.
 4. **Benchmark** — benchmark stubs: the hot path and the input size it runs on, sized from the research files.
 
@@ -46,9 +46,9 @@ Done when every picked test exists as a scenario or stub at its level, and the r
 
 ## Make them red
 
-You are resumed once the stubs are approved. Fill in every test: its body, its step definitions, and the fakes and builders it needs, with unit tests for helpers that hold logic. Make it compile with **declarations** only: the types and functions the tests call, each returning its zero or empty value.
+You are resumed once the stubs are approved, or started fresh on a requirement whose stubs exist. Fill in every test of your requirement: its body, its step definitions, and the fakes and builders it needs, with unit tests for helpers that hold logic. Make it compile with **declarations** only: the types and functions the tests call, each returning its zero or empty value.
 
-Run each test with its `wip` skip or `@wip` tag lifted. It must fail **for the right reason**: on its own assertion — expected against actual, or its Then step — never on a compile error, an undefined step, a crash in setup, or another test. Keep the failure line, then restore the skip.
+Run each test with its `wip` skip or `@wip` tag lifted — only your requirement's test files, in the background with output to a log, reading the log's last 20 lines; after a failure rerun only the failed test. It must fail **for the right reason**: on its own assertion — expected against actual, or its Then step — never on a compile error, an undefined step, a crash in setup, or another test. Keep the failure line, then restore the skip.
 
 A test that can fail only for the right reason also **can fail at all**. Before you call a test red, check it against these four:
 

@@ -7,7 +7,12 @@ Levels: acceptance, unit · Split: acceptance the main flows, unit each format v
 ### REQ-13 Lists recent files
 Source: SPEC §4.4
 
+### REQ-14 Gives the score screen a wider margin
+Source: SPEC §5
+Levels: manual
+
 ## Slices
 
 1. REQ-12
 2. REQ-13
+3. REQ-14

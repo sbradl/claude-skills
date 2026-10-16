@@ -16,6 +16,8 @@ Only these; read the sections named, not whole files:
 
 - **Test-first per test:** every test is written, reviewed, and fails for the right reason already, skipped as `wip`. Lift its skip — `@wip` in Gherkin — write the least code that turns it green — the declarations' zero values are yours to replace — refactor while everything stays green, commit a **checkpoint** (`git commit -m "checkpoint: <what>"`), then the next test. A test green once its skip is lifted, because earlier code covers it — a slice may have no production code to write: break that code one change at a time, watch the test fail, and restore it with `git checkout -- <file>`; report per test the break that made it fail, and stop on a test no break fails.
 - **Reuse before adding:** search for an existing helper, builder, or parser before writing one.
+- **`manual` requirement:** you get no tests. Build it, keep every other test green, and name in your report what to look at in the running app.
+- **Slow suites:** run only the test files of your requirement, in the background with output to a log, and read the log's last 20 lines; after a failure rerun only the failed test. An e2e test runs on one platform and size it is tagged for; the feature-end e2e check runs the rest.
 - **Your tests are fixed** — names, bodies, examples, step definitions, and test helpers. A wrong or impossible test, or a missing one: stop and report it. Behaviour neither the requirement nor a test states: stop and report it as a requirement question with its evidence — decide nothing about what the feature does. A case nothing shows occurs takes the feature's path for unexpected input.
 - **A rule rejects your code:** final in the rulebook's `## Rule decisions` → fix the code. Any other rule → stop and report the rule and the rejected code.
 - **Skips:** remove the `wip` skip or `@wip` tag from exactly the tests you make pass.
@@ -28,7 +30,7 @@ Only these; read the sections named, not whole files:
 
 ## Done
 
-Every test of your requirement passes; every e2e test you turned green passes on each platform it is tagged for; every check the config maps to `slice done` is green; `git status` is clean.
+Every test of your requirement passes; every e2e test you turned green passes on one platform it is tagged for; every check the config maps to `slice done` is green; `git status` is clean.
 
 ## Report
 
