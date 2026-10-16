@@ -68,6 +68,10 @@
   facts in one call, researches setup details only for the tools you pick, and
   researches stack-independent tools (secret scanning, infrastructure, hooks,
   dependency updates) once for the repo.
+- The `engineering-rules` enforcement area has tasks resolve their project
+  directory from their own location instead of the git top level, so they work
+  in monorepos and worktrees, and ignore every directory a task writes output
+  into.
 
 ### Fixed
 
