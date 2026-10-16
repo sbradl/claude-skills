@@ -8,9 +8,9 @@
   requirements to pushed code. You tick what is out of scope and approve the
   design and build order; then each requirement becomes a slice — just before
   it is built, you choose how it is tested and approve its tests — built
-  test-first by its own sub-agent with its tests linted and then reviewed by a
-  fresh sub-agent, closing with a report. Needs the `commit` and `engineering`
-  groups set up first.
+  test-first by its own sub-agent with its tests linted, checked that they can
+  fail, and then reviewed by a fresh sub-agent, closing with a report. Needs
+  the `commit` and `engineering` groups set up first.
 - New `build-feature-auto` skill (group `feature`): builds one or more
   features hands-off with `build-feature`'s pipeline. It asks one round of
   questions up front — only what no evidence answers, and whether you review

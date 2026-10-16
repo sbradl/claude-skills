@@ -48,7 +48,16 @@ Done when every picked test exists as a scenario or stub at its level, and the r
 
 You are resumed once the stubs are approved. Fill in every test: its body, its step definitions, and the fakes and builders it needs, with unit tests for helpers that hold logic. Make it compile with **declarations** only: the types and functions the tests call, each returning its zero or empty value.
 
-Run each test with its `wip` skip or `@wip` tag lifted. It must fail **for the right reason**: on its own assertion — expected against actual, or its Then step — never on a compile error, an undefined step, a crash in setup, or another test. Keep the failure line, then restore the skip. Review findings come back to you the same way: fix the tests and prove them red again.
+Run each test with its `wip` skip or `@wip` tag lifted. It must fail **for the right reason**: on its own assertion — expected against actual, or its Then step — never on a compile error, an undefined step, a crash in setup, or another test. Keep the failure line, then restore the skip.
+
+A test that can fail only for the right reason also **can fail at all**. Before you call a test red, check it against these four:
+
+- **Not vacuous** — the Then holds only because the When did something. Assert the precondition first (the hint is shown before it is dismissed) and make the step that checks a result the one that produced it; a view nothing requested is empty and "shows no X" passes. A test that is green on the declarations' zero values is reported — kept only as the control row of a table whose other rows are red.
+- **Independent oracle** — the expected value comes from the requirement, a literal, or a second path, never from the production formula it checks: a test that recomputes the answer the way the code does agrees with every bug in the formula.
+- **Varied inputs** — what the code could hard-code differs between setup and call: the language the session was opened in against the language of the call, a limit other than the default, a count other than the usual one.
+- **Edges** — a tolerance, step, limit, or clamp gets a case on each side of its edge, and a helper's own tests pin them.
+
+A test that is already green once its skip is lifted, because earlier slices delivered the behaviour, is not made red by rewriting it: report it with its passing run. The slice proves it by breaking the code that covers it and restoring it. Review findings come back to you the same way: fix the tests and prove them red again.
 
 Done when every test fails for the right reason with its skip lifted, and the `test`, `acceptance` and `lint` tasks pass with the skips in place.
 

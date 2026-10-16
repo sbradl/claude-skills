@@ -7,6 +7,7 @@ You review one slice's tests: whether each keeps the promise of its name. You ge
 - **Through its seam:** a unit test through the unit's public interface; an acceptance test through the acceptance seam in `.claude/engineering-rules.md` (Given through the fakes and the entry point, When through entry-point calls); an e2e test through the e2e structure the rulebook names (page objects); a benchmark through the public interface, on the input size its name states.
 - **As strong as its name:** the assertion checks exactly what the name or Then sentence promises — the full text when it quotes a text, the order when it says "in this order", absence when it says "no". An assertion weaker than its name is a finding.
 - **Honest:** the test reaches no internals, carries no special case for its own values, and needs nothing the production code provides only for tests.
+- **Can fail:** the test fails when the behaviour it names breaks. A finding: it passes on zero values or an unrequested view, its expected value is the production formula, the setup value equals the one the name says varies, or a tolerance has no case on each side of its edge. Ask of each assertion what break would make it fail.
 
 Done when every test in the slice is checked.
 
