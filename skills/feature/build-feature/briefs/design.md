@@ -22,7 +22,7 @@ Only these; read the sections named, not whole files:
    - the main data flow
    - a relation between two classes only when the design hinges on it — one line, no class diagram
    - the key decisions with their reasons
-   - **Merge into <app-wide doc>** — every change to the app-wide design, merged once the feature is complete. Only when you were given an app-wide doc.
+   - **Merge into <app-wide doc>** — every change to the app-wide design, merged once the feature is complete: what the finished code does and what the requirement sources say, never a promise about a later feature (that is an open point). Only when you were given an app-wide doc.
 
    Everything below that level emerges in the slices: classes, types, signatures, file paths, library choices, byte and file formats, constants and tuning numbers, build tooling, CI steps, and test setup.
 2. **`<feature-dir>/design.md`** — under each requirement a `Design: <element>, <element>` line naming the design elements that serve it; a **Risks** section, each risk with its mitigation; a **Requirement questions** section and an **Open points** section, each item with your recommendation and one line of why.
@@ -34,4 +34,4 @@ Done when every requirement has a `Design:` line and the design doc is at most 8
 
 ## Report
 
-Files changed, an outline of the design, new modules and why, ADRs, glossary terms, the requirement questions and open points with your recommendations, and any requirement without a design element.
+At most 15 lines; detail goes into the files you wrote. Files changed, an outline of the design, new modules and why, ADRs, glossary terms, the requirement questions and open points with your recommendations, and any requirement without a design element.

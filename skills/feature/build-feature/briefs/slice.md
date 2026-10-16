@@ -32,4 +32,4 @@ Every test of your requirement passes; every e2e test you turned green passes on
 
 ## Report
 
-Per test turned green, its name and file; helper tests added; the fuzz target and its seeds; checkpoints made. A stop returns only its reason: the test, the requirement question with your recommendation, the rule and rejected code, or the missing environment.
+At most 15 lines. Per test turned green, its name and file; helper tests added; the fuzz target and its seeds; checkpoints made. A stop returns only its reason: the test, the requirement question with your recommendation, the rule and rejected code, or the missing environment.

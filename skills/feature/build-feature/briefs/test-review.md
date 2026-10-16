@@ -12,4 +12,4 @@ Done when every test in the slice is checked.
 
 ## Report
 
-Per finding: the test, file and line, what its name promises against what the code checks, and the fix. No findings: say so, with the number of tests checked.
+At most 15 lines, the most serious findings first. Per finding: the test, file and line, what its name promises against what the code checks, and the fix. No findings: say so, with the number of tests checked.

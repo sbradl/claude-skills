@@ -14,6 +14,8 @@ Only these; read the sections named, not whole files:
 
 ## Propose
 
+You may be given all requirements of a feature for the proposal: then propose per requirement, once. In the write and red steps you get one requirement and the picks for it.
+
 First, find what the requirement leaves open about what the feature does — what the user sees, can do, or gets back — where a reasonable person could decide differently. Each is a **requirement question**, and each cites its evidence — the research file, spec line, or real sample showing the case occurs. A case nothing shows is an unseen case: list it in one line, ask nothing about it. Stop before proposing any test and report the questions, each with its evidence, your recommendation, and one line of why. You are resumed with the answers, now in the requirement; assume none yourself.
 
 Then propose the tests at every level the `Levels:` line names, split as it says. Cover behaviour and edge cases. Name each test in the domain's words, as behaviour: no UI or implementation detail (storage keys, file names, widget types).
@@ -48,8 +50,8 @@ You are resumed once the stubs are approved. Fill in every test: its body, its s
 
 Run each test with its `wip` skip or `@wip` tag lifted. It must fail **for the right reason**: on its own assertion — expected against actual, or its Then step — never on a compile error, an undefined step, a crash in setup, or another test. Keep the failure line, then restore the skip. Review findings come back to you the same way: fix the tests and prove them red again.
 
-Done when every test fails for the right reason with its skip lifted, and the `test` and `acceptance` tasks pass with the skips in place.
+Done when every test fails for the right reason with its skip lifted, and the `test`, `acceptance` and `lint` tasks pass with the skips in place.
 
 ## Report
 
-The **test list** — per test, its level, name, and file — and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations, or the proposal. After making them red: per test, its red failure line verbatim, and the declarations you added.
+Except the test list and the red failure lines, at most 15 lines; detail goes into files. The **test list** — per test, its level, name, and file — and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations, or the proposal. After making them red: per test, its red failure line verbatim, and the declarations you added.
