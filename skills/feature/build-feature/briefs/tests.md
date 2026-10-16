@@ -63,4 +63,4 @@ Done when every test fails for the right reason with its skip lifted, and the `t
 
 ## Report
 
-Except the test list and the red failure lines, at most 15 lines; detail goes into files. The **test list** — per test, its level, name, and file — and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations, or the proposal. After making them red: per test, its red failure line verbatim, and the declarations you added.
+At most 15 lines except the test list; detail goes into files. The **test list** — per test, its level, name, and file — and anything in the requirement you could not cover. A stop returns only the requirement questions with your recommendations, or the proposal. After making them red: write each test's red failure line verbatim to `<feature-dir>/red-<id>.txt` (one line per test: its name, then the failure line) and report that path and the declarations you added.
