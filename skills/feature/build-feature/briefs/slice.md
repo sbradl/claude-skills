@@ -23,7 +23,7 @@ Only these; read the sections named, not whole files:
 - **Benchmarks:** record the first run as the baseline.
 - **Texts:** use the approved texts in `design.md`. The config says `Translations: agent → <languages>` → write each text in those languages too.
 - **Checkpoints are your backups:** `git diff` to see what changed, `git stash` to park it, `git checkout -- <file>` to restore.
-- Commit checkpoints only; the coordinator squashes and pushes.
+- Commit checkpoints only, staging the paths you changed (`git add <paths>`, never `git add -A`); the coordinator squashes and pushes.
 - An environment you need is unavailable (a device, an emulator): stop and report what is missing.
 
 ## Done

@@ -17,7 +17,8 @@
   after each feature or after all — decides and logs everything else (one test
   proposal per feature, tests and their red proof in one pass per slice),
   parks a feature that needs you while the run goes on, and leaves each
-  feature as one local commit for you to push.
+  feature as one local commit for you to push. Runs are kept per project, and
+  a second run in the same working tree needs its own worktree.
 - `commit` can keep a roadmap — now / next / later, milestones, or quarters —
   in the changelog file under `planned`, rendered to `ROADMAP.md`. The commit
   that finishes an item takes it off the roadmap and turns it into that
