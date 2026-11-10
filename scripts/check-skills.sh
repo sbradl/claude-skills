@@ -27,7 +27,11 @@ dupes=$(ls -d skills/*/*/ | awk -F/ '{print $3}' | sort | uniq -d)
 
 cov=skills/feature/build-feature/check-coverage.sh
 sh "$cov" tests/check-coverage/ok.md >/dev/null || fail "$cov rejects tests/check-coverage/ok.md"
-sh "$cov" tests/check-coverage/bad.md >/dev/null && fail "$cov accepts tests/check-coverage/bad.md"
+for f in tests/check-coverage/bad-*.md; do
+  want=$(sed -n '1s/^<!-- expect: \(.*\) -->$/\1/p' "$f")
+  out=$(sh "$cov" "$f") && fail "$cov accepts $f"
+  [ "$out" = "FAIL: $want" ] || fail "$cov on $f: want 'FAIL: $want', got '$out'"
+done
 
 render=skills/commit/commit/render.sh
 sh "$render" -c tests/render/CHANGELOG.json -p -l de | diff -u tests/render/ROADMAP.de.md - || fail "$render -p output differs from tests/render/ROADMAP.de.md"
