@@ -14,7 +14,7 @@ Rules, rule packs, and vulnerability databases sometimes carry their own license
 ## Method
 
 1. Per outcome, pick the candidates: the tools widely used for this stack, plus every tool the outcome names. Keep the best four that qualify, in the report order below — the pick and the three alternatives the user can be shown.
-2. Gather facts in batches. One `sh repo-facts.sh owner/repo …` call — the script beside this file — gives every GitHub-hosted candidate's license, stars, archived flag, and latest release with its date. Fetch the remaining pages several at a time: independent `WebFetch` calls go in one message. Facts come from docs, release pages, `LICENSE` files, and the GitHub API; read them, never install or run a candidate.
+2. Gather facts in batches. One `sh <dir>/repo-facts.sh owner/repo …` call — `<dir>` is the directory holding this file — gives every GitHub-hosted candidate's license, stars, archived flag, and latest release with its date. Fetch the remaining pages several at a time: independent `WebFetch` calls go in one message. Facts come from docs, release pages, `LICENSE` files, and the GitHub API; read them, never install or run a candidate.
 3. Drop a candidate you cannot confirm qualifies, and say why.
 4. Search the repo at the stack's path for every candidate's config or dependency in one call.
 
