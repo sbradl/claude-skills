@@ -79,7 +79,8 @@ jq -r --arg audience "$audience" --arg lang "$lang" --arg release "$release" --a
         else error("name the audience with -a: \($all | join(", "))") end
     end) as $audience
     | if $release != "" then
-        (first(.releases[] | select(.version == $release) | .[$audience]) // .upcoming[$audience] // {})
+        (first(.releases[] | select(.version == $release)) // null) as $r
+        | (if $r then $r[$audience] else .upcoming[$audience] end // {})
         | categories
       else
         "# Changelog\n\n"

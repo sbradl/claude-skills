@@ -34,7 +34,12 @@ for f in tests/check-coverage/bad-*.md; do
 done
 
 render=skills/commit/commit/render.sh
-sh "$render" -c tests/render/CHANGELOG.json -p -l de | diff -u tests/render/ROADMAP.de.md - || fail "$render -p output differs from tests/render/ROADMAP.de.md"
+fx=tests/render/CHANGELOG.json
+sh "$render" -c $fx -p -l de | diff -u tests/render/ROADMAP.de.md - || fail "$render -p output differs from tests/render/ROADMAP.de.md"
+[ "$(sh "$render" -c $fx -r v2.1.0 -a developers)" = "### Fixed
+
+- \`GET /invoices/{id}\` rounds totals to cents." ] || fail "$render -r v2.1.0 -a developers: wrong release notes"
+[ -z "$(sh "$render" -c $fx -r v2.1.0 -a end-users)" ] || fail "$render -r: a release without the audience's entries must print nothing, not Upcoming"
 
 [ $bad -eq 0 ] && echo "ok: skills"
 exit $bad

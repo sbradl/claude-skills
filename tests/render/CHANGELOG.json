@@ -22,5 +22,7 @@
     "end-users": { "added": [ { "id": "invoice-pdf", "en": "Download invoices as PDF.", "de": "Rechnungen als PDF herunterladen." } ] },
     "developers": { "added": [ { "id": "invoice-pdf-api", "en": "New `GET /invoices/{id}.pdf` endpoint." } ] }
   },
-  "releases": []
+  "releases": [
+    { "version": "v2.1.0", "date": "2026-10-01", "developers": { "fixed": [ { "id": "invoice-total-rounding", "en": "`GET /invoices/{id}` rounds totals to cents." } ] } }
+  ]
 }
