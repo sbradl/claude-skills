@@ -32,7 +32,7 @@ set -- $groups
 if [ -z "$REF" ]; then
   REF=$(curl -fsSL "https://api.github.com/repos/$REPO/releases/latest" \
     | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
-  [ -n "$REF" ] || { echo "error: no release found; pass --ref main for the development version" >&2; exit 1; }
+  [ -n "$REF" ] || { echo "error: no release found (or GitHub API rate limit hit); pass --ref main for the development version" >&2; exit 1; }
 fi
 
 tmp="$(mktemp -d)"

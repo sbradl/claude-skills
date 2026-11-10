@@ -22,7 +22,7 @@ $dest = Join-Path (Get-Location) '.claude\skills'
 
 if (-not $Ref) {
     try { $Ref = (Invoke-RestMethod "https://api.github.com/repos/$repo/releases/latest").tag_name }
-    catch { throw "no release found; pass -Ref main for the development version" }
+    catch { throw "no release found (or GitHub API rate limit hit); pass -Ref main for the development version" }
 }
 
 $tmp = Join-Path ([System.IO.Path]::GetTempPath()) ("claude-skills-" + [guid]::NewGuid())
