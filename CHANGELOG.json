@@ -63,6 +63,10 @@
         {
           "id": "engineering-task-locations",
           "en": "The `engineering-rules` enforcement area has tasks resolve their project directory from their own location instead of the git top level, so they work in monorepos and worktrees, and ignore every directory a task writes output into."
+        },
+        {
+          "id": "install-update-flag",
+          "en": "Update with `install.sh --update` (PowerShell: `install.ps1 -Update`); `update.sh` and `update.ps1` still work and run it. Installing a group again now replaces its skills instead of merging into them."
         }
       ],
       "fixed": [

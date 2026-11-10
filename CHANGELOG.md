@@ -77,6 +77,9 @@
   directory from their own location instead of the git top level, so they work
   in monorepos and worktrees, and ignore every directory a task writes output
   into.
+- Update with `install.sh --update` (PowerShell: `install.ps1 -Update`);
+  `update.sh` and `update.ps1` still work and run it. Installing a group again
+  now replaces its skills instead of merging into them.
 
 ### Fixed
 

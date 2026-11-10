@@ -1,13 +1,18 @@
-# Install the claude-skills into .\.claude\skills\ in the current directory.
+# Install or update the claude-skills in .\.claude\skills\ in the current directory.
 # Usage:  irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1 | iex
 #         & ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1))) -Ref v2.1.4 tdd craft-review
+#         & ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1))) -Update
 # Installs the latest release; -Ref takes a release tag, or a branch (main for
 # the development version). Arguments name skill groups (directories under
 # skills\); none means pick from a checklist (or install all when input is
-# redirected).
+# redirected) — or, with -Update, every group already installed.
+# Each group's skill directories are replaced wholesale, so renamed or deleted
+# files inside a skill don't linger.
+# Leaves the rest of .\.claude alone.
 [CmdletBinding(PositionalBinding = $false)]
 param(
     [string]$Ref,
+    [switch]$Update,
     [Parameter(ValueFromRemainingArguments)][string[]]$Group
 )
 $ErrorActionPreference = 'Stop'
@@ -35,10 +40,16 @@ try {
     if (-not (Test-Path $src)) { throw "skills directory not found in archive" }
 
     $available = @(Get-ChildItem -Directory -Name $src)
-    if (-not $Group -and [Console]::IsInputRedirected) {
+    if (-not $Group -and $Update) {
+        $Group = @($available | Where-Object {
+            @(Get-ChildItem -Directory -Name (Join-Path $src $_) | Where-Object { Test-Path (Join-Path $dest $_) })
+        })
+        if (-not $Group) { throw "no installed skill groups in $dest; install first" }
+    }
+    elseif (-not $Group -and [Console]::IsInputRedirected) {
         $Group = $available
     }
-    if (-not $Group) {
+    elseif (-not $Group) {
         # Checklist: up/down (or k/j) move, space toggles, enter confirms.
         $n = $available.Count
         $on = @($false) * $n
@@ -77,10 +88,14 @@ try {
 
     New-Item -ItemType Directory -Path $dest -Force | Out-Null
     foreach ($g in $Group) {
+        foreach ($d in Get-ChildItem -Directory (Join-Path $src $g)) {
+            $target = Join-Path $dest $d.Name
+            if (Test-Path $target) { Remove-Item -Recurse -Force $target }
+        }
         Copy-Item -Path (Join-Path $src "$g\*") -Destination $dest -Recurse -Force
     }
 
-    Write-Host "Installed skills into $dest:"
+    Write-Host "Skills in ${dest}:"
     Get-ChildItem -Name $dest
 }
 finally {

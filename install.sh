@@ -1,23 +1,29 @@
 #!/usr/bin/env sh
-# Install the claude-skills into ./.claude/skills/ in the current directory.
+# Install or update the claude-skills in ./.claude/skills/ in the current directory.
 # Usage:  curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.sh | sh
 #         curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.sh | sh -s -- --ref v2.1.4 tdd craft-review
+#         curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.sh | sh -s -- --update
 # Installs the latest release; --ref takes a release tag, or a branch (main for
 # the development version). Arguments name skill groups (directories under
 # skills/); none means pick from a checklist (or install all when there is no
-# terminal to ask on).
+# terminal to ask on) — or, with --update, every group already installed.
+# Each group's skill directories are replaced wholesale, so renamed or deleted
+# files inside a skill don't linger.
+# Leaves the rest of ./.claude alone.
 set -eu
 
 REPO="sbradl/claude-skills"
 DEST="./.claude/skills"
 
 REF=""
+update=false
 groups=""
 while [ $# -gt 0 ]; do
   case $1 in
     --ref) [ $# -ge 2 ] || { echo "error: --ref needs a tag or branch" >&2; exit 1; }
            REF=$2; shift 2 ;;
     --ref=*) REF=${1#--ref=}; shift ;;
+    --update) update=true; shift ;;
     *) groups="$groups $1"; shift ;;
   esac
 done
@@ -84,7 +90,17 @@ pick() {
   done
 }
 
-if [ $# -eq 0 ]; then
+if [ $# -eq 0 ] && $update; then
+  for group in $(ls "$src"); do
+    for d in "$src/$group"/*/; do
+      if [ -d "$DEST/$(basename "$d")" ]; then set -- "$@" "$group"; break; fi
+    done
+  done
+  [ $# -gt 0 ] || {
+    echo "error: no installed skill groups in $DEST; install first" >&2
+    exit 1
+  }
+elif [ $# -eq 0 ]; then
   if (true </dev/tty) 2>/dev/null; then
     set -- $(pick $(ls "$src"))
     [ $# -gt 0 ] || { echo "Nothing selected."; exit 0; }
@@ -101,8 +117,11 @@ done
 
 mkdir -p "$DEST"
 for group in "$@"; do
+  for d in "$src/$group"/*/; do
+    rm -rf "$DEST/$(basename "$d")"
+  done
   cp -R "$src/$group"/. "$DEST"/
 done
 
-echo "Installed skills into $DEST:"
+echo "Skills in $DEST:"
 ls -1 "$DEST"

@@ -78,19 +78,21 @@ The development version:
 
 ## Updating
 
-Run one command from the directory you installed into. It fetches the latest release (or the one `--ref` names) and replaces the skills of every group you have installed — a group gains skills added to it since, and files removed from a skill don't linger. Groups you never installed stay out, and the rest of `./.claude/` is left alone. It takes the same arguments as install: name groups to update only those, or to add one. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
+Run the install script with `--update` (PowerShell: `-Update`) from the directory you installed into. It fetches the latest release (or the one `--ref` names) and replaces the skills of every group you have installed — a group gains skills added to it since, and files removed from a skill don't linger. Groups you never installed stay out, and the rest of `./.claude/` is left alone. Name groups to update only those, or to add one. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
 
 **Linux / macOS**
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/update.sh | sh
+curl -fsSL https://raw.githubusercontent.com/sbradl/claude-skills/main/install.sh | sh -s -- --update
 ```
 
 **Windows (PowerShell)**
 
 ```powershell
-irm https://raw.githubusercontent.com/sbradl/claude-skills/main/update.ps1 | iex
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1))) -Update
 ```
+
+The older `update.sh` and `update.ps1` commands still work; they run these.
 
 ## Setting up a project
 
@@ -243,7 +245,7 @@ skills/
       areas/static-analysis.md  security.md  testing.md  enforcement.md
             accessibility.md  performance.md  observability.md
 .claude/skills/        symlinks into skills/, so the skills load while working on this repo
-install.sh  install.ps1  update.sh  update.ps1
+install.sh  install.ps1  install and update (update.sh, update.ps1: shims for --update)
 CHANGELOG.json         the changelog's source of truth
 CHANGELOG.md           generated from it by skills/commit/commit/render.sh
 scripts/release.sh     cuts a release: release commit, tag, push
