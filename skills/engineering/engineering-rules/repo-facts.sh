@@ -7,6 +7,8 @@
 set -u
 
 command -v gh >/dev/null || { echo "error: gh is required" >&2; exit 1; }
+# Without auth every lookup fails, which would read as "not found" below.
+gh auth status >/dev/null 2>&1 || { echo "error: gh is not logged in; run gh auth login" >&2; exit 1; }
 
 for r in "$@"; do
   line=$(gh api graphql -F owner="${r%%/*}" -F name="${r#*/}" -f query='
