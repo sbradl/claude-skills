@@ -6,8 +6,8 @@
 # the development version). Arguments name skill groups (directories under
 # skills\); none means pick from a checklist (or install all when input is
 # redirected) — or, with -Update, every group already installed.
-# Each group's skill directories are replaced wholesale, so renamed or deleted
-# files inside a skill don't linger.
+# Each group's skill directories are replaced wholesale, and skills a group
+# no longer has are removed, so renamed or deleted files don't linger.
 # Leaves the rest of .\.claude alone.
 [CmdletBinding(PositionalBinding = $false)]
 param(
@@ -40,8 +40,12 @@ try {
     if (-not (Test-Path $src)) { throw "skills directory not found in archive" }
 
     $available = @(Get-ChildItem -Directory -Name $src)
+    # Lists the skills a group installed, so a later run can remove those it dropped.
+    function Get-Manifest($g) { Join-Path $dest ".claude-skills.$g" }
     if (-not $Group -and $Update) {
+        # A manifest, or a skill installed before manifests existed.
         $Group = @($available | Where-Object {
+            (Test-Path (Get-Manifest $_)) -or
             @(Get-ChildItem -Directory -Name (Join-Path $src $_) | Where-Object { Test-Path (Join-Path $dest $_) })
         })
         if (-not $Group) { throw "no installed skill groups in $dest; install first" }
@@ -88,11 +92,16 @@ try {
 
     New-Item -ItemType Directory -Path $dest -Force | Out-Null
     foreach ($g in $Group) {
-        foreach ($d in Get-ChildItem -Directory (Join-Path $src $g)) {
-            $target = Join-Path $dest $d.Name
+        $manifest = Get-Manifest $g
+        $new = @(Get-ChildItem -Name (Join-Path $src $g))
+        $old = @(if (Test-Path $manifest) { Get-Content $manifest })
+        foreach ($name in $old + $new) {
+            if ($name -in '', '.', '..' -or $name -match '[\\/]') { continue }
+            $target = Join-Path $dest $name
             if (Test-Path $target) { Remove-Item -Recurse -Force $target }
         }
         Copy-Item -Path (Join-Path $src "$g\*") -Destination $dest -Recurse -Force
+        Set-Content -Path $manifest -Value $new
     }
 
     Write-Host "Skills in ${dest}:"

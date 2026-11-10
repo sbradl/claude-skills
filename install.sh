@@ -7,8 +7,8 @@
 # the development version). Arguments name skill groups (directories under
 # skills/); none means pick from a checklist (or install all when there is no
 # terminal to ask on) — or, with --update, every group already installed.
-# Each group's skill directories are replaced wholesale, so renamed or deleted
-# files inside a skill don't linger.
+# Each group's skill directories are replaced wholesale, and skills a group
+# no longer has are removed, so renamed or deleted files don't linger.
 # Leaves the rest of ./.claude alone.
 set -eu
 
@@ -90,9 +90,13 @@ pick() {
   done
 }
 
+# Lists the skills a group installed, so a later run can remove those it dropped.
+manifest() { echo "$DEST/.claude-skills.$1"; }
+
 if [ $# -eq 0 ] && $update; then
   for group in $(ls "$src"); do
-    for d in "$src/$group"/*/; do
+    if [ -f "$(manifest "$group")" ]; then set -- "$@" "$group"; continue; fi
+    for d in "$src/$group"/*/; do  # installed before manifests existed
       if [ -d "$DEST/$(basename "$d")" ]; then set -- "$@" "$group"; break; fi
     done
   done
@@ -117,10 +121,13 @@ done
 
 mkdir -p "$DEST"
 for group in "$@"; do
-  for d in "$src/$group"/*/; do
-    rm -rf "$DEST/$(basename "$d")"
+  m=$(manifest "$group")
+  { [ -f "$m" ] && cat "$m"; ls "$src/$group"; } | while IFS= read -r name; do
+    case $name in ''|.|..|*/*) continue ;; esac
+    rm -rf "$DEST/$name"
   done
   cp -R "$src/$group"/. "$DEST"/
+  ls "$src/$group" >"$m"
 done
 
 echo "Skills in $DEST:"

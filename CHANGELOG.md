@@ -91,6 +91,9 @@
 - `install.ps1` without group names installs every group when input is
   redirected (for example in CI), as `install.sh` does, instead of failing on
   the checklist.
+- Updating removes a skill that a group renamed or dropped, instead of leaving
+  the old copy installed. The install script records each group's skills in
+  `.claude/skills/.claude-skills.<group>` for this.
 
 ## v2.1.4 — 2026-10-12
 

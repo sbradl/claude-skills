@@ -78,7 +78,7 @@ The development version:
 
 ## Updating
 
-Run the install script with `--update` (PowerShell: `-Update`) from the directory you installed into. It fetches the latest release (or the one `--ref` names) and replaces the skills of every group you have installed — a group gains skills added to it since, and files removed from a skill don't linger. Groups you never installed stay out, and the rest of `./.claude/` is left alone. Name groups to update only those, or to add one. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
+Run the install script with `--update` (PowerShell: `-Update`) from the directory you installed into. It fetches the latest release (or the one `--ref` names) and replaces the skills of every group you have installed — a group gains skills added to it since, and skills or files removed from it don't linger. Groups you never installed stay out, and the rest of `./.claude/` is left alone. Name groups to update only those, or to add one. See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
 
 **Linux / macOS**
 
