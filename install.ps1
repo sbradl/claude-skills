@@ -3,7 +3,8 @@
 #         & ([scriptblock]::Create((irm https://raw.githubusercontent.com/sbradl/claude-skills/main/install.ps1))) -Ref v2.1.4 tdd craft-review
 # Installs the latest release; -Ref takes a release tag, or a branch (main for
 # the development version). Arguments name skill groups (directories under
-# skills\); none means pick from a checklist.
+# skills\); none means pick from a checklist (or install all when input is
+# redirected).
 [CmdletBinding(PositionalBinding = $false)]
 param(
     [string]$Ref,
@@ -34,6 +35,9 @@ try {
     if (-not (Test-Path $src)) { throw "skills directory not found in archive" }
 
     $available = @(Get-ChildItem -Directory -Name $src)
+    if (-not $Group -and [Console]::IsInputRedirected) {
+        $Group = $available
+    }
     if (-not $Group) {
         # Checklist: up/down (or k/j) move, space toggles, enter confirms.
         $n = $available.Count

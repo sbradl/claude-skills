@@ -85,6 +85,9 @@
   instead of always being a Conventional Commit.
 - `tdd-loop`'s mutation pass runs the `mutation` command from your project's
   `CLAUDE.md` Testing section, so it works in projects that don't use mise.
+- `install.ps1` without group names installs every group when input is
+  redirected (for example in CI), as `install.sh` does, instead of failing on
+  the checklist.
 
 ## v2.1.4 — 2026-10-12
 
