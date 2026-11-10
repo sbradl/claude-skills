@@ -40,6 +40,7 @@ sh "$render" -c $fx -p -l de | diff -u tests/render/ROADMAP.de.md - || fail "$re
 
 - \`GET /invoices/{id}\` rounds totals to cents." ] || fail "$render -r v2.1.0 -a developers: wrong release notes"
 [ -z "$(sh "$render" -c $fx -r v2.1.0 -a end-users)" ] || fail "$render -r: a release without the audience's entries must print nothing, not Upcoming"
+echo '{"upcoming": {}}' | sh "$render" -c - -a end-users >/dev/null || fail "$render fails without releases"
 
 [ $bad -eq 0 ] && echo "ok: skills"
 exit $bad

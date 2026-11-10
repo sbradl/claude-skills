@@ -74,18 +74,18 @@ jq -r --arg audience "$audience" --arg lang "$lang" --arg release "$release" --a
     (.planned // error("the changelog has no planned section")) | roadmap
   else
     (if $audience != "" then $audience else
-      ([.upcoming, .releases[]] | map(keys) | add // [] | unique - ["version", "date"]) as $all
+      ([.upcoming, (.releases // [])[]] | map(keys) | add // [] | unique - ["version", "date"]) as $all
       | if ($all | length) == 1 then $all[0]
         else error("name the audience with -a: \($all | join(", "))") end
     end) as $audience
     | if $release != "" then
-        (first(.releases[] | select(.version == $release)) // null) as $r
+        (first((.releases // [])[] | select(.version == $release)) // null) as $r
         | (if $r then $r[$audience] else .upcoming[$audience] end // {})
         | categories
       else
         "# Changelog\n\n"
         + (.upcoming[$audience] // {} | section("Upcoming"))
-        + (.releases | map(.[$audience] as $cats | "\(.version) — \(.date)" as $h
+        + ((.releases // []) | map(.[$audience] as $cats | "\(.version) — \(.date)" as $h
              | $cats // {} | section($h)) | join(""))
       end
   end
